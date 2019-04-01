@@ -19,6 +19,7 @@
             android:layout_gravity="center_vertical"
             android:src="@drawable/fan"
             android:padding="5dp"
+
             />
         
         <TextView
