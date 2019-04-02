@@ -1,18 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="vertical"
+    tools:context=".MainActivity"
+    android:background="#dbe1d9">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:text="Smart Home"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/room0"
+            android:onClick="onClickRoom"
+            android:src="@drawable/livingroom"
+            android:background="@drawable/imageview_bg"
+            android:layout_width="170dp"
+            android:layout_height="190dp"
+            android:layout_marginRight="20dp"
+            android:adjustViewBounds="true"
+            android:padding="5dp"/>
+        <ImageView
+            android:id="@+id/room1"
+            android:onClick="onClickRoom"
+            android:src="@drawable/bathroom"
+            android:background="@drawable/imageview_bg"
+            android:layout_width="170dp"
+            android:layout_height="190dp"
+            android:adjustViewBounds="true"
+            android:padding="5dp"/>
+    </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/room2"
+            android:onClick="onClickRoom"
+            android:src="@drawable/studyroom"
+            android:background="@drawable/imageview_bg"
+            android:layout_width="170dp"
+            android:layout_height="190dp"
+            android:layout_marginRight="20dp"
+            android:adjustViewBounds="true"
+            android:padding="5dp"/>
+        <ImageView
+            android:id="@+id/room3"
+            android:onClick="onClickRoom"
+            android:src="@drawable/bedroom"
+            android:background="@drawable/imageview_bg"
+            android:layout_width="170dp"
+            android:layout_height="190dp"
+            android:adjustViewBounds="true"
+            android:padding="5dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/room4"
+            android:onClick="onClickRoom"
+            android:src="@drawable/plus"
+            android:background="@drawable/imageview_bg"
+            android:layout_width="170dp"
+            android:layout_height="190dp"
+            android:layout_marginRight="20dp"
+            android:adjustViewBounds="true"
+            android:padding="45dp"/>
+        <ImageView
+            android:id="@+id/room5"
+            android:onClick="onClickRoom"
+            android:src="@drawable/plus"
+            android:background="@drawable/imageview_bg"
+            android:layout_width="170dp"
+            android:layout_height="190dp"
+            android:adjustViewBounds="true"
+            android:padding="45dp"/>
+    </LinearLayout>
+
+</LinearLayout>
