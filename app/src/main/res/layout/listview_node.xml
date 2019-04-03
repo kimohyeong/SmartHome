@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -15,7 +15,7 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:id="@+id/imageicon"
+            android:id="@+id/deviceImg"
             android:layout_gravity="center_vertical"
             android:src="@drawable/fan"
             android:padding="5dp"
@@ -27,7 +27,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:id="@+id/textview"
+            android:id="@+id/deviceText"
             android:padding="10dp"
             android:text="HEATER"
             android:textSize="20dp"/>
@@ -37,17 +37,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="10dp"/>
-        
-        
     </LinearLayout>
-    
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
         android:weightSum="10"
-        android:background="@drawable/border">
+        android:background="@drawable/border"
+        android:id="@+id/detailLayout">
 
         <TextView
             android:layout_width="0dp"
@@ -55,6 +52,7 @@
             android:layout_weight="8"
             android:gravity="center_vertical"
             android:text="PANASONIC AC 3P"
+            android:id="@+id/deviceInfoText"
             android:padding="10dp"
             android:textSize="15dp"/>
         <TextView
@@ -63,11 +61,149 @@
             android:layout_weight="2"
             android:text="Auto 24"
             android:textSize="15dp"
+            android:id="@+id/deviceStateText"
             android:gravity="center_vertical"/>
-
     </LinearLayout>
-    
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        android:orientation="vertical"
+        android:id="@+id/fanDetailLayout"
+        android:animateLayoutChanges="true">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="130dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/fanSwitch"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ON / OFF" />
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingHorizontal="30dp">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="26dp"
+                android:text="MIN"
+                android:id="@+id/fanMaxBtn"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="26dp"
+                android:text="MID"
+                android:id="@+id/fanMidBtn"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MAX"
+                android:id="@+id/fanMinBtn"/>
+        </LinearLayout>
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        android:orientation="vertical"
+        android:id="@+id/ledDetailLayout"
+        android:animateLayoutChanges="true">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="130dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ledSwitch"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ON / OFF" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingHorizontal="30dp">
+            <com.christophesmet.android.views.colorpicker.ColorPickerView
+                android:id="@+id/colorpicker"
+                app:wheelDrawable="@drawable/img_wheel"
+                app:thumbDrawable="@drawable/img_wheel_handle"
+                app:radiusOffset="24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        android:orientation="vertical"
+        android:id="@+id/blindDetailLayout"
+        android:animateLayoutChanges="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="50dp">
+
+            <Button
+                android:id="@+id/blindMinBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="100dp"
+                android:text="MIN" />
+
+            <Button
+                android:id="@+id/blindMaxBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MAX" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="50dp"
+            >
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:scrollbarSize="10dp"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="min" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="max"
+                    android:layout_marginLeft="200dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
