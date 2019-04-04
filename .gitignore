@@ -136,6 +136,9 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
+# Config file
+app/src/main/assets/infoConfig.json
+
 ### AndroidStudio Patch ###
 
 !/gradle/wrapper/gradle-wrapper.jar

@@ -51,7 +51,7 @@
         <ImageView
             android:id="@+id/room2"
             android:onClick="onClickRoom"
-            android:src="@drawable/studyroom"
+            android:src="@drawable/bedroom"
             android:background="@drawable/imageview_bg"
             android:layout_width="170dp"
             android:layout_height="190dp"
@@ -61,7 +61,7 @@
         <ImageView
             android:id="@+id/room3"
             android:onClick="onClickRoom"
-            android:src="@drawable/bedroom"
+            android:src="@drawable/studyroom"
             android:background="@drawable/imageview_bg"
             android:layout_width="170dp"
             android:layout_height="190dp"
