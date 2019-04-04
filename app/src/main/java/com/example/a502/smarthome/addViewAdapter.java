@@ -54,8 +54,8 @@ public class addViewAdapter extends BaseAdapter{
         Device device = addDevices.get(position);
         ImageView imgv = (ImageView)itemlayout.findViewById(R.id.imageicon);
         TextView txtv = (TextView)itemlayout.findViewById(R.id.textview);
-        imgv.setImageResource(img[device.type]);
-        txtv.setText(device.name);
+        imgv.setImageResource(img[device.getDeviceType()]);
+        txtv.setText(device.getDeviceName());
         return itemlayout;
     }
 }

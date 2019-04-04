@@ -11,8 +11,6 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-import io.particle.android.sdk.cloud.ParticleCloudSDK;
-
 public class MainActivity extends AppCompatActivity {
 
     public ImageView []room;
@@ -67,15 +65,16 @@ public class MainActivity extends AppCompatActivity {
         }
         Device d = new Device();
         Device d1 = new Device();
-        d.room[0] = 0;
-        d.type=0;
-        d.name="myled";
-        d.state="on";
+        d.setDeviceRoom(0, 0);
+        d.setDeviceType(0);
+        d.setDeviceName("MyLED");
+        d.setDeviceState("on");
         devices[0].add(d);
-        d1.room[0] = 2;
-        d1.type=1;
-        d1.name="myblind";
-        d1.state="on";
+
+        d.setDeviceRoom(0, 2);
+        d.setDeviceType(1);
+        d.setDeviceName("MyBlind");
+        d.setDeviceState("on");
         devices[2].add(d1);
     }
 

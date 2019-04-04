@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder> {
     // adapter에 들어갈 list 입니다.
-    private ArrayList<RecyclerData> listData = new ArrayList<>();
+    private ArrayList<Device> listData = new ArrayList<>();
     private Context context;
     private SparseBooleanArray selectedItems = new SparseBooleanArray();
     private int prePosition = -1;
@@ -39,29 +39,24 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        // Item을 하나, 하나 보여주는(bind 되는) 함수입니다.
         holder.onBind(listData.get(position), position);
     }
 
     @Override
     public int getItemCount() {
-        // RecyclerView의 총 개수 입니다.
         return listData.size();
     }
 
-    void addItem(RecyclerData data) {
-        // 외부에서 item을 추가시킬 함수입니다.
+    void addItem(Device data) {
         listData.add(data);
     }
 
-    // RecyclerView의 핵심인 ViewHolder 입니다.
-    // 여기서 subView를 setting 해줍니다.
     class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView deviceNameTxt, deviceStateTxt, deviceInfoTxt;
         private LinearLayout fanDetailLayout, blindDetailLayout, ledDetailLayout;
         private ImageView deviceImg;
-        private RecyclerData data;
+        private Device data;
         private int position;
 
         ItemViewHolder(View itemView) {
@@ -77,13 +72,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             ledDetailLayout = (LinearLayout)itemView.findViewById(R.id.ledDetailLayout);
         }
 
-        void onBind(RecyclerData data, int position) {
+        void onBind(Device data, int position) {
             this.data = data;
             this.position = position;
 
             deviceNameTxt.setText(data.getDeviceName());
             deviceStateTxt.setText(data.getDeviceState());
-            deviceInfoTxt.setText(data.getDeviceInfo());
             deviceImg.setImageDrawable(data.getDeviceImgDrawable());
 
             changeVisibility(selectedItems.get(position));
@@ -112,7 +106,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 
         private void changeVisibility(final boolean isExpanded) {
             // height 값을 dp로 지정해서 넣고싶으면 아래 소스를 이용
-            int dpValue = 150;
+            int dpValue = 0;
+            if (this.data.getDeviceType() == 0) {
+                dpValue = 200;
+            } else {
+                dpValue = 150;
+            }
+
             float d = context.getResources().getDisplayMetrics().density;
             int height = (int) (dpValue * d);
 
@@ -121,6 +121,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             // ValueAnimator.ofInt(int... values)는 View가 변할 값을 지정, 인자는 int 배열
             ValueAnimator va = isExpanded ? ValueAnimator.ofInt(0, height) : ValueAnimator.ofInt(height, 0);
             // Animation이 실행되는 시간, n/1000초
+
             va.setDuration(600);
             va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
