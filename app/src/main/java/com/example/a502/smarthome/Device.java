@@ -1,5 +1,7 @@
 package com.example.a502.smarthome;
 
+import android.graphics.drawable.Drawable;
+
 import java.io.Serializable;
 
 /**
@@ -7,8 +9,44 @@ import java.io.Serializable;
  */
 
 public class Device implements Serializable {
-    String name;
-    int type;                   //0:led 1:blind 2:fan 3:temp
-    int[] room = new int[3];    //0:기본 1~2추가
-    String state;
+    private String name;                // device이름
+    private int type;                   //0:led 1:blind 2:fan 3:temp
+    private int[] room = new int[3];    //0:기본 1~2추가
+    private String state;               // device상태
+    private Drawable deviceImgDrawable; // device image
+
+    public String getDeviceName() {
+        return name;
+    }
+    public void setDeviceName(String _name) {
+        this.name = _name;
+    }
+
+    public int getDeviceType() {
+        return type;
+    }
+    public void setDeviceType(int _type) {
+        this.type = _type;
+    }
+
+    public String getDeviceState() {
+        return state;
+    }
+    public void setDeviceState(String _state) {
+        this.state = _state;
+    }
+
+    public int getDeviceRoom(int roomNum) {
+        return room[roomNum];
+    }
+    public void setDeviceRoom(int basicRoomNum, int addedRoomNum) {
+        room[basicRoomNum] = addedRoomNum;
+    }
+
+    public Drawable getDeviceImgDrawable() {
+        return deviceImgDrawable;
+    }
+    public void setDeviceImgDrawable(Drawable _deviceImgDrawable) {
+        this.deviceImgDrawable = _deviceImgDrawable;
+    }
 }

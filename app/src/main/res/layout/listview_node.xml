@@ -52,7 +52,7 @@
             android:layout_weight="8"
             android:gravity="center_vertical"
             android:text="PANASONIC AC 3P"
-            android:id="@+id/deviceInfoText"
+            android:id="@+id/deviceStateText"
             android:padding="10dp"
             android:textSize="15dp"/>
         <TextView
@@ -61,7 +61,7 @@
             android:layout_weight="2"
             android:text="Auto 24"
             android:textSize="15dp"
-            android:id="@+id/deviceStateText"
+            android:id="@+id/deviceInfoText"
             android:gravity="center_vertical"/>
     </LinearLayout>
 

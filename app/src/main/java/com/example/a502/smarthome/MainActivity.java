@@ -3,6 +3,7 @@ package com.example.a502.smarthome;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,20 @@ import android.widget.TextView;
 import java.sql.BatchUpdateException;
 import java.util.ArrayList;
 
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import io.particle.android.sdk.cloud.ParticleCloud;
+import io.particle.android.sdk.cloud.ParticleCloudException;
+import io.particle.android.sdk.cloud.ParticleCloudSDK;
+import io.particle.android.sdk.cloud.ParticleDevice;
+import io.particle.android.sdk.utils.Async;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,9 +55,71 @@ public class MainActivity extends AppCompatActivity {
         ActionBar bar = getSupportActionBar();
         bar.hide();
 
+        //particleInit();
         setting();
     }
 
+    public void particleInit()
+    {
+Log.d("log1","startparticle");
+        ParticleCloudSDK.init(this);
+        Async.executeAsync(ParticleCloudSDK.getCloud(), new Async.ApiWork<ParticleCloud, Object>() {
+
+            private List<ParticleDevice> particleDevices;
+
+            @Override
+            public Object callApi(@NonNull ParticleCloud particleCloud) throws ParticleCloudException, IOException {
+
+                Log.d("log1","startparticle1");
+
+                try {
+                    JSONObject obj = new JSONObject(loadJSONFromAsset());
+                    Log.e("log1",obj.optString("cloudEmail"));
+                    Log.e("log1",obj.optString("cloudPassword"));
+                    particleCloud.logIn(obj.optString("cloudEmail"), obj.optString("cloudPassword"));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.d("log1",e.toString());
+                }
+
+                Log.e("log1","login success");
+
+                particleDevices=particleCloud.getDevices();
+
+                for (ParticleDevice device : particleDevices) {
+                    //리스트 저장
+
+                    Device d=new Device();
+
+                    int roomnum=0;
+                    //클라우드에서 가져오기
+                    //roomnum=Integer.parseInt(device.getStringVariable("subRoomNum"));
+                    d.setDeviceRoom(0,9);
+                    d.setDeviceState("");
+                    d.setDeviceName("");
+                    d.setDeviceType(1);
+
+                    devices[roomnum].add(d);
+                }
+
+                return -1;
+
+            }
+
+            @Override
+            public void onSuccess(@NonNull Object value) {
+                Log.e("log1", "login success");
+            }
+
+            @Override
+            public void onFailure(@NonNull ParticleCloudException e) {
+                Log.d("log1", e.getBestMessage());
+            }
+        });
+
+
+    }
     public void setting(){
         //view
         room = new ImageView[6];
@@ -92,18 +169,6 @@ public class MainActivity extends AppCompatActivity {
         for(int i=0; i<4; i++){
             devices[i] = new ArrayList<Device>();
         }
-        Device d = new Device();
-        Device d1 = new Device();
-        d.room[0] = 0;
-        d.type=0;
-        d.name="myled";
-        d.state="on";
-        devices[0].add(d);
-        d1.room[0] = 2;
-        d1.type=1;
-        d1.name="myblind";
-        d1.state="on";
-        devices[2].add(d1);
     }
 
     ///---------- add room button ------------///
@@ -121,13 +186,13 @@ public class MainActivity extends AppCompatActivity {
         if(roomNum == 4 && !isAdd4){
             intent = new Intent(this, AddActivity.class);
             intent.putExtra("DEVICE",devices);
-            startActivityForResult(intent, 4);
+            startActivity(intent);
             return;
         }
         if(roomNum == 5 && !isAdd5) {
             intent = new Intent(this, AddActivity.class);
             intent.putExtra("DEVICE",devices);
-            startActivityForResult(intent,5);
+            startActivity(intent);
             return;
         }
 
@@ -135,6 +200,25 @@ public class MainActivity extends AppCompatActivity {
         intent = new Intent(this, RoomActivity.class);
         intent.putExtra("DEVICE",devices[roomNum]);
         startActivity(intent);
+    }
+
+    public String loadJSONFromAsset() {
+        String json = null;
+        try {
+
+            InputStream is = getAssets().open("infoConfig.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+
     }
 
     ///----------- room reset butoon ------------------///
@@ -233,3 +317,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 }
+
