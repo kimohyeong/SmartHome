@@ -6,13 +6,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.a502.smarthome.IntroActivity"
-    android:background="#dbe1d9">
+    android:background="#e4e4e4">
 
-    <TextView
-        android:layout_marginTop="50dp"
-        android:layout_gravity="center"
-        android:textSize="30dp"
-        android:text="★으니이니영이★"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <ImageView
+            android:src="@drawable/introimg"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:adjustViewBounds="true"/>
+    </LinearLayout>
 </LinearLayout>

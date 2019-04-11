@@ -6,16 +6,36 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.a502.smarthome.AddActivity"
-    android:background="#dbe1d9">
+    android:background="#e4e4e4">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <Button
+            android:text="◁"
+            android:textSize="30dp"
+            android:textColor="#ffffff"
+            android:background="#00ff0000"
+            android:layout_width="50dp"
+            android:layout_height="60dp"
+            android:onClick="onClickBack"/>
+        <TextView
+            android:text="Create a custom room"
+            android:background="#46547f"
+            android:textColor="#ffffff"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="60dp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <EditText
             android:id="@+id/editText"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="30dp"
+            android:hint="room name"
+            android:layout_marginHorizontal="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <Button
@@ -31,7 +51,8 @@
     <ScrollView
         android:scrollbars="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -39,7 +60,7 @@
             <TextView
                 android:text="Living Room"
                 android:textColor="#FFFFFF"
-                android:background="#a4db95"
+                android:background="#46547f"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <ListView
@@ -50,7 +71,7 @@
             <TextView
                 android:text="Bathroom"
                 android:textColor="#FFFFFF"
-                android:background="#a4db95"
+                android:background="#46547f"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <ListView
@@ -61,7 +82,7 @@
             <TextView
                 android:text="Bedroom"
                 android:textColor="#FFFFFF"
-                android:background="#a4db95"
+                android:background="#46547f"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <ListView
@@ -72,7 +93,7 @@
             <TextView
                 android:text="Study Room"
                 android:textColor="#FFFFFF"
-                android:background="#a4db95"
+                android:background="#46547f"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <ListView
@@ -82,4 +103,11 @@
                 android:layout_height="wrap_content"></ListView>
         </LinearLayout>
     </ScrollView>
+    <Button
+        android:text="ok"
+        android:onClick="onClickOK"
+        android:layout_gravity="center"
+        android:layout_width="140dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="20dp"/>
 </LinearLayout>

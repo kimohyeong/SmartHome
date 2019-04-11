@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.a502.smarthome">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,8 +20,7 @@
         </activity>
         <activity android:name=".RoomActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".AddActivity"></activity>
+        <activity android:name=".AddActivity" />
     </application>
 
-    <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>

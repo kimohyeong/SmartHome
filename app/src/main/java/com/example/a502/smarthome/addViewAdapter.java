@@ -6,8 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -17,13 +20,16 @@ import java.util.ArrayList;
 
 public class addViewAdapter extends BaseAdapter{
 
+    public AddActivity.OnCheckedChange onCheckedChange = new AddActivity.OnCheckedChange();
     Context context;
     ArrayList<Device> addDevices;
     LayoutInflater layoutInflater = null;
+    int roomNum;
     int[] img;
 
-    public addViewAdapter(Context context, ArrayList<Device> init){
+    public addViewAdapter(Context context, ArrayList<Device> init, int roomNum){
         this.context = context;
+        this.roomNum = roomNum;
         addDevices = init;
         layoutInflater = LayoutInflater.from(context);
 
@@ -54,8 +60,13 @@ public class addViewAdapter extends BaseAdapter{
         Device device = addDevices.get(position);
         ImageView imgv = (ImageView)itemlayout.findViewById(R.id.imageicon);
         TextView txtv = (TextView)itemlayout.findViewById(R.id.textview);
+        CheckBox cbox = (CheckBox)itemlayout.findViewById(R.id.checkbox);
+        onCheckedChange.setDevice(roomNum,position);
+        cbox.setOnCheckedChangeListener(onCheckedChange);
         imgv.setImageResource(img[device.type]);
         txtv.setText(device.name);
         return itemlayout;
     }
+
+
 }
