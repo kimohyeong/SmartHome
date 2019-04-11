@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="300dp"
+    android:layout_height="130dp"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:text="    Delete your room?"
+        android:textSize="20dp"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_height="70dp" />
+    <TextView
+        android:background="@android:color/darker_gray"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="10dp"
+        android:layout_height="1dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="right|center_vertical"
+        android:orientation="horizontal">
+        <Button
+            android:text="OK"
+            android:id="@+id/check_OKbtn"
+            android:background="#00ff0000"
+            android:textColor="#46547f"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp" />
+        <Button
+            android:text="Cancel"
+            android:id="@+id/check_CancelBtn"
+            android:background="#00ff0000"
+            android:textColor="#46547f"
+            android:textStyle="bold"
+            android:layout_marginRight="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp" />
+    </LinearLayout>
+
+</LinearLayout>
