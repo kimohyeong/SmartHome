@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
     public ImageView []room;
     public Button reBtn4, reBtn5;
     public TextView txtV4, txtV5;
-
     public Boolean isAdd4, isAdd5;
     public String name4, name5;
     public static  ArrayList<Device>[] devices;
@@ -60,17 +59,14 @@ public class MainActivity extends AppCompatActivity {
         setting();
     }
 
-    public void particleInit()
-    {
+    public void particleInit() {
         Log.d("log1","startparticle");
         ParticleCloudSDK.init(this);
         Async.executeAsync(ParticleCloudSDK.getCloud(), new Async.ApiWork<ParticleCloud, Object>() {
-
             private List<ParticleDevice> particleDevices;
 
             @Override
             public Object callApi(@NonNull ParticleCloud particleCloud) throws ParticleCloudException, IOException {
-
                 Log.d("log1","startparticle1");
 
                 try {
@@ -103,31 +99,23 @@ public class MainActivity extends AppCompatActivity {
 
                         devices[roomnum].add(d);
                     }
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.d("log1",e.toString());
                 } catch (ParticleDevice.VariableDoesNotExistException e) {
                     e.printStackTrace();
                 }
-
                 return -1;
-
             }
-
             @Override
             public void onSuccess(@NonNull Object value) {
                 Log.e("log1", "login success");
             }
-
             @Override
             public void onFailure(@NonNull ParticleCloudException e) {
                 Log.d("log1", e.getBestMessage());
             }
         });
-
-
     }
 
 
@@ -216,20 +204,17 @@ public class MainActivity extends AppCompatActivity {
     public String loadJSONFromAsset() {
         String json = null;
         try {
-
             InputStream is = getAssets().open("infoConfig.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
             is.close();
             json = new String(buffer, "UTF-8");
-
         } catch (IOException ex) {
             ex.printStackTrace();
             return null;
         }
         return json;
-
     }
 
     ///----------- room reset butoon ------------------///
@@ -267,7 +252,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         dialog.show();
-
     }
     public void reset(int roomNum){
         // room4 reset //
@@ -325,6 +309,5 @@ public class MainActivity extends AppCompatActivity {
             editor.putString("Name5",name5);
         }
         editor.commit();
-
     }
 }
