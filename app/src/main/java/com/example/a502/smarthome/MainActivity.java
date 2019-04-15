@@ -70,34 +70,50 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public Object callApi(@NonNull ParticleCloud particleCloud) throws ParticleCloudException, IOException {
+
+                Log.d("log1","startparticle1");
+
                 try {
                     JSONObject json = new JSONObject(loadJSONFromAsset());
+                    Log.e("log1",json.getString("cloudEmail"));
+                    Log.e("log1",json.getString("cloudPassword"));
                     particleCloud.logIn(json.getString("cloudEmail"), json.getString("cloudPassword"));
+
                     Calendar distantFuture = Calendar.getInstance();
                     distantFuture.add(Calendar.YEAR, 20);
                     particleCloud.setAccessToken(json.getString("cloudAccessToken"), distantFuture.getTime());
+
+                    particleDevices = particleCloud.getDevices();
+                    Log.e("log1",particleDevices.size()+"");
+
+                    for (ParticleDevice device : particleDevices) {
+                        //리스트 저장
+                        int roomnum=Integer.parseInt(device.getStringVariable("roomNum"));
+                        String name=device.getStringVariable("name");
+                        int type=Integer.parseInt(device.getStringVariable("type"));
+                        String state=device.getStringVariable("state");
+
+                        Device d=new Device();
+
+                        //클라우드에서 가져오기
+                        d.setDeviceRoom(roomnum,9);
+                        d.setDeviceState(state);
+                        d.setDeviceName(name);
+                        d.setDeviceType(type);
+
+                        devices[roomnum].add(d);
+                    }
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.d("log1",e.toString());
+                } catch (ParticleDevice.VariableDoesNotExistException e) {
+                    e.printStackTrace();
                 }
 
-                particleDevices=particleCloud.getDevices();
-                Log.e("log1",particleDevices.size()+"");
-
-                for (ParticleDevice device : particleDevices) {
-                    //리스트 저장
-                    Device d=new Device();
-                    int roomnum=0;
-
-                    //클라우드에서 가져오기
-                    //roomnum=Integer.parseInt(device.getStringVariable("subRoomNum"));
-                    d.setDeviceRoom(0,9);
-                    d.setDeviceState("");
-                    d.setDeviceName("");
-                    d.setDeviceType(1);
-                    devices[roomnum].add(d);
-                }
                 return -1;
+
             }
 
             @Override
@@ -113,6 +129,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
     public void setting(){
         //view
         room = new ImageView[6];
