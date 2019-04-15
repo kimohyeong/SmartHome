@@ -63,10 +63,8 @@ public class addViewAdapter extends BaseAdapter{
         CheckBox cbox = (CheckBox)itemlayout.findViewById(R.id.checkbox);
         onCheckedChange.setDevice(roomNum,position);
         cbox.setOnCheckedChangeListener(onCheckedChange);
-        imgv.setImageResource(img[device.type]);
-        txtv.setText(device.name);
+        imgv.setImageResource(img[device.getDeviceType()]);
+        txtv.setText(device.getDeviceName());
         return itemlayout;
     }
-
-
 }
