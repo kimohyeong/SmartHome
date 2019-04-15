@@ -15,7 +15,8 @@ import java.util.List;
 
 public class RoomActivity extends AppCompatActivity {
     private RecyclerAdapter adapter;
-    private List<Device> devices;
+    private int roomNum = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +24,7 @@ public class RoomActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         // 방에 있는 device들 가져오기
-        devices = (ArrayList<Device>)intent.getSerializableExtra("DEVICE");
+        roomNum = (int)intent.getSerializableExtra("ROOM_NUM");
         init();
         getData();
     }
@@ -37,15 +38,15 @@ public class RoomActivity extends AppCompatActivity {
     }
 
     private void getData() {
-        if (devices == null) {
+        if (MainActivity.devices[roomNum] == null) {
             Log.e("getData","devices is null");
             return;
         }
 
         // 0 - led, 1 - blind, 2 - fan
         List<Drawable> drawableList = Arrays.asList(getResources().getDrawable(R.drawable.light),getResources().getDrawable(R.drawable.blind),getResources().getDrawable(R.drawable.fan));
-        for(int i=0; i<devices.size(); i++) {
-            Device data = devices.get(i);
+        for(int i=0; i<MainActivity.devices[roomNum].size(); i++) {
+            Device data = MainActivity.devices[roomNum].get(i);
             data.setDeviceName(data.getDeviceName());
             data.setDeviceImgDrawable(drawableList.get(i));
             data.setDeviceType(data.getDeviceType());

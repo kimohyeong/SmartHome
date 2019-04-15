@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import io.particle.android.sdk.cloud.ParticleCloud;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     public Boolean isAdd4, isAdd5;
     public String name4, name5;
-    ArrayList<Device>[] devices;
+    public static  ArrayList<Device>[] devices;
 
     //sp
     SharedPreferences pref;
@@ -55,13 +56,13 @@ public class MainActivity extends AppCompatActivity {
         ActionBar bar = getSupportActionBar();
         bar.hide();
 
-        //particleInit();
+        particleInit();
         setting();
     }
 
     public void particleInit()
     {
-Log.d("log1","startparticle");
+        Log.d("log1","startparticle");
         ParticleCloudSDK.init(this);
         Async.executeAsync(ParticleCloudSDK.getCloud(), new Async.ApiWork<ParticleCloud, Object>() {
 
@@ -69,42 +70,34 @@ Log.d("log1","startparticle");
 
             @Override
             public Object callApi(@NonNull ParticleCloud particleCloud) throws ParticleCloudException, IOException {
-
-                Log.d("log1","startparticle1");
-
                 try {
-                    JSONObject obj = new JSONObject(loadJSONFromAsset());
-                    Log.e("log1",obj.optString("cloudEmail"));
-                    Log.e("log1",obj.optString("cloudPassword"));
-                    particleCloud.logIn(obj.optString("cloudEmail"), obj.optString("cloudPassword"));
-
+                    JSONObject json = new JSONObject(loadJSONFromAsset());
+                    particleCloud.logIn(json.getString("cloudEmail"), json.getString("cloudPassword"));
+                    Calendar distantFuture = Calendar.getInstance();
+                    distantFuture.add(Calendar.YEAR, 20);
+                    particleCloud.setAccessToken(json.getString("cloudAccessToken"), distantFuture.getTime());
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.d("log1",e.toString());
                 }
 
-                Log.e("log1","login success");
-
                 particleDevices=particleCloud.getDevices();
+                Log.e("log1",particleDevices.size()+"");
 
                 for (ParticleDevice device : particleDevices) {
                     //리스트 저장
-
                     Device d=new Device();
-
                     int roomnum=0;
+
                     //클라우드에서 가져오기
                     //roomnum=Integer.parseInt(device.getStringVariable("subRoomNum"));
                     d.setDeviceRoom(0,9);
                     d.setDeviceState("");
                     d.setDeviceName("");
                     d.setDeviceType(1);
-
                     devices[roomnum].add(d);
                 }
-
                 return -1;
-
             }
 
             @Override
@@ -185,20 +178,20 @@ Log.d("log1","startparticle");
         //start addActivity
         if(roomNum == 4 && !isAdd4){
             intent = new Intent(this, AddActivity.class);
-            intent.putExtra("DEVICE",devices);
+            intent.putExtra("ROOM_NUM",roomNum);   //ROOM_NUM으로 방번호 intent에 전달해줭
             startActivity(intent);
             return;
         }
         if(roomNum == 5 && !isAdd5) {
             intent = new Intent(this, AddActivity.class);
-            intent.putExtra("DEVICE",devices);
+            intent.putExtra("ROOM_NUM",roomNum);   //ROOM_NUM으로 방번호 intent에 전달해줭
             startActivity(intent);
             return;
         }
 
         //start roomActivity
         intent = new Intent(this, RoomActivity.class);
-        intent.putExtra("DEVICE",devices[roomNum]);
+        intent.putExtra("ROOM_NUM",roomNum);   //ROOM_NUM으로 방번호 intent에 전달해줭
         startActivity(intent);
     }
 
@@ -317,4 +310,3 @@ Log.d("log1","startparticle");
 
     }
 }
-
