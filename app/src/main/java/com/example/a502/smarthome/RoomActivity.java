@@ -48,7 +48,7 @@ public class RoomActivity extends AppCompatActivity {
         for(int i=0; i<MainActivity.devices[roomNum].size(); i++) {
             Device data = MainActivity.devices[roomNum].get(i);
             data.setDeviceName(data.getDeviceName());
-            data.setDeviceImgDrawable(drawableList.get(i));
+            data.setDeviceImgDrawable(drawableList.get(data.getDeviceType()));
             data.setDeviceType(data.getDeviceType());
             data.setDeviceState(data.getDeviceState());
             adapter.addItem(data);

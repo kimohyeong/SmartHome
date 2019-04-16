@@ -28,5 +28,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'io.particle:cloudsdk:0.4.5'
     implementation 'com.github.christophesmet:colorpicker:d84191b1cf'
-
+    implementation 'com.github.rtugeek:colorseekbar:1.7.3'
 }

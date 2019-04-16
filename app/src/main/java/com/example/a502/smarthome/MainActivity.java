@@ -184,14 +184,14 @@ public class MainActivity extends AppCompatActivity {
         //start addActivity
         if(roomNum == 4 && !isAdd4){
             intent = new Intent(this, AddActivity.class);
-            intent.putExtra("ROOM_NUM",roomNum);   //ROOM_NUM으로 방번호 intent에 전달해줭
-            startActivity(intent);
+            intent.putExtra("DEVICE",devices);
+            startActivityForResult(intent, 4);
             return;
         }
         if(roomNum == 5 && !isAdd5) {
             intent = new Intent(this, AddActivity.class);
-            intent.putExtra("ROOM_NUM",roomNum);   //ROOM_NUM으로 방번호 intent에 전달해줭
-            startActivity(intent);
+            intent.putExtra("DEVICE",devices);   //ROOM_NUM으로 방번호 intent에 전달해줭
+            startActivityForResult(intent, 5);
             return;
         }
 
