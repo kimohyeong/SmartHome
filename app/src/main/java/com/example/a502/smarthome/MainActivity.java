@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
         ActionBar bar = getSupportActionBar();
         bar.hide();
 
-        particleInit();
         setting();
+        particleInit();
     }
 
     public void particleInit() {
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
         //device
         devices = new ArrayList[6];
-        for(int i=0; i<4; i++){
+        for(int i=0; i<6; i++){
             devices[i] = new ArrayList<Device>();
         }
     }
@@ -180,18 +180,20 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
         }
-
+        Log.e("super", roomNum+" "+isAdd4+","+isAdd5+"");
         //start addActivity
         if(roomNum == 4 && !isAdd4){
             intent = new Intent(this, AddActivity.class);
-            intent.putExtra("DEVICE",devices);
-            startActivityForResult(intent, 4);
+            //intent.putExtra("DEVICE",devices);
+            intent.putExtra("ROOM_NUM",roomNum);   //ROOM_NUM으로 방번호 intent에 전달해줭
+            startActivityForResult(intent,4);
             return;
         }
         if(roomNum == 5 && !isAdd5) {
             intent = new Intent(this, AddActivity.class);
-            intent.putExtra("DEVICE",devices);   //ROOM_NUM으로 방번호 intent에 전달해줭
-            startActivityForResult(intent, 5);
+            //intent.putExtra("DEVICE",devices);
+            intent.putExtra("ROOM_NUM",roomNum);   //ROOM_NUM으로 방번호 intent에 전달해줭
+            startActivityForResult(intent,5);
             return;
         }
 
@@ -285,7 +287,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(resultCode != RESULT_OK) return;
 
-        devices[requestCode] = (ArrayList<Device>) intent.getSerializableExtra("AddDevice");
+       // devices[requestCode] = (ArrayList<Device>) intent.getSerializableExtra("AddDevice");
         room[requestCode].setImageResource(R.drawable.person);
 
         // room4 set //
