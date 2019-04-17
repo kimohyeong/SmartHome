@@ -19,19 +19,20 @@ public class AddActivity extends AppCompatActivity {
     EditText editText;
     ListView[] listView;
     addViewAdapter[] mAdapter;
-    ArrayList<Device>[] devices;
+    //ArrayList<Device>[] devices;
+    int roomNum;
     static int[][] addNum = new int[4][100];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
-
+        Log.e("super","dddd");
         ActionBar bar = getSupportActionBar();
         bar.hide();
 
         Intent intent = getIntent();
-        devices = (ArrayList<Device>[])intent.getSerializableExtra("DEVICE");
+        roomNum = intent.getIntExtra("ROOM_NUM",0);
         setting();
     }
 
@@ -48,7 +49,7 @@ public class AddActivity extends AppCompatActivity {
         //adapter
         mAdapter = new addViewAdapter[4];
         for(int i=0; i<4; i++){
-            mAdapter[i] = new addViewAdapter(this, devices[i], i);
+            mAdapter[i] = new addViewAdapter(this, MainActivity.devices[i], i);
             listView[i].setAdapter(mAdapter[i]);
         }
     }
@@ -59,14 +60,15 @@ public class AddActivity extends AppCompatActivity {
         for(int i=0; i<4; i++){
             for(int j=0; j<5; j++){
                 if(addNum[i][j] == 1){
-                    addDevice.add(devices[i].get(j));
+                    addDevice.add(MainActivity.devices[i].get(j));
                 }
             }
         }
 
         //finish & transger addDevice
         Intent intent = new Intent();
-        intent.putExtra("AddDevice",addDevice);
+        MainActivity.devices[roomNum] = addDevice;
+       // intent.putExtra("AddDevice",addDevice);
         intent.putExtra("AddName",editText.getText().toString());
         setResult(RESULT_OK, intent);
         finish();

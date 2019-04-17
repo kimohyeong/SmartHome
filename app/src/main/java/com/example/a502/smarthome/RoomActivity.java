@@ -22,7 +22,6 @@ public class RoomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room);
         Intent intent = getIntent();
-
         // 방에 있는 device들 가져오기
         roomNum = (int)intent.getSerializableExtra("ROOM_NUM");
         init();
@@ -48,7 +47,7 @@ public class RoomActivity extends AppCompatActivity {
         for(int i=0; i<MainActivity.devices[roomNum].size(); i++) {
             Device data = MainActivity.devices[roomNum].get(i);
             data.setDeviceName(data.getDeviceName());
-            data.setDeviceImgDrawable(drawableList.get(i));
+            data.setDeviceImgDrawable(drawableList.get(data.getDeviceType()));
             data.setDeviceType(data.getDeviceType());
             data.setDeviceState(data.getDeviceState());
             adapter.addItem(data);

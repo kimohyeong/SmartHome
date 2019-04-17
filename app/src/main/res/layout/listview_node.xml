@@ -19,7 +19,6 @@
             android:layout_gravity="center_vertical"
             android:src="@drawable/fan"
             android:padding="5dp"
-
             />
         
         <TextView
@@ -68,14 +67,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="20dp"
+        android:padding="10dp"
         android:orientation="vertical"
         android:id="@+id/fanDetailLayout"
         android:animateLayoutChanges="true">
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="130dp"
+            android:gravity="center"
             android:layout_marginBottom="20dp"
             android:orientation="horizontal">
             <Switch
@@ -92,38 +91,55 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:paddingHorizontal="30dp">
-            <Button
+            android:weightSum="3">
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="26dp"
-                android:text="MIN"
-                android:id="@+id/fanMaxBtn"/>
-            <Button
+                android:layout_weight="1">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MIN"
+                    android:id="@+id/fanMinBtn"/>
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="26dp"
-                android:text="MID"
-                android:id="@+id/fanMidBtn"/>
-            <Button
+                android:layout_weight="1"
+                android:gravity="center">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MID"
+                    android:id="@+id/fanMidBtn"/>
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="MAX"
-                android:id="@+id/fanMinBtn"/>
+                android:layout_weight="1"
+                android:gravity="right">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MAX"
+                    android:id="@+id/fanMaxBtn"/>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="20dp"
+        android:padding="10dp"
         android:orientation="vertical"
         android:id="@+id/ledDetailLayout"
         android:animateLayoutChanges="true">
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="130dp"
+            android:gravity="center"
             android:layout_marginBottom="10dp"
             android:orientation="horizontal">
             <Switch
@@ -139,70 +155,82 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingHorizontal="30dp">
-            <com.christophesmet.android.views.colorpicker.ColorPickerView
+            android:orientation="vertical">
+            <com.rtugeek.android.colorseekbar.ColorSeekBar
+                android:paddingLeft="8dp"
                 android:id="@+id/colorpicker"
-                app:wheelDrawable="@drawable/img_wheel"
-                app:thumbDrawable="@drawable/img_wheel_handle"
-                app:radiusOffset="24dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:barHeight="10dp"
+                app:colorSeeds="@array/material_colors" />
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="20dp"
+        android:padding="10dp"
         android:orientation="vertical"
         android:id="@+id/blindDetailLayout"
         android:animateLayoutChanges="true">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingHorizontal="50dp">
-
-            <Button
-                android:id="@+id/blindMinBtn"
-                android:layout_width="wrap_content"
+            android:weightSum="2"
+            android:paddingHorizontal="30dp">
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="100dp"
-                android:text="MIN" />
+                android:id="@+id/blindMinLayout"
+                android:layout_weight="1">
+                <Button
+                    android:id="@+id/blindMinBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MIN" />
+            </LinearLayout>
 
-            <Button
-                android:id="@+id/blindMaxBtn"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="MAX" />
+                android:layout_weight="1"
+                android:id="@+id/blindMaxLayout"
+                android:gravity="right">
+                <Button
+                    android:id="@+id/blindMaxBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MAX" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="50dp"
+            android:paddingHorizontal="10dp"
             >
-
             <SeekBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
+                android:id="@+id/blindSeekBar"
                 android:scrollbarSize="10dp"/>
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="min" />
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="max"
-                    android:layout_marginLeft="200dp"/>
+                    android:layout_marginLeft="300dp"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
