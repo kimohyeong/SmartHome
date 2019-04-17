@@ -11,6 +11,7 @@ import java.io.Serializable;
 public class Device implements Serializable {
     private String name;                // device이름
     private int type;                   //0:led 1:blind 2:fan 3:temp
+    private int roomNum;
     private int[] room = new int[3];    //0:기본 1~2추가
     private String state;               // device상태
     private Drawable deviceImgDrawable; // device image
@@ -42,6 +43,9 @@ public class Device implements Serializable {
     public void setDeviceRoom(int basicRoomNum, int addedRoomNum) {
         room[basicRoomNum] = addedRoomNum;
     }
+
+    public int getDeviceRoomNum() {return roomNum;}
+    public void setDeviceRoomNum(int roomNum) { this.roomNum = roomNum; }
 
     public Drawable getDeviceImgDrawable() {
         return deviceImgDrawable;

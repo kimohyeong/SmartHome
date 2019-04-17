@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     public Boolean isAdd4, isAdd5;
     public String name4, name5;
     public static  ArrayList<Device>[] devices;
-    public static List<ParticleDevice> particleDevices;
+    public static ParticleDevice meshGateway;
 
     //sp
     SharedPreferences pref;
@@ -68,12 +68,11 @@ public class MainActivity extends AppCompatActivity {
         Log.d("log1","startparticle");
         ParticleCloudSDK.init(this);
         Async.executeAsync(ParticleCloudSDK.getCloud(), new Async.ApiWork<ParticleCloud, Object>() {
-
-
             @Override
             public Object callApi(@NonNull ParticleCloud particleCloud) throws ParticleCloudException, IOException {
                 Log.d("log1","startparticle1");
                 try {
+                    List<ParticleDevice> particleDevices;
                     JSONObject json = new JSONObject(loadJSONFromAsset());
                     Log.e("log1",json.getString("cloudEmail"));
                     Log.e("log1",json.getString("cloudPassword"));
@@ -93,10 +92,15 @@ public class MainActivity extends AppCompatActivity {
                         int type=Integer.parseInt(device.getStringVariable("type"));
                         String state=device.getStringVariable("state");
 
+                        if(name.equals("meshGateway")) {
+                            meshGateway = device;
+                        }
+
                         Device d=new Device();
 
                         //클라우드에서 가져오기
                         d.setDeviceRoom(roomnum,9);
+                        d.setDeviceRoomNum(roomnum);
                         d.setDeviceState(state);
                         d.setDeviceName(name);
                         d.setDeviceType(type);
