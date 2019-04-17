@@ -25,9 +25,22 @@ import android.widget.Toast;
 
 import com.rtugeek.android.colorseekbar.ColorSeekBar;
 
-import java.util.ArrayList;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import io.particle.android.sdk.cloud.ParticleCloud;
+import io.particle.android.sdk.cloud.ParticleCloudException;
+import io.particle.android.sdk.cloud.ParticleCloudSDK;
+import io.particle.android.sdk.cloud.ParticleDevice;
+import io.particle.android.sdk.utils.Async;
 import io.particle.android.sdk.utils.Toaster;
+
+import static io.particle.android.sdk.utils.Py.list;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder>  {
     private ArrayList<Device> listData = new ArrayList<>();
@@ -119,10 +132,19 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                 case R.id.fanMinBtn:
                 case R.id.fanMidBtn:
                 case R.id.fanMaxBtn:
-                    if(MainActivity.particleDevices == null) {
-                        Log.e("log1-blindBtn", "particleCloud is null");
+                    if(MainActivity.meshGateway == null) {
+                        Log.e("log1-blindBtn", "Gateway is null");
                         return;
                     }
+                    if(v.getId() == R.id.fanMinBtn) {
+                        this.data.setDeviceState("MIN");
+                    } else if(v.getId() == R.id.fanMidBtn) {
+                        this.data.setDeviceState("MID");
+                    } else {
+                        this.data.setDeviceState("MAX");
+                    }
+                    String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/"+ this.data.getDeviceState();
+                    sendCloudCommand(commandStr);
                     break;
             }
             return;
@@ -238,6 +260,32 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
 
+        }
+
+        public void sendCloudCommand(final String command) {
+            Async.executeAsync(ParticleCloudSDK.getCloud(), new Async.ApiWork<ParticleCloud, Object>() {
+                @Override
+                public Object callApi(@NonNull ParticleCloud particleCloud) throws ParticleCloudException, IOException {
+                    try {
+                        String cmd = command;
+
+                        List<String> msg = new ArrayList<String>();
+                        msg.add(cmd);
+                        int resultCode = MainActivity.meshGateway.callFunction("publishMsg", msg);
+                        Log.e("log1-sendCC",command + resultCode);
+
+                    }  catch (ParticleDevice.FunctionDoesNotExistException e) {
+                        e.printStackTrace();
+                    }
+                    return -1;
+                }
+                @Override
+                public void onSuccess(@NonNull Object value) {
+                }
+                @Override
+                public void onFailure(@NonNull ParticleCloudException e) {
+                }
+            });
         }
     }
 }
