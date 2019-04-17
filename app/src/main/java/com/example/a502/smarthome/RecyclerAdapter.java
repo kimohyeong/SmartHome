@@ -27,6 +27,8 @@ import com.rtugeek.android.colorseekbar.ColorSeekBar;
 
 import java.util.ArrayList;
 
+import io.particle.android.sdk.utils.Toaster;
+
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder>  {
     private ArrayList<Device> listData = new ArrayList<>();
     private Context context;
@@ -117,7 +119,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                 case R.id.fanMinBtn:
                 case R.id.fanMidBtn:
                 case R.id.fanMaxBtn:
-                    Log.e("log1-blindBtn", v.getId()+"");
+                    if(MainActivity.particleDevices == null) {
+                        Log.e("log1-blindBtn", "particleCloud is null");
+                        return;
+                    }
                     break;
             }
             return;

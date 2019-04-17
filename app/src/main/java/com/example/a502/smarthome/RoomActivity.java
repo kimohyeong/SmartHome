@@ -22,7 +22,6 @@ public class RoomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room);
         Intent intent = getIntent();
-
         // 방에 있는 device들 가져오기
         roomNum = (int)intent.getSerializableExtra("ROOM_NUM");
         init();

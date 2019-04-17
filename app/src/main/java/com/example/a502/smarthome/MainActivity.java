@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     public Boolean isAdd4, isAdd5;
     public String name4, name5;
     public static  ArrayList<Device>[] devices;
+    public static List<ParticleDevice> particleDevices;
 
     //sp
     SharedPreferences pref;
@@ -63,12 +64,11 @@ public class MainActivity extends AppCompatActivity {
         Log.d("log1","startparticle");
         ParticleCloudSDK.init(this);
         Async.executeAsync(ParticleCloudSDK.getCloud(), new Async.ApiWork<ParticleCloud, Object>() {
-            private List<ParticleDevice> particleDevices;
+
 
             @Override
             public Object callApi(@NonNull ParticleCloud particleCloud) throws ParticleCloudException, IOException {
                 Log.d("log1","startparticle1");
-
                 try {
                     JSONObject json = new JSONObject(loadJSONFromAsset());
                     Log.e("log1",json.getString("cloudEmail"));
