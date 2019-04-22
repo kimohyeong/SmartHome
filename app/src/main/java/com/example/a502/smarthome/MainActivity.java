@@ -1,12 +1,8 @@
 package com.example.a502.smarthome;
 
 import android.app.Dialog;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -18,7 +14,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.sql.BatchUpdateException;
 import java.util.ArrayList;
 
 
@@ -27,7 +22,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -193,21 +187,21 @@ public class MainActivity extends AppCompatActivity {
         if(roomNum == 4 && !isAdd4){
             intent = new Intent(this, AddActivity.class);
             //intent.putExtra("DEVICE",devices);
-            intent.putExtra("ROOM_NUM",roomNum);   //ROOM_NUM으로 방번호 intent에 전달해줭
+            intent.putExtra("ROOM_NUM",roomNum);
             startActivityForResult(intent,4);
             return;
         }
         if(roomNum == 5 && !isAdd5) {
             intent = new Intent(this, AddActivity.class);
             //intent.putExtra("DEVICE",devices);
-            intent.putExtra("ROOM_NUM",roomNum);   //ROOM_NUM으로 방번호 intent에 전달해줭
+            intent.putExtra("ROOM_NUM",roomNum);
             startActivityForResult(intent,5);
             return;
         }
 
         //start roomActivity
         intent = new Intent(this, RoomActivity.class);
-        intent.putExtra("ROOM_NUM",roomNum);   //ROOM_NUM으로 방번호 intent에 전달해줭
+        intent.putExtra("ROOM_NUM",roomNum);
         startActivity(intent);
     }
 
@@ -324,46 +318,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void plusDevice(View v)
     {
-
-        //Particle앱 존재 검사
-        boolean isExist = false;
-
-        PackageManager pkgMgr = getPackageManager();
-        List<ResolveInfo> mApps;
-        Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
-        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-        mApps = pkgMgr.queryIntentActivities(mainIntent, 0);
-
-        try {
-            for (int i = 0; i < mApps.size(); i++) {
-                if(mApps.get(i).activityInfo.packageName.startsWith("io.particle.android.app")){
-                    isExist = true;
-                    break;
-                }
-            }
-        }
-        catch (Exception e) {
-            isExist = false;
-        }
-
-        //존재하면 앱 실행
-        if(isExist)
-        {
-            ComponentName compName=new ComponentName("io.particle.android.app","io.particle.android.sdk.ui.DeviceListActivity");
-            Intent intent =new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_LAUNCHER);
-            intent.setComponent(compName);
-
-            // Intent intent = getPackageManager().getLaunchIntentForPackage("io.particle.android.app");
-            // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        }
-        else
-        {
-            String url = "market://details?id=" + "io.particle.android.app";
-            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(i);
-        }
+        Intent intent = new Intent(this, AddDeviceActivity.class);
+        startActivity(intent);
 
     }
 }
