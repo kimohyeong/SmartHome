@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         //particleInit();
         setting();
-        particleInit();
+        //particleInit();
     }
 
     public void particleInit() {
@@ -133,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    }
     public void setting(){
         //view
         room = new ImageView[6];
@@ -184,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
             devices[i] = new ArrayList<Device>();
         }
         //test
-        //addData();
+        addData();
     }
 
     public void addData(){
@@ -232,16 +231,16 @@ public class MainActivity extends AppCompatActivity {
         //start addActivity
         if(roomNum == 4 && !isAdd4){
             intent = new Intent(this, AddActivity.class);
-            intent.putExtra("DEVICE",devices);
-            startActivityForResult(intent,4);
             //intent.putExtra("DEVICE",devices);
-          //  intent.putExtra("ROOM_NUM",roomNum);
-           // startActivityForResult(intent,4);
+            //startActivityForResult(intent,4);
+            //intent.putExtra("DEVICE",devices);
+            intent.putExtra("ROOM_NUM",roomNum);
+            startActivityForResult(intent,4);
             return;
         }
         if(roomNum == 5 && !isAdd5) {
             intent = new Intent(this, AddActivity.class);
-            intent.putExtra("DEVICE",devices);
+            intent.putExtra("ROOM_NUM",roomNum);
             startActivityForResult(intent,5);
             return;
         }
