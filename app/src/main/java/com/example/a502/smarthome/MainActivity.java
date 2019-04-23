@@ -250,7 +250,8 @@ public class MainActivity extends AppCompatActivity {
         int [] roomImg = {R.drawable.livingroom, R.drawable.bathroom, R.drawable.bedroom, R.drawable.studyroom,R.drawable.person,R.drawable.person};
         intent = new Intent(this, RoomActivity.class);
         intent.putExtra("NAME",roomName[roomNum]);
-        intent.putExtra("DEVICE",devices[roomNum]);
+        //intent.putExtra("DEVICE",devices[roomNum]);
+        intent.putExtra("ROOM_NUM",roomNum);
         intent.putExtra("IMG",roomImg[roomNum]);
         startActivity(intent);
     }

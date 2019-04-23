@@ -71,7 +71,8 @@ public class AddActivity extends AppCompatActivity {
 
         //finish & transger addDevice
         Intent intent = new Intent();
-        intent.putExtra("AddDevice",addDevice);
+        MainActivity.devices[roomNum] = addDevice;
+        //intent.putExtra("AddDevice",addDevice);
         intent.putExtra("AddName",editText.getText().toString());
         setResult(RESULT_OK, intent);
         finish();
