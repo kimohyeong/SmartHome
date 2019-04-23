@@ -20,9 +20,10 @@ public class AddActivity extends AppCompatActivity {
     EditText editText;
     ListView listView;
     addViewAdapter mAdapter;
-    ArrayList<Device>[] devices;
+    //ArrayList<Device>[] devices;
     ArrayList<Device> device;
     static boolean[] addNum ;
+    int roomNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,7 @@ public class AddActivity extends AppCompatActivity {
         bar.hide();
 
         Intent intent = getIntent();
-        devices = (ArrayList<Device>[])intent.getSerializableExtra("DEVICE");
+        roomNum = intent.getIntExtra("ROOM_NUM",0);
         setting();
     }
 
@@ -46,12 +47,12 @@ public class AddActivity extends AppCompatActivity {
 
         device= new ArrayList<Device>();
         for(int i=0; i<4; i++){
-            for(int j=0; j<devices[i].size(); j++){
+            for(int j=0; j<MainActivity.devices[i].size(); j++){
                 if(j==0)
-                    devices[i].get(j).setIsFirst(true);
+                    MainActivity.devices[i].get(j).setIsFirst(true);
                 else
-                    devices[i].get(j).setIsFirst(false);
-                device.add((devices[i].get(j)));
+                    MainActivity.devices[i].get(j).setIsFirst(false);
+                device.add((MainActivity.devices[i].get(j)));
             }
         }
         //adapter

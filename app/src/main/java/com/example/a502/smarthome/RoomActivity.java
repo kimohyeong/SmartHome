@@ -33,7 +33,7 @@ public class RoomActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         // 방에 있는 device들 가져오기
-        roomNum = (int)intent.getSerializableExtra("ROOM_NUM");
+        roomNum = intent.getIntExtra("ROOM_NUM",0);
         //devices = (ArrayList<Device>)intent.getSerializableExtra("DEVICE");
         roomName = intent.getStringExtra("NAME");
         roomImg = intent.getIntExtra("IMG",0);
