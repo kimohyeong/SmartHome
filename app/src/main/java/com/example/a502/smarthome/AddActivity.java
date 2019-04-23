@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -17,10 +18,11 @@ import java.util.ArrayList;
 public class AddActivity extends AppCompatActivity {
 
     EditText editText;
-    ListView[] listView;
-    addViewAdapter[] mAdapter;
+    ListView listView;
+    addViewAdapter mAdapter;
     ArrayList<Device>[] devices;
-    static int[][] addNum = new int[4][100];
+    ArrayList<Device> device;
+    static boolean[] addNum ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,29 +40,31 @@ public class AddActivity extends AppCompatActivity {
     public void setting(){
         Log.d("super","setting");///////////
 
+        addNum =  new boolean[100];
         editText = findViewById(R.id.editText);
-        listView = new ListView[4];
-        listView[0] = findViewById(R.id.addList0);
-        listView[1] = findViewById(R.id.addList1);
-        listView[2] = findViewById(R.id.addList2);
-        listView[3] = findViewById(R.id.addList3);
+        listView = findViewById(R.id.addList0);
 
-        //adapter
-        mAdapter = new addViewAdapter[4];
+        device= new ArrayList<Device>();
         for(int i=0; i<4; i++){
-            mAdapter[i] = new addViewAdapter(this, devices[i], i);
-            listView[i].setAdapter(mAdapter[i]);
+            for(int j=0; j<devices[i].size(); j++){
+                if(j==0)
+                    devices[i].get(j).setIsFirst(true);
+                else
+                    devices[i].get(j).setIsFirst(false);
+                device.add((devices[i].get(j)));
+            }
         }
+        //adapter
+        mAdapter = new addViewAdapter(this, device);
+        listView.setAdapter(mAdapter);
     }
     public void onClickOK(View v){
         ArrayList<Device> addDevice = new ArrayList<Device>();
 
         //check된 device addDevice에저장
-        for(int i=0; i<4; i++){
-            for(int j=0; j<5; j++){
-                if(addNum[i][j] == 1){
-                    addDevice.add(devices[i].get(j));
-                }
+        for(int i=0; i<device.size(); i++){
+            if(addNum[i]){
+                addDevice.add(device.get(i));
             }
         }
 
@@ -76,23 +80,6 @@ public class AddActivity extends AppCompatActivity {
         editText.setText("");
     }
 
-    //checkbox check listener
-    public static class OnCheckedChange implements CompoundButton.OnCheckedChangeListener{
-        int roomNum, idx;
-
-        public void setDevice(int roomNum, int idx){
-            this.roomNum = roomNum;
-            this.idx = idx;
-        }
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            Log.d("super","FF : "+roomNum+"/"+idx);
-            if(isChecked)
-                addNum[roomNum][idx] = 1;
-            else
-                addNum[roomNum][idx] = -1;
-        }
-    }
 
     public void onClickBack(View v){
         finish();

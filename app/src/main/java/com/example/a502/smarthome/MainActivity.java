@@ -169,8 +169,41 @@ Log.d("log1","startparticle");
         for(int i=0; i<4; i++){
             devices[i] = new ArrayList<Device>();
         }
+        //test
+        addData();
     }
 
+    public void addData(){
+        Device[] dd = new Device[10];
+        for(int i=0; i<2; i++){
+            dd[i] = new Device();
+            dd[i].setDeviceRoom(0,0);
+            dd[i].setDeviceName("led"+i);
+            dd[i].setDeviceType(0);
+            devices[0].add(dd[i]);
+        }
+        for(int i=2; i<4; i++){
+            dd[i] = new Device();
+            dd[i].setDeviceRoom(0,1);
+            dd[i].setDeviceName("led"+i);
+            dd[i].setDeviceType(0);
+            devices[1].add(dd[i]);
+        }
+        for(int i=4; i<7; i++){
+            dd[i] = new Device();
+            dd[i].setDeviceRoom(0,2);
+            dd[i].setDeviceName("led"+i);
+            dd[i].setDeviceType(0);
+            devices[2].add(dd[i]);
+        }
+        for(int i=7; i<10; i++){
+            dd[i] = new Device();
+            dd[i].setDeviceRoom(0,3);
+            dd[i].setDeviceName("led"+i);
+            dd[i].setDeviceType(0);
+            devices[3].add(dd[i]);
+        }
+    }
     ///---------- add room button ------------///
     public void onClickRoom(View v){
         int roomNum = -1;
@@ -186,19 +219,23 @@ Log.d("log1","startparticle");
         if(roomNum == 4 && !isAdd4){
             intent = new Intent(this, AddActivity.class);
             intent.putExtra("DEVICE",devices);
-            startActivity(intent);
+            startActivityForResult(intent,4);
             return;
         }
         if(roomNum == 5 && !isAdd5) {
             intent = new Intent(this, AddActivity.class);
             intent.putExtra("DEVICE",devices);
-            startActivity(intent);
+            startActivityForResult(intent,5);
             return;
         }
 
         //start roomActivity
+        String []roomName  = {"Living Room","BathRoom","Bedroom","Study Room",name4,name5};
+        int [] roomImg = {R.drawable.livingroom, R.drawable.bathroom, R.drawable.bedroom, R.drawable.studyroom,R.drawable.person,R.drawable.person};
         intent = new Intent(this, RoomActivity.class);
+        intent.putExtra("NAME",roomName[roomNum]);
         intent.putExtra("DEVICE",devices[roomNum]);
+        intent.putExtra("IMG",roomImg[roomNum]);
         startActivity(intent);
     }
 
@@ -288,11 +325,11 @@ Log.d("log1","startparticle");
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
+        Log.d("super","@@ : "+requestCode);
         if(resultCode != RESULT_OK) return;
 
         devices[requestCode] = (ArrayList<Device>) intent.getSerializableExtra("AddDevice");
         room[requestCode].setImageResource(R.drawable.person);
-
         // room4 set //
         if(requestCode == 4){
             isAdd4 = true;
