@@ -15,6 +15,8 @@ public class Device implements Serializable {
     private int[] room = new int[3];    //0:기본 1~2추가
     private String state;               // device상태
     private Drawable deviceImgDrawable; // device image
+    private boolean isFirst;             //fist인지
+    private boolean cBoxState;            //checkbox상태
 
     public String getDeviceName() {
         return name;
@@ -52,5 +54,15 @@ public class Device implements Serializable {
     }
     public void setDeviceImgDrawable(Drawable _deviceImgDrawable) {
         this.deviceImgDrawable = _deviceImgDrawable;
+    }
+
+    public boolean getIsFirst(){ return isFirst;};
+    public void setIsFirst(Boolean _isFirst){
+        this.isFirst = _isFirst;
+    }
+
+    public boolean getCBoxState(){ return cBoxState;};
+    public void setCBoxState(Boolean _cBoxState){
+        this.cBoxState = _cBoxState;
     }
 }

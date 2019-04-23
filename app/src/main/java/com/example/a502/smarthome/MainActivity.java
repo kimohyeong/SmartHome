@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.sql.BatchUpdateException;
 import java.util.ArrayList;
 
 
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     public ImageView []room;
     public Button reBtn4, reBtn5;
     public TextView txtV4, txtV5;
+
     public Boolean isAdd4, isAdd5;
     public String name4, name5;
     public static  ArrayList<Device>[] devices;
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         ActionBar bar = getSupportActionBar();
         bar.hide();
 
+        //particleInit();
         setting();
         particleInit();
     }
@@ -62,9 +65,14 @@ public class MainActivity extends AppCompatActivity {
         Log.d("log1","startparticle");
         ParticleCloudSDK.init(this);
         Async.executeAsync(ParticleCloudSDK.getCloud(), new Async.ApiWork<ParticleCloud, Object>() {
+
+            private List<ParticleDevice> particleDevices;
+
             @Override
             public Object callApi(@NonNull ParticleCloud particleCloud) throws ParticleCloudException, IOException {
+
                 Log.d("log1","startparticle1");
+
                 try {
                     List<ParticleDevice> particleDevices;
                     JSONObject json = new JSONObject(loadJSONFromAsset());
@@ -107,12 +115,16 @@ public class MainActivity extends AppCompatActivity {
                 } catch (ParticleDevice.VariableDoesNotExistException e) {
                     e.printStackTrace();
                 }
+
                 return -1;
+
             }
+
             @Override
             public void onSuccess(@NonNull Object value) {
                 Log.e("log1", "login success");
             }
+
             @Override
             public void onFailure(@NonNull ParticleCloudException e) {
                 Log.d("log1", e.getBestMessage());
@@ -121,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    }
     public void setting(){
         //view
         room = new ImageView[6];
@@ -170,8 +183,41 @@ public class MainActivity extends AppCompatActivity {
         for(int i=0; i<6; i++){
             devices[i] = new ArrayList<Device>();
         }
+        //test
+        //addData();
     }
 
+    public void addData(){
+        Device[] dd = new Device[10];
+        for(int i=0; i<2; i++){
+            dd[i] = new Device();
+            dd[i].setDeviceRoom(0,0);
+            dd[i].setDeviceName("led"+i);
+            dd[i].setDeviceType(0);
+            devices[0].add(dd[i]);
+        }
+        for(int i=2; i<4; i++){
+            dd[i] = new Device();
+            dd[i].setDeviceRoom(0,1);
+            dd[i].setDeviceName("led"+i);
+            dd[i].setDeviceType(0);
+            devices[1].add(dd[i]);
+        }
+        for(int i=4; i<7; i++){
+            dd[i] = new Device();
+            dd[i].setDeviceRoom(0,2);
+            dd[i].setDeviceName("led"+i);
+            dd[i].setDeviceType(0);
+            devices[2].add(dd[i]);
+        }
+        for(int i=7; i<10; i++){
+            dd[i] = new Device();
+            dd[i].setDeviceRoom(0,3);
+            dd[i].setDeviceName("led"+i);
+            dd[i].setDeviceType(0);
+            devices[3].add(dd[i]);
+        }
+    }
     ///---------- add room button ------------///
     public void onClickRoom(View v){
         int roomNum = -1;
@@ -182,43 +228,51 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
         }
-        Log.e("super", roomNum+" "+isAdd4+","+isAdd5+"");
+
         //start addActivity
         if(roomNum == 4 && !isAdd4){
             intent = new Intent(this, AddActivity.class);
-            //intent.putExtra("DEVICE",devices);
-            intent.putExtra("ROOM_NUM",roomNum);
+            intent.putExtra("DEVICE",devices);
             startActivityForResult(intent,4);
+            //intent.putExtra("DEVICE",devices);
+          //  intent.putExtra("ROOM_NUM",roomNum);
+           // startActivityForResult(intent,4);
             return;
         }
         if(roomNum == 5 && !isAdd5) {
             intent = new Intent(this, AddActivity.class);
-            //intent.putExtra("DEVICE",devices);
-            intent.putExtra("ROOM_NUM",roomNum);
+            intent.putExtra("DEVICE",devices);
             startActivityForResult(intent,5);
             return;
         }
 
         //start roomActivity
+        String []roomName  = {"Living Room","BathRoom","Bedroom","Study Room",name4,name5};
+        int [] roomImg = {R.drawable.livingroom, R.drawable.bathroom, R.drawable.bedroom, R.drawable.studyroom,R.drawable.person,R.drawable.person};
         intent = new Intent(this, RoomActivity.class);
-        intent.putExtra("ROOM_NUM",roomNum);
+        intent.putExtra("NAME",roomName[roomNum]);
+        intent.putExtra("DEVICE",devices[roomNum]);
+        intent.putExtra("IMG",roomImg[roomNum]);
         startActivity(intent);
     }
 
     public String loadJSONFromAsset() {
         String json = null;
         try {
+
             InputStream is = getAssets().open("infoConfig.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
             is.close();
             json = new String(buffer, "UTF-8");
+
         } catch (IOException ex) {
             ex.printStackTrace();
             return null;
         }
         return json;
+
     }
 
     ///----------- room reset butoon ------------------///
@@ -256,6 +310,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         dialog.show();
+
     }
     public void reset(int roomNum){
         // room4 reset //
@@ -323,3 +378,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 }
+
