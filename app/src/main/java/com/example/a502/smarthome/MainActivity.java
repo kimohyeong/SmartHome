@@ -23,7 +23,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import io.particle.android.sdk.cloud.ParticleCloud;
@@ -41,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
     public Boolean isAdd4, isAdd5;
     public String name4, name5;
-    ArrayList<Device>[] devices;
+    public static  ArrayList<Device>[] devices;
+    public static ParticleDevice meshGateway;
 
     //sp
     SharedPreferences pref;
@@ -57,11 +58,11 @@ public class MainActivity extends AppCompatActivity {
 
         //particleInit();
         setting();
+        particleInit();
     }
 
-    public void particleInit()
-    {
-Log.d("log1","startparticle");
+    public void particleInit() {
+        Log.d("log1","startparticle");
         ParticleCloudSDK.init(this);
         Async.executeAsync(ParticleCloudSDK.getCloud(), new Async.ApiWork<ParticleCloud, Object>() {
 
@@ -73,34 +74,46 @@ Log.d("log1","startparticle");
                 Log.d("log1","startparticle1");
 
                 try {
-                    JSONObject obj = new JSONObject(loadJSONFromAsset());
-                    Log.e("log1",obj.optString("cloudEmail"));
-                    Log.e("log1",obj.optString("cloudPassword"));
-                    particleCloud.logIn(obj.optString("cloudEmail"), obj.optString("cloudPassword"));
+                    List<ParticleDevice> particleDevices;
+                    JSONObject json = new JSONObject(loadJSONFromAsset());
+                    Log.e("log1",json.getString("cloudEmail"));
+                    Log.e("log1",json.getString("cloudPassword"));
+                    particleCloud.logIn(json.getString("cloudEmail"), json.getString("cloudPassword"));
 
+                    Calendar distantFuture = Calendar.getInstance();
+                    distantFuture.add(Calendar.YEAR, 20);
+                    particleCloud.setAccessToken(json.getString("cloudAccessToken"), distantFuture.getTime());
+
+                    particleDevices = particleCloud.getDevices();
+                    Log.e("log1",particleDevices.size()+"");
+
+                    for (ParticleDevice device : particleDevices) {
+                        //리스트 저장
+                        int roomnum=Integer.parseInt(device.getStringVariable("roomNum"));
+                        String name=device.getStringVariable("name");
+                        int type=Integer.parseInt(device.getStringVariable("type"));
+                        String state=device.getStringVariable("state");
+
+                        if(name.equals("meshGateway")) {
+                            meshGateway = device;
+                        }
+
+                        Device d=new Device();
+
+                        //클라우드에서 가져오기
+                        d.setDeviceRoom(roomnum,9);
+                        d.setDeviceRoomNum(roomnum);
+                        d.setDeviceState(state);
+                        d.setDeviceName(name);
+                        d.setDeviceType(type);
+
+                        devices[roomnum].add(d);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.d("log1",e.toString());
-                }
-
-                Log.e("log1","login success");
-
-                particleDevices=particleCloud.getDevices();
-
-                for (ParticleDevice device : particleDevices) {
-                    //리스트 저장
-
-                    Device d=new Device();
-
-                    int roomnum=0;
-                    //클라우드에서 가져오기
-                    //roomnum=Integer.parseInt(device.getStringVariable("subRoomNum"));
-                    d.setDeviceRoom(0,9);
-                    d.setDeviceState("");
-                    d.setDeviceName("");
-                    d.setDeviceType(1);
-
-                    devices[roomnum].add(d);
+                } catch (ParticleDevice.VariableDoesNotExistException e) {
+                    e.printStackTrace();
                 }
 
                 return -1;
@@ -117,6 +130,7 @@ Log.d("log1","startparticle");
                 Log.d("log1", e.getBestMessage());
             }
         });
+    }
 
 
     }
@@ -166,11 +180,11 @@ Log.d("log1","startparticle");
 
         //device
         devices = new ArrayList[6];
-        for(int i=0; i<4; i++){
+        for(int i=0; i<6; i++){
             devices[i] = new ArrayList<Device>();
         }
         //test
-        addData();
+        //addData();
     }
 
     public void addData(){
@@ -220,6 +234,9 @@ Log.d("log1","startparticle");
             intent = new Intent(this, AddActivity.class);
             intent.putExtra("DEVICE",devices);
             startActivityForResult(intent,4);
+            //intent.putExtra("DEVICE",devices);
+          //  intent.putExtra("ROOM_NUM",roomNum);
+           // startActivityForResult(intent,4);
             return;
         }
         if(roomNum == 5 && !isAdd5) {
@@ -325,11 +342,11 @@ Log.d("log1","startparticle");
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
-        Log.d("super","@@ : "+requestCode);
         if(resultCode != RESULT_OK) return;
 
-        devices[requestCode] = (ArrayList<Device>) intent.getSerializableExtra("AddDevice");
+       // devices[requestCode] = (ArrayList<Device>) intent.getSerializableExtra("AddDevice");
         room[requestCode].setImageResource(R.drawable.person);
+
         // room4 set //
         if(requestCode == 4){
             isAdd4 = true;
@@ -351,6 +368,13 @@ Log.d("log1","startparticle");
             editor.putString("Name5",name5);
         }
         editor.commit();
+    }
+
+
+    public void plusDevice(View v)
+    {
+        Intent intent = new Intent(this, AddDeviceActivity.class);
+        startActivity(intent);
 
     }
 }
