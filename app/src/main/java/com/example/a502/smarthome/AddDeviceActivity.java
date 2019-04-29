@@ -69,7 +69,6 @@ public class AddDeviceActivity extends AppCompatActivity {
         else
         {
             //ParticleDeviceSetupLibrary.startDeviceSetup(this, MainActivity.class);
-            Log.e("log1", "adddeviceactiyi");
             Intent intent=new Intent(v.getContext(), CreateAccountActivity.class);
             startActivity(intent);
         }
