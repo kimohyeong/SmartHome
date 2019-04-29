@@ -3,10 +3,11 @@ package com.example.a502.smarthome;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,9 +28,10 @@ import java.util.Calendar;
 import java.util.List;
 
 import io.particle.android.sdk.cloud.ParticleCloud;
-import io.particle.android.sdk.cloud.ParticleCloudException;
 import io.particle.android.sdk.cloud.ParticleCloudSDK;
 import io.particle.android.sdk.cloud.ParticleDevice;
+import io.particle.android.sdk.cloud.exceptions.ParticleCloudException;
+import io.particle.android.sdk.devicesetup.ParticleDeviceSetupLibrary;
 import io.particle.android.sdk.utils.Async;
 
 public class MainActivity extends AppCompatActivity {
@@ -52,13 +54,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ParticleDeviceSetupLibrary.init(this.getApplicationContext());
 
         ActionBar bar = getSupportActionBar();
         bar.hide();
 
         //particleInit();
         setting();
-        //particleInit();
+        addData();
     }
 
     public void particleInit() {
@@ -183,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
             devices[i] = new ArrayList<Device>();
         }
         //test
-        addData();
+        //addData();
     }
 
     public void addData(){
@@ -375,7 +378,6 @@ public class MainActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(this, AddDeviceActivity.class);
         startActivity(intent);
-
     }
 }
 

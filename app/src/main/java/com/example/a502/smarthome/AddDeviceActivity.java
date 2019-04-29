@@ -6,17 +6,23 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.view.View;
+
+import io.particle.android.sdk.accountsetup.CreateAccountActivity;
+import io.particle.android.sdk.accountsetup.LoginActivity;
+import io.particle.android.sdk.devicesetup.ParticleDeviceSetupLibrary;
+import io.particle.mesh.ui.setup.MeshSetupActivity;
 
 import java.util.List;
 
 public class AddDeviceActivity extends AppCompatActivity {
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_device);
 
@@ -50,7 +56,7 @@ public class AddDeviceActivity extends AppCompatActivity {
         //존재하면 앱 실행
         if(isExist)
         {
-            ComponentName compName=new ComponentName("io.particle.android.app","io.particle.android.sdk.ui.DeviceListActivity");
+            ComponentName compName=new ComponentName("io.particle.android.app","io.particle.android.sdk.ui.IntroActivity");
             Intent intent =new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_LAUNCHER);
             intent.setComponent(compName);
@@ -58,14 +64,15 @@ public class AddDeviceActivity extends AppCompatActivity {
             // Intent intent = getPackageManager().getLaunchIntentForPackage("io.particle.android.app");
             // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+
         }
         else
         {
-            String url = "market://details?id=" + "io.particle.android.app";
-            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(i);
+            //ParticleDeviceSetupLibrary.startDeviceSetup(this, MainActivity.class);
+            Log.e("log1", "adddeviceactiyi");
+            Intent intent=new Intent(v.getContext(), CreateAccountActivity.class);
+            startActivity(intent);
         }
-
         finish();
     }
 

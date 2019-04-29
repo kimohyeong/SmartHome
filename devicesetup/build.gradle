@@ -1,0 +1,104 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.jakewharton.butterknife'
+
+// This is the library version used when deploying the artifact
+version = '0.6.3'
+
+ext {
+    bintrayRepo = 'android'
+    bintrayName = 'devicesetup'
+    bintrayOrg = 'particle'
+
+    publishedGroupId = 'io.particle'
+    libraryName = 'Particle (formerly Spark) Android Device Setup library'
+    artifact = 'devicesetup'
+
+    libraryDescription = "The Particle Device Setup library provides everything you need to " +
+            "offer your users a simple initial setup process for Particle-powered devices.  This " +
+            "includes all the necessary device communication code, an easily customizable UI, and " +
+            "a simple developer API."
+
+    siteUrl = 'https://github.com/spark/spark-setup-android'
+    gitUrl = 'https://github.com/spark/spark-setup-android.git'
+
+    libraryVersion = project.version
+
+    developerId = 'idok'
+    developerName = 'Ido Kleinman'
+    developerEmail = 'ido@particle.io'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        abortOnError true
+    }
+
+}
+
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    implementation project(':cloudsdk')
+    //api 'io.particle:cloudsdk:0.4.9'
+
+    api 'com.squareup.phrase:phrase:1.0.3'
+    api 'uk.co.chrisjenx:calligraphy:2.3.0'
+    api 'com.segment.analytics.android:analytics:4.3.1'
+    api 'com.madgag.spongycastle:core:1.58.0.0'
+
+    api 'com.google.dagger:dagger:2.21'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.21'
+
+    // using snapshot to unbreak Butterknife with AndroidX
+    api 'com.jakewharton:butterknife:10.0.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
+
+    api 'androidx.appcompat:appcompat:1.0.2'
+    api 'androidx.recyclerview:recyclerview:1.0.0'
+}
+
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs += [
+            "-Adagger.gradle.incremental=enabled"
+    ]
+}
+
+apply from: '../pom_generator_v1.gradle'
+apply from: '../bintray_upload_v1.gradle'
+
+
+// Disable javadoc generation.  See this bug for more info:
+// https://github.com/novoda/bintray-release/issues/71
+allprojects {
+    tasks.withType(Javadoc) {
+        enabled = false
+    }
+}
