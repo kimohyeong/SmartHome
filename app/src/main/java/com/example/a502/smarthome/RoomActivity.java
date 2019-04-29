@@ -23,6 +23,10 @@ public class RoomActivity extends AppCompatActivity {
     private String roomName;
     private int roomImg;
 
+    //act num
+    TextView actnum;
+    TextView inactnum;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,9 +36,7 @@ public class RoomActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        // 방에 있는 device들 가져오기
         roomNum = intent.getIntExtra("ROOM_NUM",0);
-        //devices = (ArrayList<Device>)intent.getSerializableExtra("DEVICE");
         roomName = intent.getStringExtra("NAME");
         roomImg = intent.getIntExtra("IMG",0);
         init();
@@ -50,9 +52,22 @@ public class RoomActivity extends AppCompatActivity {
 
         //위layout
         TextView txtRoom = findViewById(R.id.txt_room);
-        txtRoom.setText(roomName);
         ImageView imgRoom = findViewById(R.id.img_room);
+        actnum = (TextView)findViewById(R.id.actNum);
+        inactnum = (TextView)findViewById(R.id.inactNum);
+
+        txtRoom.setText(roomName);
         imgRoom.setImageResource(roomImg);
+
+        int an=0,ian=0;
+        for(int i=0; i<MainActivity.devices[roomNum].size(); i++){
+            if(MainActivity.devices[roomNum].get(i).getDeviceState().substring(0,2).equals("ON"))
+                an++;
+            else
+                ian++;
+        }
+        actnum.setText(String.valueOf(an));
+        inactnum.setText(String.valueOf(ian));
     }
 
     private void getData() {
