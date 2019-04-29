@@ -138,6 +138,7 @@ fabric.properties
 
 # Config file
 app/src/main/assets/infoConfig.json
+app/google-services.json
 
 ### AndroidStudio Patch ###
 
