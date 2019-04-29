@@ -2,15 +2,12 @@ package com.example.a502.smarthome;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+
 import android.text.Layout;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ViewGroup;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +20,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.rtugeek.android.colorseekbar.ColorSeekBar;
 
 import org.json.JSONException;
@@ -34,9 +34,9 @@ import java.util.Calendar;
 import java.util.List;
 
 import io.particle.android.sdk.cloud.ParticleCloud;
-import io.particle.android.sdk.cloud.ParticleCloudException;
 import io.particle.android.sdk.cloud.ParticleCloudSDK;
 import io.particle.android.sdk.cloud.ParticleDevice;
+import io.particle.android.sdk.cloud.exceptions.ParticleCloudException;
 import io.particle.android.sdk.utils.Async;
 import io.particle.android.sdk.utils.Toaster;
 
@@ -76,6 +76,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         private LinearLayout fanDetailLayout, blindDetailLayout, ledDetailLayout;
         private ImageView deviceImg;
         private Device data;
+        private Switch deviceSwitch;
         private int position;
 
         ItemViewHolder(View itemView) {
@@ -85,6 +86,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             deviceStateTxt = itemView.findViewById(R.id.deviceStateText);
             deviceInfoTxt = itemView.findViewById(R.id.deviceInfoText);
             deviceImg = itemView.findViewById(R.id.deviceImg);
+            deviceSwitch = itemView.findViewById(R.id.deviceSwitch);
+            // LED layout listener 세팅
+            deviceSwitch.setOnCheckedChangeListener(this);
 
             fanDetailLayout = (LinearLayout)itemView.findViewById(R.id.fanDetailLayout);
             blindDetailLayout = (LinearLayout)itemView.findViewById(R.id.blindDetailLayout);
@@ -207,10 +211,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         private void SetLayoutListener(LinearLayout curLayout, int deviceNum) {
             switch (deviceNum){
                 case 0:
-                    // LED layout listener 세팅
-                    Switch ledSwitch = curLayout.getChildAt(0).findViewById(R.id.ledSwitch);
-                    ledSwitch.setOnCheckedChangeListener(this);
-                    ColorSeekBar cs = curLayout.getChildAt(1).findViewById(R.id.colorpicker);
+                    ColorSeekBar cs = curLayout.getChildAt(0).findViewById(R.id.colorpicker);
                     cs.setOnColorChangeListener(new ColorSeekBar.OnColorChangeListener() {
                         @Override
                         public void onColorChangeListener(int colorBarPosition, int alphaBarPosition, int color) {

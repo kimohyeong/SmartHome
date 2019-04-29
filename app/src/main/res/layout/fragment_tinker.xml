@@ -1,0 +1,216 @@
+<RelativeLayout
+    android:id="@+id/tinker_main"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    tools:context="com.example.a502.smarthome.tinker.TinkerFragment">
+
+    <RelativeLayout
+        android:id="@+id/tinker_content_view"
+        android:layout_width="@dimen/content_width"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/tinker_core_shadow_temp"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:gravity="start"
+            android:orientation="vertical">
+
+            <com.example.a502.smarthome.tinker.BgColorLinearLayout
+                style="@style/SparkTinkerPinBG.Left">
+
+                <TextView
+                    android:id="@+id/tinker_a7"
+                    style="@style/SparkTinkerPin"
+                    android:text="A7"/>
+            </com.example.a502.smarthome.tinker.BgColorLinearLayout>
+
+            <com.example.a502.smarthome.tinker.BgColorLinearLayout
+                style="@style/SparkTinkerPinBG.Left">
+
+                <TextView
+                    android:id="@+id/tinker_a6"
+                    style="@style/SparkTinkerPin"
+                    android:text="A6"/>
+            </com.example.a502.smarthome.tinker.BgColorLinearLayout>
+
+            <com.example.a502.smarthome.tinker.BgColorLinearLayout
+                style="@style/SparkTinkerPinBG.Left">
+
+                <TextView
+                    android:id="@+id/tinker_a5"
+                    style="@style/SparkTinkerPin"
+                    android:text="A5"/>
+            </com.example.a502.smarthome.tinker.BgColorLinearLayout>
+
+            <com.example.a502.smarthome.tinker.BgColorLinearLayout
+                style="@style/SparkTinkerPinBG.Left">
+
+                <TextView
+                    android:id="@+id/tinker_a4"
+                    style="@style/SparkTinkerPin"
+                    android:text="A4"/>
+            </com.example.a502.smarthome.tinker.BgColorLinearLayout>
+
+            <com.example.a502.smarthome.tinker.BgColorLinearLayout
+                style="@style/SparkTinkerPinBG.Left">
+
+                <TextView
+                    android:id="@+id/tinker_a3"
+                    style="@style/SparkTinkerPin"
+                    android:text="A3"/>
+            </com.example.a502.smarthome.tinker.BgColorLinearLayout>
+
+            <com.example.a502.smarthome.tinker.BgColorLinearLayout
+                style="@style/SparkTinkerPinBG.Left">
+
+                <TextView
+                    android:id="@+id/tinker_a2"
+                    style="@style/SparkTinkerPin"
+                    android:text="A2"/>
+            </com.example.a502.smarthome.tinker.BgColorLinearLayout>
+
+            <com.example.a502.smarthome.tinker.BgColorLinearLayout
+                style="@style/SparkTinkerPinBG.Left">
+
+                <TextView
+                    android:id="@+id/tinker_a1"
+                    style="@style/SparkTinkerPin"
+                    android:text="A1"/>
+            </com.example.a502.smarthome.tinker.BgColorLinearLayout>
+
+            <com.example.a502.smarthome.tinker.BgColorLinearLayout
+                style="@style/SparkTinkerPinBG.Left">
+
+                <TextView
+                    android:id="@+id/tinker_a0"
+                    style="@style/SparkTinkerPin"
+                    android:text="A0"/>
+            </com.example.a502.smarthome.tinker.BgColorLinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:gravity="end"
+            android:orientation="vertical">
+
+            <com.example.a502.smarthome.tinker.BgColorLinearLayout
+                style="@style/SparkTinkerPinBG.Right">
+
+                <TextView
+                    android:id="@+id/tinker_d7"
+                    style="@style/SparkTinkerPin"
+                    android:text="D7"/>
+            </com.example.a502.smarthome.tinker.BgColorLinearLayout>
+
+            <com.example.a502.smarthome.tinker.BgColorLinearLayout
+                style="@style/SparkTinkerPinBG.Right">
+
+                <TextView
+                    android:id="@+id/tinker_d6"
+                    style="@style/SparkTinkerPin"
+                    android:text="D6"/>
+            </com.example.a502.smarthome.tinker.BgColorLinearLayout>
+
+            <com.example.a502.smarthome.tinker.BgColorLinearLayout
+                style="@style/SparkTinkerPinBG.Right">
+
+                <TextView
+                    android:id="@+id/tinker_d5"
+                    style="@style/SparkTinkerPin"
+                    android:text="D5"/>
+            </com.example.a502.smarthome.tinker.BgColorLinearLayout>
+
+            <com.example.a502.smarthome.tinker.BgColorLinearLayout
+                style="@style/SparkTinkerPinBG.Right">
+
+                <TextView
+                    android:id="@+id/tinker_d4"
+                    style="@style/SparkTinkerPin"
+                    android:text="D4"/>
+            </com.example.a502.smarthome.tinker.BgColorLinearLayout>
+
+            <com.example.a502.smarthome.tinker.BgColorLinearLayout
+                style="@style/SparkTinkerPinBG.Right">
+
+                <TextView
+                    android:id="@+id/tinker_d3"
+                    style="@style/SparkTinkerPin"
+                    android:text="D3"/>
+            </com.example.a502.smarthome.tinker.BgColorLinearLayout>
+
+            <com.example.a502.smarthome.tinker.BgColorLinearLayout
+                style="@style/SparkTinkerPinBG.Right">
+
+                <TextView
+                    android:id="@+id/tinker_d2"
+                    style="@style/SparkTinkerPin"
+                    android:text="D2"/>
+            </com.example.a502.smarthome.tinker.BgColorLinearLayout>
+
+            <com.example.a502.smarthome.tinker.BgColorLinearLayout
+                style="@style/SparkTinkerPinBG.Right">
+
+                <TextView
+                    android:id="@+id/tinker_d1"
+                    style="@style/SparkTinkerPin"
+                    android:text="D1"/>
+            </com.example.a502.smarthome.tinker.BgColorLinearLayout>
+
+            <com.example.a502.smarthome.tinker.BgColorLinearLayout
+                style="@style/SparkTinkerPinBG.Right">
+
+                <TextView
+                    android:id="@+id/tinker_d0"
+                    style="@style/SparkTinkerPin"
+                    android:text="D0"/>
+            </com.example.a502.smarthome.tinker.BgColorLinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/tinker_logo"
+        android:layout_width="135dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/tinker_logo_temp"/>
+
+    <FrameLayout
+        android:id="@+id/instructions_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_margin="16dp"/>
+
+    <FrameLayout
+        android:id="@+id/get_device_progress_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#5EEE"
+        android:visibility="gone">
+
+        <ProgressBar
+            style="@android:style/Widget.Holo.ProgressBar.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
+</RelativeLayout>
