@@ -1,1 +1,7 @@
-include ':app'
+include ':app',
+        ':meshui',
+        ':mesh',
+        ':firmwareprotos',
+        ':cloudsdk',
+        ':devicesetup',
+        ':ecjpake4j'

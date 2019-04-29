@@ -3,25 +3,104 @@
     package="com.example.a502.smarthome">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
+        android:name=".tinker.TinkerApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".IntroActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".RoomActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".AddActivity" />
         <activity android:name=".AddDeviceActivity"/>
+
+        <activity
+            android:name="com.example.a502.smarthome.ui.DeviceListActivity"
+            android:label="@string/title_device_list"
+            android:screenOrientation="portrait"
+            android:theme="@style/ParticleSetupTheme.NoActionBar.TranslucentSystemBars">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="meshsetup"
+                    android:scheme="particle" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.a502.smarthome.ui.InspectorActivity"
+            android:label="@string/title_inspector_detail"
+            android:parentActivityName="com.example.a502.smarthome.ui.DeviceListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/TinkerSetup">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.a502.smarthome.ui.DeviceListActivity" />
+        </activity>
+        <!--
+        All of the following are from the device setup lib, and must be present in your app's
+        manifest or you will not go to space today.
+        -->
+        <activity
+            android:name="io.particle.android.sdk.accountsetup.CreateAccountActivity"
+            android:label="@string/title_activity_create_account"
+            android:screenOrientation="portrait"
+            android:theme="@style/ParticleSetupTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize|stateHidden">
+
+            <!--
+            FIXME: revisit using these custom schemes (or using
+            URI based auto-populating of fields at all
+            -->
+
+
+            <!--
+            start this activity with custom URI scheme
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="setup"
+                    android:path="/signup"
+                    android:scheme="https" />
+                <data
+                    android:host="setup"
+                    android:path="/signup"
+                    android:scheme="http" />
+            </intent-filter>
+            -->
+        </activity>
+        <activity
+            android:name="io.particle.android.sdk.utils.ui.WebViewActivity"
+            android:label="@string/title_activity_web_view"
+            android:screenOrientation="portrait"
+            android:theme="@style/ParticleSetupTheme.NoActionBar" />
+        <activity
+            android:name="io.particle.android.sdk.accountsetup.TwoFactorActivity"
+            android:label="@string/title_activity_two_factor"
+            android:screenOrientation="portrait"
+            android:theme="@style/ParticleSetupTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
     </application>
 
 </manifest>

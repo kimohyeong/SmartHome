@@ -3,15 +3,18 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <compositeConfiguration>
-          <compositeBuild compositeDefinitionSource="SCRIPT" />
-        </compositeConfiguration>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/cloudsdk" />
+            <option value="$PROJECT_DIR$/devicesetup" />
+            <option value="$PROJECT_DIR$/ecjpake4j" />
+            <option value="$PROJECT_DIR$/firmwareprotos" />
+            <option value="$PROJECT_DIR$/mesh" />
+            <option value="$PROJECT_DIR$/meshui" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
