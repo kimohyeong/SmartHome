@@ -24,9 +24,6 @@ class SetupContexts(
 
     private val log = KotlinLogging.logger {}
 
-    var targetDevice = SetupDevice(DeviceRole.SETUP_TARGET)
-    var commissioner = SetupDevice(DeviceRole.COMMISSIONER)
-
     var flowIntent: FlowIntent? by log.logged()
     var currentFlow: List<FlowType> by log.logged(emptyList())
     var hasEthernet: Boolean? by log.logged()
@@ -37,6 +34,7 @@ class SetupContexts(
     // FIXME: this should go.  See notes on StepDetermineFlowAfterPreflow
     val getReadyNextButtonClickedLD: LiveData<Boolean?> = MutableLiveData()
     val pricingImpactConfirmedLD: LiveData<Boolean?> = MutableLiveData()
+
 
 
     override fun clearState() {
@@ -60,12 +58,6 @@ class SetupContexts(
             ld.castAndPost(null)
         }
 
-        targetDevice.transceiverLD.value?.disconnect()
-        commissioner.transceiverLD.value?.disconnect()
-
-        targetDevice = SetupDevice(DeviceRole.SETUP_TARGET)
-        commissioner = SetupDevice(DeviceRole.COMMISSIONER)
-
         flowIntent = null
         singleStepCongratsMessage = ""
         currentFlow = emptyList()
@@ -76,11 +68,11 @@ class SetupContexts(
     }
 
     fun requireTargetXceiver(): ProtocolTransceiver {
-        return targetDevice.transceiverLD.value!!
+        return ble.targetDevice.transceiverLD.value!!
     }
 
     fun requireCommissionerXceiver(): ProtocolTransceiver {
-        return commissioner.transceiverLD.value!!
+        return ble.commissioner.transceiverLD.value!!
     }
 
     fun updateGetReadyNextButtonClicked(clicked: Boolean) {

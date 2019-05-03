@@ -8,7 +8,7 @@ import io.particle.mesh.setup.flow.FailedToConnectException
 import io.particle.mesh.setup.flow.MeshSetupStep
 import io.particle.mesh.setup.flow.Scopes
 import io.particle.mesh.setup.flow.context.SetupContexts
-import io.particle.mesh.setup.flow.FlowUiDelegate
+import io.particle.mesh.setup.flow.modules.FlowUiDelegate
 import kotlinx.coroutines.delay
 
 
@@ -19,7 +19,7 @@ class StepConnectToTargetDevice(
 
     @WorkerThread
     override suspend fun doRunStep(ctxs: SetupContexts, scopes: Scopes) {
-        if (ctxs.targetDevice.transceiverLD.value?.isConnected == true) {
+        if (ctxs.ble.targetDevice.transceiverLD.value?.isConnected == true) {
             return
         }
 
@@ -30,7 +30,7 @@ class StepConnectToTargetDevice(
 
         val transceiver = scopes.withMain {
             try {
-                deviceConnector.connect(ctxs.targetDevice.barcode.value!!, "target", scopes)
+                deviceConnector.connect(ctxs.ble.targetDevice.barcode.value!!, "target", scopes)
             } catch (ex: Exception) {
                 return@withMain null
             }
@@ -40,10 +40,10 @@ class StepConnectToTargetDevice(
             throw FailedToConnectException()
         } else {
             // don't move any further until the value is set on the LiveData
-            ctxs.targetDevice.transceiverLD
+            ctxs.ble.targetDevice.transceiverLD
                 .nonNull(scopes)
                 .runBlockOnUiThreadAndAwaitUpdate(scopes) {
-                    ctxs.targetDevice.updateDeviceTransceiver(transceiver)
+                    ctxs.ble.targetDevice.updateDeviceTransceiver(transceiver)
                 }
             delay(5000)
         }

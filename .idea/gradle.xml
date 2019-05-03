@@ -14,7 +14,9 @@
             <option value="$PROJECT_DIR$/ecjpake4j" />
             <option value="$PROJECT_DIR$/firmwareprotos" />
             <option value="$PROJECT_DIR$/mesh" />
-            <option value="$PROJECT_DIR$/meshui" />
+            <option value="$PROJECT_DIR$/sdk_example_app" />
+            <option value="$PROJECT_DIR$/setup_exampleapp" />
+            <option value="$PROJECT_DIR$/setup_testapp" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

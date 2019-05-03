@@ -3,6 +3,7 @@ package io.particle.mesh.setup.flow.setupsteps
 import io.particle.mesh.common.Result
 import io.particle.mesh.common.truthy
 import io.particle.mesh.setup.connection.ResultCode
+import io.particle.mesh.setup.flow.FlowException
 import io.particle.mesh.setup.flow.MeshSetupFlowException
 import io.particle.mesh.setup.flow.MeshSetupStep
 import io.particle.mesh.setup.flow.Scopes
@@ -13,7 +14,7 @@ import kotlinx.coroutines.delay
 class StepFetchIccid : MeshSetupStep() {
 
     override suspend fun doRunStep(ctxs: SetupContexts, scopes: Scopes) {
-        if (ctxs.targetDevice.iccid.truthy()) {
+        if (ctxs.cellular.targetDeviceIccid.value.truthy()) {
             return
         }
 
@@ -22,7 +23,7 @@ class StepFetchIccid : MeshSetupStep() {
         val iccidReply = targetXceiver.sendGetIccId()
         when (iccidReply) {
             is Result.Present -> {
-                ctxs.targetDevice.iccid = iccidReply.value.iccid
+                ctxs.cellular.updateTargetDeviceIccid(iccidReply.value.iccid)
             }
 
             is Result.Error -> {

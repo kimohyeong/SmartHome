@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">SmartHome</string>
+
     <string name="tinker_instructions"><![CDATA[Welcome to Tinker!\n\n
 Tinker is the fastest and easiest way to prototype and play with your Photon.\n\n
 You can access the basic input/output functions of the Photon without writing a line of code.\n\n
@@ -98,5 +98,10 @@ Enjoy!]]></string>
     <string name="publish_positive_action">Publish event</string>
     <string name="cancel">Cancel</string>
     <string name="logout_confirm_message">Are you sure you want to log out?</string>
+    <string name="p_controlpanel_control_panel">Control Panel</string>
+    <string name="p_common_wifi">Wi-Fi</string>
+    <string name="single_space"> </string>
+    <string name="p_controlpanel_prepare_for_pairing">Prepare for Pairing</string>
+    <string name="p_cp_cellular">Cellular</string>
 
 </resources>

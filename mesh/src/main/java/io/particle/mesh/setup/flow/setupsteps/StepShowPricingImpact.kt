@@ -4,6 +4,7 @@ import androidx.annotation.WorkerThread
 import io.particle.android.sdk.cloud.ParticleCloud
 import io.particle.android.sdk.cloud.PricingImpactAction
 import io.particle.android.sdk.cloud.PricingImpactNetworkType
+import io.particle.mesh.common.android.livedata.liveDataSuspender
 import io.particle.mesh.common.android.livedata.nonNull
 import io.particle.mesh.common.android.livedata.runBlockOnUiThreadAndAwaitUpdate
 import io.particle.mesh.setup.flow.FatalFlowException
@@ -12,7 +13,7 @@ import io.particle.mesh.setup.flow.MeshSetupStep
 import io.particle.mesh.setup.flow.Scopes
 import io.particle.mesh.setup.flow.context.NetworkSetupType
 import io.particle.mesh.setup.flow.context.SetupContexts
-import io.particle.mesh.setup.flow.FlowUiDelegate
+import io.particle.mesh.setup.flow.modules.FlowUiDelegate
 import io.particle.mesh.setup.flow.modules.meshsetup.MeshNetworkToJoin
 
 
@@ -50,14 +51,14 @@ class StepShowPricingImpact(
             null -> PricingImpactAction.ADD_NETWORK_DEVICE
         }
 
-        val connType = ctxs.targetDevice.connectivityType
+        val connType = ctxs.ble.targetDevice.connectivityType
         val networkType = if (connType == Gen3ConnectivityType.CELLULAR) {
             PricingImpactNetworkType.CELLULAR
         } else {
             PricingImpactNetworkType.WIFI
         }
 
-        val selectedNetwork = ctxs.mesh.meshNetworkToJoinLD.value
+        val selectedNetwork = ctxs.mesh.targetDeviceMeshNetworkToJoinLD.value
         val networkId = when (selectedNetwork) {
             is MeshNetworkToJoin.SelectedNetwork -> selectedNetwork.networkToJoin.networkId
             is MeshNetworkToJoin.CreateNewNetwork,
@@ -66,10 +67,10 @@ class StepShowPricingImpact(
 
         ctxs.cloud.pricingImpact = cloud.getPricingImpact(
             action = action,
-            deviceId = ctxs.targetDevice.deviceId,
+            deviceId = ctxs.ble.targetDevice.deviceId,
             networkId = networkId,
             networkType = networkType,
-            iccid = ctxs.targetDevice.iccid
+            iccid = ctxs.ble.targetDevice.iccid
         )
     }
 }

@@ -1,16 +1,15 @@
 package io.particle.mesh.setup.flow.setupsteps
 
 import io.particle.android.sdk.cloud.ParticleCloud
+import io.particle.mesh.setup.flow.*
 import io.particle.mesh.setup.flow.ExceptionType.ERROR_FATAL
-import io.particle.mesh.setup.flow.FailedToActivateSimException
-import io.particle.mesh.setup.flow.MeshSetupStep
-import io.particle.mesh.setup.flow.Scopes
+import io.particle.mesh.setup.flow.ExceptionType.ERROR_RECOVERABLE
 import io.particle.mesh.setup.flow.context.SetupContexts
 
 class StepEnsureSimActivated(private val cloud: ParticleCloud) : MeshSetupStep() {
 
     override suspend fun doRunStep(ctxs: SetupContexts, scopes: Scopes) {
-        if (ctxs.targetDevice.isSimActivatedLD.value == true) {
+        if (ctxs.cellular.isSimActivatedLD.value == true) {
             return
         }
 
@@ -18,7 +17,7 @@ class StepEnsureSimActivated(private val cloud: ParticleCloud) : MeshSetupStep()
 
             val statusCode = doActivateSim(ctxs)
             if (statusCode == 200) {
-                ctxs.targetDevice.updateIsSimActivated(true)
+                ctxs.cellular.updateIsSimActivated(true)
                 return
 
             } else if (statusCode == 504) {
@@ -33,7 +32,7 @@ class StepEnsureSimActivated(private val cloud: ParticleCloud) : MeshSetupStep()
     }
 
     private fun doActivateSim(ctxs: SetupContexts): Int {
-        val response = cloud.activateSim(ctxs.targetDevice.iccid!!)
+        val response = cloud.activateSim(ctxs.cellular.targetDeviceIccid.value!!)
         return response.status
     }
 

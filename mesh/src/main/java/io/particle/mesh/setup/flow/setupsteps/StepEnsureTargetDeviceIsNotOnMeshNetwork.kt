@@ -8,9 +8,10 @@ import io.particle.mesh.common.android.livedata.nonNull
 import io.particle.mesh.common.android.livedata.runBlockOnUiThreadAndAwaitUpdate
 import io.particle.mesh.setup.connection.ResultCode
 import io.particle.mesh.setup.flow.*
-import io.particle.mesh.setup.flow.DialogSpec.ResDialogSpec
 import io.particle.mesh.setup.flow.ExceptionType.ERROR_FATAL
 import io.particle.mesh.setup.flow.context.SetupContexts
+import io.particle.mesh.setup.ui.DialogResult
+import io.particle.mesh.setup.ui.DialogSpec.ResDialogSpec
 import mu.KotlinLogging
 
 
@@ -74,7 +75,7 @@ class StepEnsureTargetDeviceIsNotOnMeshNetwork(
 
         ctxs.mesh.checkedForExistingNetwork = true
 
-        cloud.removeDeviceFromAnyMeshNetwork(ctxs.targetDevice.deviceId!!)
+        cloud.removeDeviceFromAnyMeshNetwork(ctxs.ble.targetDevice.deviceId!!)
     }
 
 }

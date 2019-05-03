@@ -5,12 +5,13 @@ import io.particle.mesh.common.Result
 import io.particle.mesh.common.android.livedata.nonNull
 import io.particle.mesh.common.android.livedata.runBlockOnUiThreadAndAwaitUpdate
 import io.particle.mesh.common.truthy
-import io.particle.mesh.setup.flow.DialogSpec.ResDialogSpec
+import io.particle.mesh.setup.flow.FlowException
 import io.particle.mesh.setup.flow.MeshSetupFlowException
 import io.particle.mesh.setup.flow.MeshSetupStep
 import io.particle.mesh.setup.flow.Scopes
 import io.particle.mesh.setup.flow.context.SetupContexts
-import io.particle.mesh.setup.flow.FlowUiDelegate
+import io.particle.mesh.setup.flow.modules.FlowUiDelegate
+import io.particle.mesh.setup.ui.DialogSpec.ResDialogSpec
 import mu.KotlinLogging
 
 
@@ -19,11 +20,11 @@ class StepCollectMeshNetworkToJoinPassword(private val flowUi: FlowUiDelegate) :
     private val log = KotlinLogging.logger {}
 
     override suspend fun doRunStep(ctxs: SetupContexts, scopes: Scopes) {
-        if (ctxs.mesh.meshNetworkToJoinCommissionerPassword.value.truthy()) {
+        if (ctxs.mesh.targetDeviceMeshNetworkToJoinCommissionerPassword.value.truthy()) {
             return
         }
 
-        val passwordLd = ctxs.mesh.meshNetworkToJoinCommissionerPassword
+        val passwordLd = ctxs.mesh.targetDeviceMeshNetworkToJoinCommissionerPassword
         val password = passwordLd.nonNull(scopes).runBlockOnUiThreadAndAwaitUpdate(scopes) {
             if (!ctxs.mesh.shownNetworkPasswordUi) {
                 flowUi.collectPasswordForMeshToJoin()

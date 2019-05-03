@@ -7,7 +7,7 @@ import io.particle.mesh.setup.flow.FailedToConnectException
 import io.particle.mesh.setup.flow.MeshSetupStep
 import io.particle.mesh.setup.flow.Scopes
 import io.particle.mesh.setup.flow.context.SetupContexts
-import io.particle.mesh.setup.flow.FlowUiDelegate
+import io.particle.mesh.setup.flow.modules.FlowUiDelegate
 import kotlinx.coroutines.delay
 
 
@@ -19,7 +19,7 @@ class StepEnsureCommissionerConnected(
 ) : MeshSetupStep() {
 
     override suspend fun doRunStep(ctxs: SetupContexts, scopes: Scopes) {
-        val commissioner = ctxs.commissioner.transceiverLD.value
+        val commissioner = ctxs.ble.commissioner.transceiverLD.value
         if (commissioner != null && commissioner.isConnected) {
             return
         }
@@ -33,7 +33,7 @@ class StepEnsureCommissionerConnected(
         val transceiver = scopes.withMain {
             try {
                 deviceConnector.connect(
-                    ctxs.commissioner.barcode.value!!,
+                    ctxs.ble.commissioner.barcode.value!!,
                     "commissioner",
                     scopes
                 )
@@ -46,10 +46,10 @@ class StepEnsureCommissionerConnected(
             throw FailedToConnectException()
         } else {
             // don't move any further until the value is set on the LiveData
-            ctxs.commissioner.transceiverLD
+            ctxs.ble.commissioner.transceiverLD
                 .nonNull(scopes)
                 .runBlockOnUiThreadAndAwaitUpdate(scopes) {
-                    ctxs.commissioner.updateDeviceTransceiver(transceiver)
+                    ctxs.ble.commissioner.updateDeviceTransceiver(transceiver)
                 }
             delay(5000)
         }

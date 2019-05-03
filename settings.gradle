@@ -1,7 +1,9 @@
 include ':app',
-        ':meshui',
         ':mesh',
         ':firmwareprotos',
         ':cloudsdk',
         ':devicesetup',
+        ':sdk_example_app',
+        ':setup_testapp',
+        ':setup_exampleapp',
         ':ecjpake4j'
