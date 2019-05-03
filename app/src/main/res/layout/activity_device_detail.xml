@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/default_light_background"
-    tools:context="io.particle.android.sdk.ui.TinkerActivity"
+    tools:context="io.smarthome.android.sdk.ui.TinkerActivity"
     tools:ignore="MergeRootFrame">
 
     <TextView

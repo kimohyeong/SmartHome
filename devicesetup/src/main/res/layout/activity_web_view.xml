@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        tools:context="io.particle.android.sdk.utils.ui.WebViewActivity"/>
+        tools:context="io.smarthome.android.sdk.utils.ui.WebViewActivity"/>
 
 
 </LinearLayout>

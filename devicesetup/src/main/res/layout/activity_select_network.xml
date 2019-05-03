@@ -6,7 +6,7 @@
     android:clipChildren="false"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="io.particle.android.sdk.devicesetup.ui.SelectNetworkActivity">
+    tools:context="io.smarthome.android.sdk.devicesetup.ui.SelectNetworkActivity">
 
     <include layout="@layout/brand_image_header"/>
 
@@ -28,7 +28,7 @@
 
         <fragment
             android:id="@+id/wifi_list_fragment"
-            android:name="io.particle.android.sdk.devicesetup.ui.WifiListFragment"
+            android:name="io.smarthome.android.sdk.devicesetup.ui.WifiListFragment"
             android:layout_width="match_parent"
             android:layout_height="0px"
             android:layout_gravity="center_horizontal"

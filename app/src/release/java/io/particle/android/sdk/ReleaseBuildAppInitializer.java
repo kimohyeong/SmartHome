@@ -1,4 +1,4 @@
-package io.particle.android.sdk;
+package io.smarthome.android.sdk;
 
 
 //import com.segment.analytics.Analytics;
@@ -18,15 +18,14 @@ import io.fabric.sdk.android.Fabric;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.logging.Handler;
 import java.util.logging.Level;
 
 import android.util.Log;
 
-import io.particle.android.sdk.utils.GDPRKt;
+import io.smarthome.android.sdk.utils.GDPRKt;
 
-import io.particle.mesh.common.QATool;
-import io.particle.mesh.common.QAToolImpl;
+import io.smarthome.mesh.common.QATool;
+import io.smarthome.mesh.common.QAToolImpl;
 
 
 public class ReleaseBuildAppInitializer {
