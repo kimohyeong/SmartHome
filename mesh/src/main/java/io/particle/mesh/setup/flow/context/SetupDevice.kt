@@ -5,14 +5,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.particle.android.sdk.cloud.ParticleCloud
 import io.particle.android.sdk.cloud.ParticleDevice.ParticleDeviceType
+import io.particle.firmwareprotos.ctrl.Network.InterfaceEntry
 import io.particle.mesh.common.android.livedata.castAndPost
 import io.particle.mesh.common.android.livedata.castAndSetOnMainThread
 import io.particle.mesh.common.logged
-import io.particle.mesh.setup.BarcodeData.CompleteBarcodeData
 import io.particle.mesh.setup.connection.ProtocolTransceiver
 import io.particle.mesh.setup.flow.Gen3ConnectivityType
 import io.particle.mesh.setup.toConnectivityType
 import io.particle.mesh.setup.toDeviceType
+import io.particle.mesh.setup.ui.BarcodeData.CompleteBarcodeData
 import mu.KotlinLogging
 
 
@@ -24,17 +25,17 @@ enum class DeviceRole {
 
 
 class SetupDevice(
-    deviceRole: DeviceRole,
+    val deviceRole: DeviceRole,
     val barcode: LiveData<CompleteBarcodeData?> = MutableLiveData(),
     val transceiverLD: LiveData<ProtocolTransceiver?> = MutableLiveData(),
-    val isDeviceConnectedToCloudLD: LiveData<Boolean?> = MutableLiveData(),
-    val isClaimedLD: LiveData<Boolean?> = MutableLiveData(),
-    val isSimActivatedLD: LiveData<Boolean?> = MutableLiveData()
+    // FIXME: having 2 LDs, representing the transceiver & the uninitialized transceiver isn't great
+    val deviceConnectedLD: LiveData<Boolean?> = MutableLiveData(),
+    val isClaimedLD: LiveData<Boolean?> = MutableLiveData()
+
 ) {
 
     private val log = KotlinLogging.logger {}
 
-    var deviceRole: DeviceRole by log.logged(deviceRole)
     var deviceId: String? by log.logged()
     var connectivityType: Gen3ConnectivityType? by log.logged()
     var deviceType: ParticleDeviceType? by log.logged()
@@ -45,7 +46,7 @@ class SetupDevice(
 
     @WorkerThread
     fun updateBarcode(barcodeData: CompleteBarcodeData?, cloud: ParticleCloud) {
-        log.info { "updateBarcode() for $deviceRole: $barcodeData" }
+        log.info { "updateBarcode(): $barcodeData" }
         barcode.castAndPost(barcodeData)
         barcodeData?.let {
             deviceType = it.toDeviceType(cloud)
@@ -54,23 +55,18 @@ class SetupDevice(
     }
 
     fun updateDeviceTransceiver(transceiver: ProtocolTransceiver?) {
-        log.info { "updateDeviceTransceiver() for $deviceRole: $transceiver" }
+        log.info { "updateDeviceTransceiver(): $transceiver" }
         transceiverLD.castAndSetOnMainThread(transceiver)
     }
 
+    fun updateDeviceConnectionInitialized(initialized: Boolean) {
+        log.info { "updateDeviceConnectionInitialized(): $initialized" }
+        deviceConnectedLD.castAndPost(initialized)
+    }
+
     fun updateIsClaimed(isClaimed: Boolean) {
-        log.info { "updateIsClaimed() for $deviceRole: $isClaimed" }
+        log.info { "updateIsClaimed(): $isClaimed" }
         isClaimedLD.castAndPost(isClaimed)
-    }
-
-    fun updateDeviceConnectedToCloudLD(isConnected: Boolean) {
-        log.info { "updateDeviceConnectedToCloudLD() for $deviceRole: $isConnected" }
-        isDeviceConnectedToCloudLD.castAndPost(isConnected)
-    }
-
-    fun updateIsSimActivated(isActivated: Boolean) {
-        log.info { "updateIsSimActivated() for $deviceRole: $isActivated" }
-        isSimActivatedLD.castAndPost(isActivated)
     }
 
 }

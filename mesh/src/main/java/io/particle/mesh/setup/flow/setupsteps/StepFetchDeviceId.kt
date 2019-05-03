@@ -11,12 +11,12 @@ class StepFetchDeviceId : MeshSetupStep() {
 
     @WorkerThread
     override suspend fun doRunStep(ctxs: SetupContexts, scopes: Scopes) {
-        if (ctxs.targetDevice.deviceId != null) {
+        if (ctxs.ble.targetDevice.deviceId != null) {
             return
         }
 
         val deviceIdReply = ctxs.requireTargetXceiver().sendGetDeviceId().throwOnErrorOrAbsent()
-        ctxs.targetDevice.deviceId = deviceIdReply.id
+        ctxs.ble.targetDevice.deviceId = deviceIdReply.id
     }
 
 }

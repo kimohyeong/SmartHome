@@ -3,7 +3,6 @@ package io.particle.mesh.common.android
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import io.particle.mesh.common.QATool
-import io.particle.mesh.setup.flow.Scopes
 import kotlinx.coroutines.*
 
 
@@ -46,11 +45,10 @@ enum class LifecycleCancellationPoint {
  * The coroutine is automatically cancelled using the CoroutineLifecycleListener.
  */
 fun <T> LifecycleOwner.load(
-    scopes: Scopes,
-    cancelWhen: LifecycleCancellationPoint = LifecycleCancellationPoint.ON_DESTROY,
-    loader: () -> T
+        cancelWhen: LifecycleCancellationPoint = LifecycleCancellationPoint.ON_DESTROY,
+        loader: () -> T
 ): Deferred<T> {
-    val deferred = scopes.backgroundScope.async(start = CoroutineStart.LAZY, block = {
+    val deferred = GlobalScope.async(Dispatchers.Default, start = CoroutineStart.LAZY, block = {
         loader()
     })
 
@@ -70,7 +68,7 @@ fun <T> LifecycleOwner.load(
  * will call <code>await()</code> and pass the returned value to <code>block()</code>.
  */
 infix fun <T> Deferred<T>.then(block: (T) -> Unit): Job {
-    return GlobalScope.launch {
+    return GlobalScope.launch(Dispatchers.Main) {
         try {
             block(this@then.await())
         } catch (ex: Exception) {

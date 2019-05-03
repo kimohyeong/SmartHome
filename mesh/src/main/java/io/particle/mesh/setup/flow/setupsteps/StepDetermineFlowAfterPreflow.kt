@@ -40,7 +40,7 @@ class StepDetermineFlowAfterPreflow : MeshSetupStep() {
     private suspend fun determineRemainingFlow(ctxs: SetupContexts): List<FlowType> {
         ensureHasEthernetChecked(ctxs)
 
-        val meshOnly = (ctxs.targetDevice.connectivityType == Gen3ConnectivityType.MESH_ONLY
+        val meshOnly = (ctxs.ble.targetDevice.connectivityType == Gen3ConnectivityType.MESH_ONLY
                 && !ctxs.hasEthernet!!)
 
         if (meshOnly) {
@@ -78,7 +78,7 @@ class StepDetermineFlowAfterPreflow : MeshSetupStep() {
             FlowType.ETHERNET_FLOW
 
         } else {
-            when(ctxs.targetDevice.connectivityType!!) {
+            when(ctxs.ble.targetDevice.connectivityType!!) {
                 Gen3ConnectivityType.WIFI -> FlowType.WIFI_FLOW
                 Gen3ConnectivityType.CELLULAR -> FlowType.CELLULAR_FLOW
                 Gen3ConnectivityType.MESH_ONLY -> FlowType.JOINER_FLOW
@@ -97,7 +97,7 @@ class StepDetermineFlowAfterPreflow : MeshSetupStep() {
             return reply.interfacesList
         }
 
-        val interfaces = fetchInterfaceList(ctxs.targetDevice)
+        val interfaces = fetchInterfaceList(ctxs.ble.targetDevice)
         ctxs.hasEthernet = null != interfaces.firstOrNull { it.type == InterfaceType.ETHERNET }
     }
 

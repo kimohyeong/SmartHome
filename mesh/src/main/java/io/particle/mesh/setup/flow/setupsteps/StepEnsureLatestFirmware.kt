@@ -6,7 +6,7 @@ import io.particle.mesh.ota.FirmwareUpdateManager
 import io.particle.mesh.setup.flow.MeshSetupStep
 import io.particle.mesh.setup.flow.Scopes
 import io.particle.mesh.setup.flow.context.SetupContexts
-import io.particle.mesh.setup.flow.FlowUiDelegate
+import io.particle.mesh.setup.flow.modules.FlowUiDelegate
 import mu.KotlinLogging
 
 
@@ -18,19 +18,19 @@ class StepEnsureLatestFirmware(
     private val log = KotlinLogging.logger {}
 
     override suspend fun doRunStep(ctxs: SetupContexts, scopes: Scopes) {
-        if (ctxs.targetDevice.hasLatestFirmware) {
+        if (ctxs.ble.targetDevice.hasLatestFirmware) {
             log.info { "Already checked device for latest firmware; skipping" }
             flowUi.showGlobalProgressSpinner(false)
             return
         }
 
-        val xceiver = ctxs.targetDevice.transceiverLD.value!!
-        val deviceType = ctxs.targetDevice.deviceType!!
+        val xceiver = ctxs.ble.targetDevice.transceiverLD.value!!
+        val deviceType = ctxs.ble.targetDevice.deviceType!!
 
         val needsUpdate = firmwareUpdateManager.needsUpdate(xceiver, deviceType)
         if (!needsUpdate) {
             log.debug { "No firmware update needed!" }
-            ctxs.targetDevice.hasLatestFirmware = true
+            ctxs.ble.targetDevice.hasLatestFirmware = true
             return
         }
 

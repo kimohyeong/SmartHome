@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.particle.firmwareprotos.ctrl.wifi.WifiNew.ScanNetworksReply
 import io.particle.firmwareprotos.ctrl.wifi.WifiNew.Security.NO_SECURITY
-import io.particle.mesh.R
 import io.particle.mesh.common.Result
 import io.particle.mesh.common.android.livedata.castAndPost
 import io.particle.mesh.common.android.livedata.liveDataSuspender
@@ -14,6 +13,8 @@ import io.particle.mesh.setup.connection.ResultCode
 import io.particle.mesh.setup.flow.Clearable
 import io.particle.mesh.setup.flow.FlowException
 import io.particle.mesh.setup.flow.FlowManager
+import io.particle.mesh.setup.ui.DialogSpec.StringDialogSpec
+import io.particle.mesh.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mu.KotlinLogging
@@ -62,7 +63,7 @@ class ArgonSteps(
 
         val wifiNetworkSelectionSuspender = liveDataSuspender({ targetWifiNetwork.nonNull() })
         withContext(Dispatchers.Main) {
-//            flowManager.navigate(R.id.action_global_scanForWiFiNetworksFragment)
+            flowManager.navigate(R.id.action_global_scanForWiFiNetworksFragment)
             wifiNetworkSelectionSuspender.awaitResult()
         }
     }
@@ -78,7 +79,7 @@ class ArgonSteps(
 
         val passwordSuspender = liveDataSuspender({ targetWifiNetworkPassword.nonNull() })
         withContext(Dispatchers.Main) {
-//            flowManager.navigate(R.id.action_global_enterWifiNetworkPasswordFragment)
+            flowManager.navigate(R.id.action_global_enterWifiNetworkPasswordFragment)
             passwordSuspender.awaitResult()
         }
         flowManager.showGlobalProgressSpinner(true)
@@ -108,12 +109,12 @@ class ArgonSteps(
                         flowManager.clearDialogResult()
                         val suspender = liveDataSuspender({ flowManager.dialogResultLD.nonNull() })
                         val result = withContext(Dispatchers.Main) {
-//                            flowManager.newDialogRequest(
-//                                // FIXME: i18n!
-//                                StringDialogSpec(
-//                                    "Could not connect to Wi-Fi.  Please try entering your password again."
-//                                )
-//                            )
+                            flowManager.newDialogRequest(
+                                // FIXME: i18n!
+                                StringDialogSpec(
+                                    "Could not connect to Wi-Fi.  Please try entering your password again."
+                                )
+                            )
                             suspender.awaitResult()
                         }
                         flowManager.clearDialogResult()
@@ -137,7 +138,7 @@ class ArgonSteps(
             return
         }
         connectingToCloudUiShown = true
-//        flowManager.navigate(R.id.action_global_argonConnectingStatusFragment)
+        flowManager.navigate(R.id.action_global_argonConnectingStatusFragment)
     }
 
 }

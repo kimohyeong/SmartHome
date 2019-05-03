@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="brand_name">Particle</string>
+    <string name="brand_name">SmartHome</string>
     <string name="app_name">@string/brand_name</string>
     <string name="device_name">Photon</string>
     <drawable name="device_image">@drawable/photon_vector</drawable>

@@ -6,8 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
@@ -116,6 +114,7 @@ public class ParticleDeviceSetupLibrary {
 
     public static void startDeviceSetup(Context ctx, SetupCompleteIntentBuilder setupCompleteIntentBuilder) {
         instance.setupCompleteIntentBuilder = setupCompleteIntentBuilder;
+
         startDeviceSetup(ctx);
     }
 
@@ -200,9 +199,6 @@ public class ParticleDeviceSetupLibrary {
      */
     @Deprecated
     public SetupCompleteIntentBuilder getSetupCompleteIntentBuilder() {
-        if(setupCompleteIntentBuilder == null) {
-            Log.e("log1","setup builder is null");
-        }
         return setupCompleteIntentBuilder;
     }
 

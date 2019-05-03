@@ -2,7 +2,6 @@ package io.particle.android.sdk.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import io.particle.android.sdk.accountsetup.CreateAccountActivity;
 import io.particle.android.sdk.accountsetup.LoginActivity;
