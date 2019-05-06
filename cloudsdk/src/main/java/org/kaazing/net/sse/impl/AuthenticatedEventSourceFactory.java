@@ -27,7 +27,7 @@ import org.kaazing.net.sse.SseEventSource;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import io.particle.android.sdk.cloud.ParticleCloud;
+import io.smarthome.android.sdk.cloud.ParticleCloud;
 
 
 public class AuthenticatedEventSourceFactory extends DefaultEventSourceFactory {
