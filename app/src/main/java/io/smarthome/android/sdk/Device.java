@@ -10,6 +10,7 @@ import java.io.Serializable;
 
 public class Device implements Serializable {
     private String name;                // device이름
+    private int id;                     // db 테이블 id
     private int type;                   //0:led 1:blind 2:fan 3:temp
     private int roomNum;
     private int[] room = new int[3];    //0:기본 1~2추가
@@ -17,6 +18,9 @@ public class Device implements Serializable {
     private Drawable deviceImgDrawable; // device image
     private boolean isFirst;             //fist인지
     private boolean cBoxState;            //checkbox상태
+
+    public int getDeviceId() {return id;}
+    public void setDeviceId(int _id) {this.id = _id;}
 
     public String getDeviceName() {
         return name;
