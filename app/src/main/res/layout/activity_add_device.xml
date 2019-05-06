@@ -16,6 +16,7 @@
         android:background="#46547f"
         />
     <EditText
+        android:id="@+id/newDeviceNameEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:singleLine="true"/>
@@ -31,7 +32,8 @@
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/deviceRadioGroup">
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,7 +47,6 @@
             android:layout_weight="1"
             android:button="@drawable/radio_button_fan"
             android:id="@+id/r_fan"
-
             />
         <RadioButton
             android:layout_width="wrap_content"
@@ -54,7 +55,6 @@
             android:button="@drawable/radio_button_blind"
             android:id="@+id/r_blind"
             />
-
     </RadioGroup>
 
     <TextView
@@ -69,27 +69,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/roomRadioGroup">
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Living Room"/>
+            android:text="Living Room"
+            android:id="@+id/livingRadioBtn"/>
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Bathroom"/>
+            android:text="Bathroom"
+            android:id="@+id/bathRadioBtn"/>
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Bedroom"/>
+            android:text="Bedroom"
+            android:id="@+id/bedRadioBtn"/>
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Study Room"/>
+            android:text="Study Room"
+            android:id="@+id/studyRadioBtn"/>
 
     </RadioGroup>
 

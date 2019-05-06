@@ -8,6 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +33,7 @@ import io.smarthome.android.sdk.cloud.ParticleCloud;
 import io.smarthome.android.sdk.cloud.ParticleCloudSDK;
 import io.smarthome.android.sdk.cloud.ParticleDevice;
 import io.smarthome.android.sdk.cloud.exceptions.ParticleCloudException;
+import io.smarthome.android.sdk.cloudDB.DBhelper;
 import io.smarthome.android.sdk.devicesetup.ParticleDeviceSetupLibrary;
 import io.smarthome.android.sdk.ui.SplashActivity;
 import io.smarthome.android.sdk.utils.Async;
@@ -45,9 +49,13 @@ public class SmartHomeMainActivity extends AppCompatActivity {
     public Boolean isAdd4, isAdd5;
     public String name4, name5;
     public static  ArrayList<Device>[] devices;
+
     public static ParticleDevice meshGateway;
 
-    //sp
+    // For DataBase
+    DBhelper helper;
+
+    // For SharedPreferences
     SharedPreferences pref;
     SharedPreferences.Editor editor;
 
@@ -55,87 +63,32 @@ public class SmartHomeMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smarthome_main);
+        helper = new DBhelper(this);
         ParticleDeviceSetupLibrary.init(this.getApplicationContext());
 
         ActionBar bar = getSupportActionBar();
         bar.hide();
 
         //particleInit();
+        // Set MainActivity UI
         setting();
-        addData();
+        //addData();
     }
 
-    public void particleInit() {
-        Log.d("log1","startparticle");
-        ParticleCloudSDK.init(this);
-        Async.executeAsync(ParticleCloudSDK.getCloud(), new Async.ApiWork<ParticleCloud, Object>() {
-
-            private List<ParticleDevice> particleDevices;
-
-            @Override
-            public Object callApi(@NonNull ParticleCloud particleCloud) throws ParticleCloudException, IOException {
-
-                Log.d("log1","startparticle1");
-
-                try {
-                    List<ParticleDevice> particleDevices;
-                    JSONObject json = new JSONObject(loadJSONFromAsset());
-                    Log.e("log1",json.getString("cloudEmail"));
-                    Log.e("log1",json.getString("cloudPassword"));
-                    particleCloud.logIn(json.getString("cloudEmail"), json.getString("cloudPassword"));
-
-                    Calendar distantFuture = Calendar.getInstance();
-                    distantFuture.add(Calendar.YEAR, 20);
-                    particleCloud.setAccessToken(json.getString("cloudAccessToken"), distantFuture.getTime());
-
-                    particleDevices = particleCloud.getDevices();
-                    Log.e("log1",particleDevices.size()+"");
-
-                    for (ParticleDevice device : particleDevices) {
-                        //리스트 저장
-                        int roomnum=Integer.parseInt(device.getStringVariable("roomNum"));
-                        String name=device.getStringVariable("name");
-                        int type=Integer.parseInt(device.getStringVariable("type"));
-                        String state=device.getStringVariable("state");
-
-                        if(name.equals("meshGateway")) {
-                            meshGateway = device;
-                        }
-
-                        Device d=new Device();
-
-                        //클라우드에서 가져오기
-                        d.setDeviceRoom(roomnum,9);
-                        d.setDeviceRoomNum(roomnum);
-                        d.setDeviceState(state);
-                        d.setDeviceName(name);
-                        d.setDeviceType(type);
-
-                        devices[roomnum].add(d);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.d("log1",e.toString());
-                } catch (ParticleDevice.VariableDoesNotExistException e) {
-                    e.printStackTrace();
-                }
-
-                return -1;
-
-            }
-
-            @Override
-            public void onSuccess(@NonNull Object value) {
-                Log.e("log1", "login success");
-            }
-
-            @Override
-            public void onFailure(@NonNull ParticleCloudException e) {
-                Log.d("log1", e.getBestMessage());
-            }
-        });
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.e("smart main: ","onRestart");
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("smart main: ","onResume"+helper.getDevicesCount()+"");
+        if(helper.getDevicesCount() != 0) {
+            devices = helper.getAllDevices();
+        }
+    }
 
     public void setting(){
         //view
@@ -181,11 +134,17 @@ public class SmartHomeMainActivity extends AppCompatActivity {
             room[5].setImageResource(R.drawable.person);
         }
 
-        //device
+        // Init device array
         devices = new ArrayList[6];
         for(int i=0; i<6; i++){
             devices[i] = new ArrayList<Device>();
         }
+
+        // db에 device존재하면
+        if(helper.getDevicesCount() != 0) {
+            devices = helper.getAllDevices();
+        }
+
         //test
         //addData();
     }
@@ -377,7 +336,9 @@ public class SmartHomeMainActivity extends AppCompatActivity {
 
     public void plusDevice(View v)
     {
-        Intent intent = new Intent(this, SplashActivity.class);
+        //Intent intent = new Intent(this, SplashActivity.class);
+        //DB test
+        Intent intent = new Intent(this, AddDeviceActivity.class);
         startActivity(intent);
     }
 }
