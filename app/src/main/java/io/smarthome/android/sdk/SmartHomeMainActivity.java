@@ -156,6 +156,7 @@ public class SmartHomeMainActivity extends AppCompatActivity {
             dd[i].setDeviceRoom(0,0);
             dd[i].setDeviceName("led"+i);
             dd[i].setDeviceType(0);
+            dd[i].setDeviceState("ON/30");
             devices[0].add(dd[i]);
         }
         for(int i=2; i<4; i++){
@@ -163,12 +164,14 @@ public class SmartHomeMainActivity extends AppCompatActivity {
             dd[i].setDeviceRoom(0,1);
             dd[i].setDeviceName("led"+i);
             dd[i].setDeviceType(0);
+            dd[i].setDeviceState("OFF/90");
             devices[1].add(dd[i]);
         }
         for(int i=4; i<7; i++){
             dd[i] = new Device();
             dd[i].setDeviceRoom(0,2);
             dd[i].setDeviceName("led"+i);
+            dd[i].setDeviceState("OFF/30");
             dd[i].setDeviceType(0);
             devices[2].add(dd[i]);
         }
@@ -176,6 +179,7 @@ public class SmartHomeMainActivity extends AppCompatActivity {
             dd[i] = new Device();
             dd[i].setDeviceRoom(0,3);
             dd[i].setDeviceName("led"+i);
+            dd[i].setDeviceState("ON/30");
             dd[i].setDeviceType(0);
             devices[3].add(dd[i]);
         }

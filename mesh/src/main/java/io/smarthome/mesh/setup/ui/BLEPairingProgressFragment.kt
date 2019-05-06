@@ -31,5 +31,5 @@ class BLEPairingProgressFragment : BaseMeshSetupFragment() {
         }
 
     }
-
+//.put("product_type", flowManagerVM.flowManager?.getTypeName())
 }

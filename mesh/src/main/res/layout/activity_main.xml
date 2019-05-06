@@ -11,7 +11,7 @@
         android:id="@+id/p_action_close"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="?attr/selectableItemBackground"
+        android:background="#46547f"
         android:src="@drawable/p_ic_close_cyan_24dp"
         app:layout_constraintBottom_toBottomOf="@id/guideline"
         app:layout_constraintDimensionRatio="1:1"
@@ -20,16 +20,18 @@
 
     <TextView
         android:id="@+id/p_meshactivity_username"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="16dp"
+        android:background="#46547f"
         android:gravity="center_vertical|end"
-        android:textColor="@color/p_faded_gray"
-        android:textSize="@dimen/p_setup_text_size_small"
+        android:textColor="#ffffff"
+        android:textSize="10sp"
+        android:paddingRight="20dp"
         app:layout_constraintBottom_toBottomOf="@id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/p_action_close"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="hithere@somebody.com" />
+        tools:text="hithere@somebody.com"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
