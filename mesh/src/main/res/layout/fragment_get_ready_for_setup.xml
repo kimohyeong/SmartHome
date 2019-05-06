@@ -11,7 +11,7 @@
     <TextView
         android:id="@+id/setup_header_text"
         style="@style/p_setup_header_text"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="90dp"
         android:layout_marginBottom="0dp"
         android:text="@string/p_getreadyforsetup_header_text"
         app:layout_constraintBottom_toTopOf="@id/p_mesh_step1"
@@ -19,7 +19,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:visibility="gone"/>
+    <TextView
+        android:id="@+id/setup_header_text1"
+        style="@style/p_setup_header_text"
+        android:layout_marginTop="90dp"
+        android:layout_marginBottom="0dp"
+        android:text="장치 설정을 위해 준비하세요."
+        android:layout_width="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         app:layout_constraintVertical_chainStyle="packed" />
+    <TextView
+        android:id="@+id/p_mesh_setp1_ex1"
+        android:text="1. 장치에 전원을 공급 하세요."
+        style="@style/setup_step_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:gravity="center_horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/setup_header_text1" />
+    <TextView
+        android:id="@+id/p_mesh_setp1_ex2"
+        android:text="2. 장치가 파란색으로 깜박이는 것을 확인하세요."
+        style="@style/setup_step_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/p_mesh_setp1_ex1" />
 
     <VideoView
         android:id="@+id/videoView"
@@ -33,7 +67,8 @@
         app:layout_constraintDimensionRatio="17:30"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/setup_header_text" />
+        app:layout_constraintTop_toBottomOf="@id/setup_header_text"
+        android:visibility="gone"/>
 
     <CheckBox
         android:id="@+id/p_getreadyforsetup_antenna_confirmation_speedbump"
@@ -79,7 +114,8 @@
         android:paddingBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/textView4"
