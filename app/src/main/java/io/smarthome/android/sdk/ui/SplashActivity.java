@@ -34,11 +34,11 @@ public class SplashActivity extends BaseActivity {
         if (SPLASH_DISPLAY_TIME < 1) {
             // don't display the splash screen at all, immediately move to the next activity.
             onShowingSplashComplete();
+            Log.d("super","setcontetntview");
             return;
         }
 
         this.setContentView(R.layout.activity_splash);
-
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
         }
@@ -65,14 +65,17 @@ public class SplashActivity extends BaseActivity {
         } else {
             Intent intent;
             if (SDKGlobals.getAppDataStorage().getUserHasClaimedDevices()) {
+                Log.d("super","1");
                 intent = NextActivitySelector.getNextActivityIntent(this,
                         ParticleCloudSDK.getCloud(),
                         SDKGlobals.getSensitiveDataStorage(),
                         null);
             } else {
+                Log.d("super","2");
                 intent = new Intent(this, IntroActivity.class);
             }
 
+            Log.d("super","3");
             log.d("Splash screen done, moving to next Activity: " + intent);
             startActivity(intent);
             finish();

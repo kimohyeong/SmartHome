@@ -14,7 +14,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:visibility="gone"/>
+    <TextView
+        android:id="@+id/setup_header_text1"
+        style="@style/p_setup_header_text"
+        android:text="GateWay장치를 휴대전화와 페어링 하십시오."
+        app:layout_constraintBottom_toTopOf="@id/assistantText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"/>
 
     <TextView
         android:id="@+id/assistantText"
@@ -26,7 +36,19 @@
         app:layout_constraintBottom_toTopOf="@id/p_mesh_helpfulTip"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/setup_header_text" />
+        app:layout_constraintTop_toBottomOf="@+id/setup_header_text"
+        android:visibility="gone"/>
+    <TextView
+        android:id="@+id/assistantText1"
+        style="@style/setup_step_text"
+        android:layout_width="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/p_scancodeintro_text_1"
+        app:layout_constraintBottom_toTopOf="@id/p_mesh_helpfulTip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setup_header_text1"/>
 
     <LinearLayout
         android:id="@+id/p_mesh_helpfulTip"
@@ -39,7 +61,8 @@
         app:layout_constraintBottom_toTopOf="@+id/mainImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/assistantText">
+        app:layout_constraintTop_toBottomOf="@+id/assistantText1"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/p_mesh_miniHeader"

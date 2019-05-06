@@ -36,7 +36,7 @@ import io.smarthome.sdk.app.R;
 import static io.smarthome.android.sdk.utils.Py.list;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder>  {
-    private ArrayList<Device> listData = new ArrayList<>();
+    public ArrayList<Device> listData = new ArrayList<>();
     private Context context;
     private SparseBooleanArray selectedItems = new SparseBooleanArray();
     private int prePosition = -1;
