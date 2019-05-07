@@ -30,6 +30,7 @@ import io.particle.android.sdk.cloud.ParticleCloud;
 import io.particle.android.sdk.cloud.ParticleCloudSDK;
 import io.particle.android.sdk.cloud.ParticleDevice;
 import io.particle.android.sdk.cloud.exceptions.ParticleCloudException;
+import io.particle.android.sdk.cloudDB.DBhelper;
 import io.particle.android.sdk.devicesetup.ParticleDeviceSetupLibrary;
 import io.particle.android.sdk.ui.SplashActivity;
 import io.particle.android.sdk.utils.Async;
@@ -47,6 +48,8 @@ public class SmartHomeMainActivity extends AppCompatActivity {
     public static  ArrayList<Device>[] devices;
     public static ParticleDevice meshGateway;
 
+    DBhelper helper;
+
     //sp
     SharedPreferences pref;
     SharedPreferences.Editor editor;
@@ -56,6 +59,7 @@ public class SmartHomeMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smarthome_main);
         ParticleDeviceSetupLibrary.init(this.getApplicationContext());
+        helper = new DBhelper(this);
 
         ActionBar bar = getSupportActionBar();
         bar.hide();
@@ -63,6 +67,20 @@ public class SmartHomeMainActivity extends AppCompatActivity {
         //particleInit();
         setting();
         addData();
+    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.e("smart main: ","onRestart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("smart main: ","onResume"+helper.getDevicesCount()+"");
+        if(helper.getDevicesCount() != 0) {
+            devices = helper.getAllDevices();
+        }
     }
 
     public void particleInit() {
@@ -186,6 +204,10 @@ public class SmartHomeMainActivity extends AppCompatActivity {
         for(int i=0; i<6; i++){
             devices[i] = new ArrayList<Device>();
         }
+        // db에 device존재하면
+        if(helper.getDevicesCount() != 0) {
+            devices = helper.getAllDevices();
+        }
         //test
         //addData();
     }
@@ -197,6 +219,7 @@ public class SmartHomeMainActivity extends AppCompatActivity {
             dd[i].setDeviceRoom(0,0);
             dd[i].setDeviceName("led"+i);
             dd[i].setDeviceType(0);
+            dd[i].setDeviceState("ON/30");
             devices[0].add(dd[i]);
         }
         for(int i=2; i<4; i++){
@@ -204,12 +227,14 @@ public class SmartHomeMainActivity extends AppCompatActivity {
             dd[i].setDeviceRoom(0,1);
             dd[i].setDeviceName("led"+i);
             dd[i].setDeviceType(0);
+            dd[i].setDeviceState("OFF/90");
             devices[1].add(dd[i]);
         }
         for(int i=4; i<7; i++){
             dd[i] = new Device();
             dd[i].setDeviceRoom(0,2);
             dd[i].setDeviceName("led"+i);
+            dd[i].setDeviceState("OFF/30");
             dd[i].setDeviceType(0);
             devices[2].add(dd[i]);
         }
@@ -217,6 +242,7 @@ public class SmartHomeMainActivity extends AppCompatActivity {
             dd[i] = new Device();
             dd[i].setDeviceRoom(0,3);
             dd[i].setDeviceName("led"+i);
+            dd[i].setDeviceState("ON/30");
             dd[i].setDeviceType(0);
             devices[3].add(dd[i]);
         }
@@ -379,6 +405,9 @@ public class SmartHomeMainActivity extends AppCompatActivity {
     {
         Log.e("log1","plusDevice");
         Intent intent = new Intent(this, SplashActivity.class);
+        //Intent intent = new Intent(this, SplashActivity.class);
+        //DB test
+//        Intent intent = new Intent(this, AddDeviceActivity.class);
         startActivity(intent);
     }
 }

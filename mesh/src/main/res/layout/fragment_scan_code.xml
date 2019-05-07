@@ -7,9 +7,11 @@
     android:keepScreenOn="true"
     tools:layout_editor_absoluteY="25dp">
 
+
+
     <TextView
         android:id="@+id/textView6"
-        style="@style/p_setup_header_text"
+        style="@style/setup_step_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"

@@ -3,11 +3,18 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SmartHome.iml" filepath="$PROJECT_DIR$/SmartHome.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/SmartHome1.iml" filepath="$PROJECT_DIR$/.idea/SmartHome1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/cloudsdk/cloudsdk.iml" filepath="$PROJECT_DIR$/cloudsdk/cloudsdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cloudsdk/cloudsdk.iml" filepath="$PROJECT_DIR$/cloudsdk/cloudsdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/devicesetup/devicesetup.iml" filepath="$PROJECT_DIR$/devicesetup/devicesetup.iml" />
       <module fileurl="file://$PROJECT_DIR$/devicesetup/devicesetup.iml" filepath="$PROJECT_DIR$/devicesetup/devicesetup.iml" />
       <module fileurl="file://$PROJECT_DIR$/ecjpake4j/ecjpake4j.iml" filepath="$PROJECT_DIR$/ecjpake4j/ecjpake4j.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ecjpake4j/ecjpake4j.iml" filepath="$PROJECT_DIR$/ecjpake4j/ecjpake4j.iml" />
       <module fileurl="file://$PROJECT_DIR$/firmwareprotos/firmwareprotos.iml" filepath="$PROJECT_DIR$/firmwareprotos/firmwareprotos.iml" />
+      <module fileurl="file://$PROJECT_DIR$/firmwareprotos/firmwareprotos.iml" filepath="$PROJECT_DIR$/firmwareprotos/firmwareprotos.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mesh/mesh.iml" filepath="$PROJECT_DIR$/mesh/mesh.iml" />
       <module fileurl="file://$PROJECT_DIR$/mesh/mesh.iml" filepath="$PROJECT_DIR$/mesh/mesh.iml" />
     </modules>
   </component>
