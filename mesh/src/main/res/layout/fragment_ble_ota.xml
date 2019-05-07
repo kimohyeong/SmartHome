@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true"
-    tools:context="io.smarthome.mesh.setup.ui.ota.BleOtaFragment"
+    tools:context="io.particle.mesh.setup.ui.ota.BleOtaFragment"
     tools:layout_editor_absoluteY="81dp">
 
     <TextView

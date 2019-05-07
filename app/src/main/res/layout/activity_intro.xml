@@ -3,7 +3,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:clipChildren="false"
-             tools:context="io.smarthome.android.sdk.ui.IntroActivity">
+             tools:context="io.particle.android.sdk.ui.IntroActivity">
 
     <!-- FIXME: remove? -->
     <!--

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#EEEFF3"
-    tools:context="io.smarthome.android.sdk.controlpanel.ControlPanelWifiOptionsFragment">
+    tools:context="io.particle.android.sdk.controlpanel.ControlPanelWifiOptionsFragment">
 
     <FrameLayout
         android:layout_width="0dp"

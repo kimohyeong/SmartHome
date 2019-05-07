@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    tools:context="io.smarthome.android.sdk.devicesetup.ui.GetReadyActivity"
+    tools:context="io.particle.android.sdk.devicesetup.ui.GetReadyActivity"
     tools:ignore="MissingPrefix">
 
     <TextView

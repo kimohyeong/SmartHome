@@ -7,7 +7,7 @@
              android:paddingLeft="@dimen/activity_horizontal_margin"
              android:paddingRight="@dimen/activity_horizontal_margin"
              android:paddingTop="@dimen/activity_vertical_margin"
-             tools:context="io.smarthome.android.sdk.ui.SplashActivity">
+             tools:context="io.particle.android.sdk.ui.SplashActivity">
 
     <Space
         android:layout_width="wrap_content"

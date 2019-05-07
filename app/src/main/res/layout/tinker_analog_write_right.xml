@@ -16,7 +16,7 @@
         android:textSize="@dimen/analog_write_text_value_size"
         android:text="0"/>
 
-    <io.smarthome.android.sdk.tinker.ReversedSeekBar
+    <io.particle.android.sdk.tinker.ReversedSeekBar
         android:id="@+id/tinker_analog_write_seekbar"
         style="@style/TinkerSeekBar"
         android:layout_gravity="center_vertical|end"

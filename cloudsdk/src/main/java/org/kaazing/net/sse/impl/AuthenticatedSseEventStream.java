@@ -43,7 +43,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import io.smarthome.android.sdk.cloud.ParticleCloud;
+import io.particle.android.sdk.cloud.ParticleCloud;
 
 /**
  * ServerSentEvent stream implementation.

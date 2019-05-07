@@ -1,4 +1,4 @@
-<io.smarthome.android.sdk.utils.ui.SoftKeyboardVisibilityDetectingLinearLayout
+<io.particle.android.sdk.utils.ui.SoftKeyboardVisibilityDetectingLinearLayout
     android:id="@+id/keyboard_change_detector_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,7 +7,7 @@
     android:animateLayoutChanges="true"
     android:orientation="vertical"
     android:paddingBottom="24dp"
-    tools:context="io.smarthome.android.sdk.devicesetup.ui.ManualNetworkEntryActivity">
+    tools:context="io.particle.android.sdk.devicesetup.ui.ManualNetworkEntryActivity">
 
     <include layout="@layout/brand_image_header"/>
 
@@ -59,4 +59,4 @@
 
     </LinearLayout>
 
-</io.smarthome.android.sdk.utils.ui.SoftKeyboardVisibilityDetectingLinearLayout>
+</io.particle.android.sdk.utils.ui.SoftKeyboardVisibilityDetectingLinearLayout>

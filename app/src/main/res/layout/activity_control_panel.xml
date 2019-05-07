@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="io.smarthome.android.sdk.controlpanel.ControlPanelActivity">
+    tools:context="io.particle.android.sdk.controlpanel.ControlPanelActivity">
 
     <LinearLayout
         android:id="@+id/p_controlpanel_not_an_actionbar"

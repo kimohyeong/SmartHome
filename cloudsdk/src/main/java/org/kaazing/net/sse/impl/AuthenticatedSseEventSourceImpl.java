@@ -30,10 +30,10 @@ import org.kaazing.net.sse.SseException;
 import java.io.IOException;
 import java.net.URI;
 
-import io.smarthome.android.sdk.cloud.ParticleCloud;
-import io.smarthome.android.sdk.utils.TLog;
+import io.particle.android.sdk.cloud.ParticleCloud;
+import io.particle.android.sdk.utils.TLog;
 
-import static io.smarthome.android.sdk.utils.Py.list;
+import static io.particle.android.sdk.utils.Py.list;
 
 
 // FIXME: replace this entire SSE stack with something backed by OkHttp.
