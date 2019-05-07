@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true"
-    tools:context="io.particle.mesh.setup.ui.MeshSetupActivity">
+    tools:context="io.smarthome.mesh.setup.ui.MeshSetupActivity">
 
     <ImageButton
         android:id="@+id/p_action_close"

@@ -16,7 +16,7 @@
         android:gravity="center_vertical"
         android:text="234"/>
 
-    <io.particle.android.sdk.tinker.ReversedProgressBar
+    <io.smarthome.android.sdk.tinker.ReversedProgressBar
         android:id="@+id/tinker_analog_read_progress"
         style="@style/TinkerProgress"
         android:layout_gravity="center_vertical"
