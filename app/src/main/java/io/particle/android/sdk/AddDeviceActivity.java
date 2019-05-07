@@ -9,10 +9,11 @@ import android.widget.RadioGroup;
 
 import java.util.Random;
 
+import io.particle.android.sdk.cloudDB.DBhelper;
 import io.particle.sdk.app.R;
 
 public class AddDeviceActivity extends AppCompatActivity {
-    private io.smarthome.android.sdk.cloudDB.DBhelper helper = new io.smarthome.android.sdk.cloudDB.DBhelper(this);
+    private DBhelper helper = new DBhelper(this);
     private static int dbID = new Random().nextInt(999999);    //  database ID를 위해 하나씩 증가함
 
     EditText newDeivceNameEdit;

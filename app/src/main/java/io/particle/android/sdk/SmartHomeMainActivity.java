@@ -59,6 +59,7 @@ public class SmartHomeMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smarthome_main);
         ParticleDeviceSetupLibrary.init(this.getApplicationContext());
+        helper = new DBhelper(this);
 
         ActionBar bar = getSupportActionBar();
         bar.hide();
@@ -404,7 +405,6 @@ public class SmartHomeMainActivity extends AppCompatActivity {
     {
         Log.e("log1","plusDevice");
         Intent intent = new Intent(this, SplashActivity.class);
-        //Intent intent = new Intent(this, SplashActivity.class);
         //DB test
 //        Intent intent = new Intent(this, AddDeviceActivity.class);
         startActivity(intent);
