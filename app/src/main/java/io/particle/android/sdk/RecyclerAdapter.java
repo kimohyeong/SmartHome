@@ -83,9 +83,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             // LED layout listener 세팅
             deviceSwitch.setOnCheckedChangeListener(this);
 
-            fanDetailLayout = (LinearLayout)itemView.findViewById(R.id.fanDetailLayout);
-            blindDetailLayout = (LinearLayout)itemView.findViewById(R.id.blindDetailLayout);
-            ledDetailLayout = (LinearLayout)itemView.findViewById(R.id.ledDetailLayout);
+            fanDetailLayout = itemView.findViewById(R.id.fanDetailLayout);
+            blindDetailLayout = itemView.findViewById(R.id.blindDetailLayout);
+            ledDetailLayout = itemView.findViewById(R.id.ledDetailLayout);
         }
 
         void onBind(Device data, int position) {

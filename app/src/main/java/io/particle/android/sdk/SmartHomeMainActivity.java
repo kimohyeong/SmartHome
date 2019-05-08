@@ -64,8 +64,9 @@ public class SmartHomeMainActivity extends AppCompatActivity {
         ActionBar bar = getSupportActionBar();
         bar.hide();
 
-        //particleInit();
-        setting();
+        deviceSetting();
+
+        // For test
         addData();
     }
     @Override
@@ -83,79 +84,7 @@ public class SmartHomeMainActivity extends AppCompatActivity {
         }
     }
 
-    public void particleInit() {
-        Log.d("log1","startparticle");
-        ParticleCloudSDK.init(this);
-        Async.executeAsync(ParticleCloudSDK.getCloud(), new Async.ApiWork<ParticleCloud, Object>() {
-
-            private List<ParticleDevice> particleDevices;
-
-            @Override
-            public Object callApi(@NonNull ParticleCloud particleCloud) throws ParticleCloudException, IOException {
-
-                Log.d("log1","startparticle1");
-
-                try {
-                    List<ParticleDevice> particleDevices;
-                    JSONObject json = new JSONObject(loadJSONFromAsset());
-                    Log.e("log1",json.getString("cloudEmail"));
-                    Log.e("log1",json.getString("cloudPassword"));
-                    particleCloud.logIn(json.getString("cloudEmail"), json.getString("cloudPassword"));
-
-                    Calendar distantFuture = Calendar.getInstance();
-                    distantFuture.add(Calendar.YEAR, 20);
-                    particleCloud.setAccessToken(json.getString("cloudAccessToken"), distantFuture.getTime());
-
-                    particleDevices = particleCloud.getDevices();
-                    Log.e("log1",particleDevices.size()+"");
-
-                    for (ParticleDevice device : particleDevices) {
-                        //리스트 저장
-                        int roomnum=Integer.parseInt(device.getStringVariable("roomNum"));
-                        String name=device.getStringVariable("name");
-                        int type=Integer.parseInt(device.getStringVariable("type"));
-                        String state=device.getStringVariable("state");
-
-                        if(name.equals("meshGateway")) {
-                            meshGateway = device;
-                        }
-
-                        Device d=new Device();
-
-                        //클라우드에서 가져오기
-                        d.setDeviceRoom(roomnum,9);
-                        d.setDeviceRoomNum(roomnum);
-                        d.setDeviceState(state);
-                        d.setDeviceName(name);
-                        d.setDeviceType(type);
-
-                        devices[roomnum].add(d);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.d("log1",e.toString());
-                } catch (ParticleDevice.VariableDoesNotExistException e) {
-                    e.printStackTrace();
-                }
-
-                return -1;
-
-            }
-
-            @Override
-            public void onSuccess(@NonNull Object value) {
-                Log.e("log1", "login success");
-            }
-
-            @Override
-            public void onFailure(@NonNull ParticleCloudException e) {
-                Log.d("log1", e.getBestMessage());
-            }
-        });
-    }
-
-
-    public void setting(){
+    public void deviceSetting(){
         //view
         room = new ImageView[6];
         room[0] = findViewById(R.id.room0);
@@ -208,8 +137,6 @@ public class SmartHomeMainActivity extends AppCompatActivity {
         if(helper.getDevicesCount() != 0) {
             devices = helper.getAllDevices();
         }
-        //test
-        //addData();
     }
 
     public void addData(){
@@ -280,29 +207,9 @@ public class SmartHomeMainActivity extends AppCompatActivity {
         int [] roomImg = {R.drawable.livingroom, R.drawable.bathroom, R.drawable.bedroom, R.drawable.studyroom,R.drawable.person,R.drawable.person};
         intent = new Intent(this, RoomActivity.class);
         intent.putExtra("NAME",roomName[roomNum]);
-        //intent.putExtra("DEVICE",devices[roomNum]);
         intent.putExtra("ROOM_NUM",roomNum);
         intent.putExtra("IMG",roomImg[roomNum]);
         startActivity(intent);
-    }
-
-    public String loadJSONFromAsset() {
-        String json = null;
-        try {
-
-            InputStream is = getAssets().open("infoConfig.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        return json;
-
     }
 
     ///----------- room reset butoon ------------------///
@@ -405,7 +312,7 @@ public class SmartHomeMainActivity extends AppCompatActivity {
     {
         Log.e("log1","plusDevice");
         Intent intent = new Intent(this, SplashActivity.class);
-        //DB test
+//        DB test
 //        Intent intent = new Intent(this, AddDeviceActivity.class);
         startActivity(intent);
     }

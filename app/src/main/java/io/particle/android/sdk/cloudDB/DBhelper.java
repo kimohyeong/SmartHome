@@ -15,7 +15,7 @@ import io.particle.android.sdk.Device;
 
 
 public class DBhelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "deviceManager";
     private static final String TABLE_DEVICE = "devices";
 
