@@ -33,7 +33,8 @@ public class IntroActivity extends BaseActivity {
 
         Ui.findView(this, R.id.set_up_button).setOnClickListener(view -> {
             Intent intent = NextActivitySelector.getNextActivityIntent(
-                    view.getContext(),
+                    //view.getContext(),
+                    this,
                     ParticleCloudSDK.getCloud(),
                     SDKGlobals.getSensitiveDataStorage(),
                     null);

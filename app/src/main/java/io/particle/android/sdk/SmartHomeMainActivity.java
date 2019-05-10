@@ -45,7 +45,7 @@ public class SmartHomeMainActivity extends AppCompatActivity {
 
     public Boolean isAdd4, isAdd5;
     public String name4, name5;
-    public static  ArrayList<Device>[] devices;
+    public static ArrayList<Device>[] devices;
     public static ParticleDevice meshGateway;
 
     DBhelper helper;
@@ -403,10 +403,7 @@ public class SmartHomeMainActivity extends AppCompatActivity {
 
     public void plusDevice(View v)
     {
-        Log.e("log1","plusDevice");
-        Intent intent = new Intent(this, SplashActivity.class);
-        //DB test
-//        Intent intent = new Intent(this, AddDeviceActivity.class);
+        Intent intent = new Intent(this, AddDeviceActivity.class);
         startActivity(intent);
     }
 }

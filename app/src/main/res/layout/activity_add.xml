@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.a502.smarthome.AddActivity"
     android:background="#e4e4e4">
 
     <RelativeLayout
