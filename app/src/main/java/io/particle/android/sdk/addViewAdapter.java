@@ -38,11 +38,12 @@ public class addViewAdapter extends BaseAdapter{
         addDevices = init;
         layoutInflater = LayoutInflater.from(context);
 
-        img = new int[4];
+        img = new int[5];
         img[0] = R.drawable.light;
-        img[1] = R.drawable.blind;
-        img[2] = R.drawable.fan;
-        img[3] = R.drawable.temperature;
+        img[1] = R.drawable.rgbled;
+        img[2] = R.drawable.blind;
+        img[3] = R.drawable.fan;
+        img[4] = R.drawable.temperature;
 
         roomName = new String[4];
         roomName[0] = "Living Room";

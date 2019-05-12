@@ -209,7 +209,7 @@ public class SmartHomeMainActivity extends AppCompatActivity {
         }
 
         //addData1();
-        addData();
+        //addData();
     }
 
     public void addData1(){
