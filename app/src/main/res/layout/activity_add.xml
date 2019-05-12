@@ -5,18 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    tools:context="io.particle.android.sdk.AddActivity"
     android:background="#e4e4e4">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
-            android:text="◁"
-            android:textSize="30dp"
+            android:text="〈"
+            android:textSize="25dp"
             android:textColor="#ffffff"
             android:background="#00ff0000"
             android:layout_width="50dp"
             android:layout_height="60dp"
+            android:gravity="left|center_vertical"
             android:onClick="onClickBack"/>
         <TextView
             android:text="Create a custom room"
@@ -27,8 +29,8 @@
             android:layout_width="match_parent"
             android:layout_height="60dp" />
         <Button
-            android:text="v"
-            android:textSize="30dp"
+            android:text="√"
+            android:textSize="25dp"
             android:textColor="#ffffff"
             android:background="#00ff0000"
             android:layout_width="50dp"
@@ -36,14 +38,21 @@
             android:layout_alignParentRight="true"
             android:onClick="onClickOK"/>
     </RelativeLayout>
+
+
     <RelativeLayout
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:paddingVertical="15dp">
         <EditText
             android:id="@+id/editText"
             android:hint="room name"
-            android:layout_marginHorizontal="20dp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:layout_marginHorizontal="10dp"
+            android:textSize="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <Button
@@ -51,6 +60,7 @@
             android:textSize="20dp"
             android:onClick="onClickClear"
             android:background="#00ff0000"
+            android:textColor="@android:color/black"
             android:layout_alignRight="@+id/editText"
             android:layout_alignBottom="@+id/editText"
             android:layout_width="40dp"
@@ -59,8 +69,8 @@
 
     <ListView
         android:id="@+id/addList0"
-        android:background="#FFFFFF"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"></ListView>
 
 </LinearLayout>

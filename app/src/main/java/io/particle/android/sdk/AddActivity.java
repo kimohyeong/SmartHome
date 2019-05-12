@@ -3,6 +3,9 @@ package io.particle.android.sdk;
 import android.content.Intent;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,9 +42,12 @@ public class AddActivity extends AppCompatActivity {
     public void setting(){
         Log.d("super","setting");///////////
 
+
         addNum =  new boolean[100];
         editText = findViewById(R.id.editText);
         listView = findViewById(R.id.addList0);
+        //int color = Color.parseColor("#ff0000");
+        editText.getBackground().setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP);
 
         device= new ArrayList<Device>();
         for(int i=0; i<4; i++){

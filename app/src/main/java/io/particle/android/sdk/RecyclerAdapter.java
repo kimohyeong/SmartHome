@@ -40,6 +40,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
     private Context context;
     private SparseBooleanArray selectedItems = new SparseBooleanArray();
     private int prePosition = -1;
+    private int roomNum;
+    CloudLink cloudLink = new CloudLink();
 
     @NonNull
     @Override
@@ -63,6 +65,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         listData.add(data);
     }
 
+    void setRoomNum(int roomNum){this.roomNum  = roomNum;}
+
     class ItemViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, SeekBar.OnSeekBarChangeListener{
 
         private TextView deviceNameTxt, deviceStateTxt, deviceInfoTxt;
@@ -81,12 +85,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             deviceImg = itemView.findViewById(R.id.deviceImg);
             deviceSwitch = itemView.findViewById(R.id.deviceSwitch);
             // LED layout listener 세팅
-            deviceSwitch.setOnCheckedChangeListener(this);
 
             fanDetailLayout = (LinearLayout)itemView.findViewById(R.id.fanDetailLayout);
             blindDetailLayout = (LinearLayout)itemView.findViewById(R.id.blindDetailLayout);
             ledDetailLayout = (LinearLayout)itemView.findViewById(R.id.ledDetailLayout);
         }
+
 
         void onBind(Device data, int position) {
             this.data = data;
@@ -95,6 +99,41 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             deviceNameTxt.setText(data.getDeviceName());
             deviceStateTxt.setText(data.getDeviceState());
             deviceImg.setImageDrawable(data.getDeviceImgDrawable());
+
+            // switch on off
+            deviceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    String s = data.getDeviceState();
+                    if(s.substring(0,1).equals("1") && isChecked)
+                        return;
+                    else if(s.substring(0,1).equals("0") && !isChecked)
+                        return;;
+
+                    String stateStr;
+                    int x =Integer.parseInt(RoomActivity.actNum.getText().toString());
+                    int y =Integer.parseInt(RoomActivity.inactNum.getText().toString());
+                    if(isChecked) {
+                        stateStr = "1" + s.substring(1, s.length());
+                        x++;
+                        y--;
+                    }
+                    else {
+                        stateStr = "0" + s.substring(1, s.length());
+                        x--;
+                        y++;
+                    }
+                    RoomActivity.actNum.setText(x+"");
+                    RoomActivity.inactNum.setText(y+"");
+                    data.setDeviceState(stateStr);
+                    cloudLink.setDevice(roomNum,position,stateStr);
+                    notifyDataSetChanged();
+                }
+            });
+            if(data.getDeviceState().substring(0,1).equals("1"))
+                deviceSwitch.setChecked(true);
+            else
+                deviceSwitch.setChecked(false);
 
             changeVisibility(selectedItems.get(position));
 
