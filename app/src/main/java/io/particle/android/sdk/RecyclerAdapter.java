@@ -188,13 +188,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         }
 
         private void changeVisibility(final boolean isExpanded) {
-            int dpValue = 150;
+            final LinearLayout curLayout = visibleLayout(this.data.getDeviceType());
+            if(curLayout == null) return;
 
+            int dpValue = curLayout.getHeight();
+            Log.e("smart Recycler: ", dpValue+"");
             float d = context.getResources().getDisplayMetrics().density;
             int height = (int) (dpValue * d);
-            final LinearLayout curLayout = visibleLayout(this.data.getDeviceType());
-
-            if(curLayout == null) return;
 
             // ValueAnimator.ofInt(int... values)는 View가 변할 값을 지정, 인자는 int 배열
             ValueAnimator va = isExpanded ? ValueAnimator.ofInt(0, height) : ValueAnimator.ofInt(height, 0);

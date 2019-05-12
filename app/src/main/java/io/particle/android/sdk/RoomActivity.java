@@ -98,10 +98,6 @@ public class RoomActivity extends AppCompatActivity {
         List<Drawable> drawableList = Arrays.asList(getResources().getDrawable(R.drawable.light),getResources().getDrawable(R.drawable.rgbled),getResources().getDrawable(R.drawable.blind),getResources().getDrawable(R.drawable.fan),getResources().getDrawable(R.drawable.temperature));
         for(int i = 0; i< SmartHomeMainActivity.devices[roomNum].size(); i++) {
             Device data = SmartHomeMainActivity.devices[roomNum].get(i);
-//            data.setDeviceName(data.getDeviceName());
-//            data.setDeviceImgDrawable(drawableList.get(data.getDeviceType()));
-//            data.setDeviceType(data.getDeviceType());
-//            data.setDeviceState(data.getDeviceState());
             adapter.addItem(data);
         }
         adapter.notifyDataSetChanged();
