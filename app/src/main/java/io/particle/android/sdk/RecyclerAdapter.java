@@ -70,7 +70,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
     class ItemViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, SeekBar.OnSeekBarChangeListener{
 
         private TextView deviceNameTxt, deviceStateTxt, deviceInfoTxt;
-        private LinearLayout fanDetailLayout, blindDetailLayout, ledDetailLayout;
+        private LinearLayout fanDetailLayout, blindDetailLayout, ledDetailLayout, rgbledDetailLayout;
         private ImageView deviceImg;
         private Device data;
         private Switch deviceSwitch;
@@ -86,9 +86,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             deviceSwitch = itemView.findViewById(R.id.deviceSwitch);
             // LED layout listener 세팅
 
-            fanDetailLayout = itemView.findViewById(R.id.fanDetailLayout);
-            blindDetailLayout = itemView.findViewById(R.id.blindDetailLayout);
-            ledDetailLayout = itemView.findViewById(R.id.ledDetailLayout);
+            fanDetailLayout = (LinearLayout)itemView.findViewById(R.id.fanDetailLayout);
+            blindDetailLayout = (LinearLayout)itemView.findViewById(R.id.blindDetailLayout);
+            ledDetailLayout = (LinearLayout)itemView.findViewById(R.id.ledDetailLayout);
+            rgbledDetailLayout = (LinearLayout)itemView.findViewById(R.id.rgbledDetailLayout);
         }
 
 
@@ -188,13 +189,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         }
 
         private void changeVisibility(final boolean isExpanded) {
+
             final LinearLayout curLayout = visibleLayout(this.data.getDeviceType());
             if(curLayout == null) return;
 
             int dpValue = curLayout.getHeight();
-            Log.e("smart Recycler: ", dpValue+"");
             float d = context.getResources().getDisplayMetrics().density;
-            int height = (int) (dpValue * d);
+            int height = (int) (150 * d);
 
             // ValueAnimator.ofInt(int... values)는 View가 변할 값을 지정, 인자는 int 배열
             ValueAnimator va = isExpanded ? ValueAnimator.ofInt(0, height) : ValueAnimator.ofInt(height, 0);
@@ -227,30 +228,35 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                     fanDetailLayout.setVisibility(View.GONE);
                     blindDetailLayout.setVisibility(View.GONE);
                     ledDetailLayout.setVisibility(View.VISIBLE);
+                    rgbledDetailLayout.setVisibility(View.GONE);
                     return ledDetailLayout;
                 case 1:
                     SetLayoutListener(ledDetailLayout, deviceNum);
                     fanDetailLayout.setVisibility(View.GONE);
                     blindDetailLayout.setVisibility(View.GONE);
-                    ledDetailLayout.setVisibility(View.VISIBLE);
-                    return ledDetailLayout;
+                    ledDetailLayout.setVisibility(View.GONE);
+                    rgbledDetailLayout.setVisibility(View.VISIBLE);
+                    return rgbledDetailLayout;
                 case 2:
                     SetLayoutListener(blindDetailLayout, deviceNum);
                     fanDetailLayout.setVisibility(View.GONE);
                     blindDetailLayout.setVisibility(View.VISIBLE);
                     ledDetailLayout.setVisibility(View.GONE);
+                    rgbledDetailLayout.setVisibility(View.GONE);
                     return blindDetailLayout;
                 case 3:
                     SetLayoutListener(fanDetailLayout, deviceNum);
                     fanDetailLayout.setVisibility(View.VISIBLE);
                     blindDetailLayout.setVisibility(View.GONE);
                     ledDetailLayout.setVisibility(View.GONE);
+                    rgbledDetailLayout.setVisibility(View.GONE);
                     return fanDetailLayout;
                 case 4:
                     SetLayoutListener(fanDetailLayout, deviceNum);
                     fanDetailLayout.setVisibility(View.GONE);
                     blindDetailLayout.setVisibility(View.GONE);
                     ledDetailLayout.setVisibility(View.GONE);
+                    rgbledDetailLayout.setVisibility(View.GONE);
                     return null;
             }
             return null;
@@ -260,22 +266,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         private void SetLayoutListener(LinearLayout curLayout, int deviceNum) {
             switch (deviceNum){
                 case 0:
+                    /*
                     ColorSeekBar cs = curLayout.getChildAt(0).findViewById(R.id.colorpicker);
                     cs.setOnColorChangeListener(new ColorSeekBar.OnColorChangeListener() {
                         @Override
                         public void onColorChangeListener(int colorBarPosition, int alphaBarPosition, int color) {
                             Log.e("log1-colorSeekBar", color+"");
                         }
-                    });
+                    });*/
                     return;
                 case 1:
-                    ColorSeekBar cs1 = curLayout.getChildAt(0).findViewById(R.id.colorpicker);
-                    cs1.setOnColorChangeListener(new ColorSeekBar.OnColorChangeListener() {
-                        @Override
-                        public void onColorChangeListener(int colorBarPosition, int alphaBarPosition, int color) {
-                            Log.e("log1-colorSeekBar", color+"");
-                        }
-                    });
                     return;
                 case 2:
                     // BLIND layout listener 세팅
@@ -284,17 +284,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                     blindMaxBtn.setOnClickListener(this);
                     blindMinBtn.setOnClickListener(this);
 
-                    SeekBar blindSeekBar = curLayout.getChildAt(1).findViewById(R.id.blindSeekBar);
-                    blindSeekBar.setOnSeekBarChangeListener(this);
                     return;
                 case 3:
                     // FAN layout listener 세팅
-                    Switch fanSwitch = curLayout.getChildAt(0).findViewById(R.id.fanSwitch);
-                    fanSwitch.setOnCheckedChangeListener(this);
+                    //Switch fanSwitch = curLayout.getChildAt(0).findViewById(R.id.fanSwitch);
+                    //fanSwitch.setOnCheckedChangeListener(this);
 
-                    Button fanMinBtn = curLayout.getChildAt(1).findViewById(R.id.fanMinBtn);
-                    Button fanMidBtn = curLayout.getChildAt(1).findViewById(R.id.fanMidBtn);
-                    Button fanMaxBtn = curLayout.getChildAt(1).findViewById(R.id.fanMaxBtn);
+                    Button fanMinBtn = curLayout.getChildAt(0).findViewById(R.id.fanMinBtn);
+                    Button fanMidBtn = curLayout.getChildAt(0).findViewById(R.id.fanMidBtn);
+                    Button fanMaxBtn = curLayout.getChildAt(0).findViewById(R.id.fanMaxBtn);
                     fanMinBtn.setOnClickListener(this);
                     fanMidBtn.setOnClickListener(this);
                     fanMaxBtn.setOnClickListener(this);
