@@ -18,6 +18,7 @@ public class Device implements Serializable {
     private Drawable deviceImgDrawable; // device image
     private boolean isFirst;             //fist인지
     private boolean cBoxState;            //checkbox상태
+    private String detailState;
 
     public int getDeviceId() {return id;}
     public void setDeviceId(int _id) {this.id = _id;}
@@ -60,13 +61,21 @@ public class Device implements Serializable {
         this.deviceImgDrawable = _deviceImgDrawable;
     }
 
-    public boolean getIsFirst(){ return isFirst;};
+    public boolean getIsFirst(){ return isFirst;}
     public void setIsFirst(Boolean _isFirst){
         this.isFirst = _isFirst;
     }
 
-    public boolean getCBoxState(){ return cBoxState;};
+    public boolean getCBoxState(){ return cBoxState;}
     public void setCBoxState(Boolean _cBoxState){
         this.cBoxState = _cBoxState;
+    }
+
+
+    public String getDeviceDetailState() {
+        return detailState;
+    }
+    public void setDeviceDetailState(String _state) {
+        this.detailState = _state;
     }
 }
