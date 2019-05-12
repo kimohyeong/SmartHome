@@ -19,6 +19,7 @@
             android:layout_width="50dp"
             android:layout_height="60dp"
             android:gravity="left|center_vertical"
+            android:layout_marginLeft="10dp"
             android:onClick="onClickBack"/>
         <TextView
             android:text="Create a custom room"

@@ -95,7 +95,7 @@ public class RoomActivity extends AppCompatActivity {
         }
 
         // 0 - led, 1 - blind, 2 - fan
-        List<Drawable> drawableList = Arrays.asList(getResources().getDrawable(R.drawable.light),getResources().getDrawable(R.drawable.blind),getResources().getDrawable(R.drawable.fan));
+        List<Drawable> drawableList = Arrays.asList(getResources().getDrawable(R.drawable.light),getResources().getDrawable(R.drawable.rgbled),getResources().getDrawable(R.drawable.blind),getResources().getDrawable(R.drawable.fan),getResources().getDrawable(R.drawable.temperature));
         for(int i = 0; i< SmartHomeMainActivity.devices[roomNum].size(); i++) {
             Device data = SmartHomeMainActivity.devices[roomNum].get(i);
 //            data.setDeviceName(data.getDeviceName());
