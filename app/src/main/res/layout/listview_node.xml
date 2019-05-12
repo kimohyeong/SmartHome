@@ -73,26 +73,11 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="10dp"
         android:orientation="vertical"
         android:id="@+id/fanDetailLayout"
         android:animateLayoutChanges="true">
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginBottom="20dp"
-            android:orientation="horizontal">
-            <Switch
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/fanSwitch"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ON / OFF" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -102,10 +87,13 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
                 android:layout_weight="1">
                 <Button
+                    android:textColor="@android:color/black"
+                    android:background="@drawable/ripple_bg"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:text="MIN"
                     android:id="@+id/fanMinBtn"/>
             </LinearLayout>
@@ -116,8 +104,10 @@
                 android:layout_weight="1"
                 android:gravity="center">
                 <Button
+                    android:textColor="@android:color/black"
+                    android:background="@drawable/ripple_bg"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:text="MID"
                     android:id="@+id/fanMidBtn"/>
             </LinearLayout>
@@ -126,10 +116,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="right">
+                android:gravity="center">
                 <Button
+                    android:textColor="@android:color/black"
+                    android:background="@drawable/ripple_bg"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:text="MAX"
                     android:id="@+id/fanMaxBtn"/>
             </LinearLayout>
@@ -138,7 +130,62 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="vertical"
+        android:id="@+id/rgbledDetailLayout"
+        android:animateLayoutChanges="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+            <Button
+                android:text="red"
+                android:textColor="@android:color/black"
+                android:background="@drawable/ripple_bg"
+                android:layout_marginRight="5dp"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:id="@+id/led_red"/>
+            <Button
+                android:text="yellow"
+                android:textColor="@android:color/black"
+                android:background="@drawable/ripple_bg"
+                android:layout_marginRight="5dp"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:id="@+id/led_yellow"/>
+            <Button
+                android:text="green"
+                android:textColor="@android:color/black"
+                android:background="@drawable/ripple_bg"
+                android:layout_marginRight="5dp"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:id="@+id/led_green"/>
+            <Button
+                android:text="blue"
+                android:textColor="@android:color/black"
+                android:background="@drawable/ripple_bg"
+                android:layout_marginRight="5dp"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:id="@+id/rgb_blue"/>
+            <Button
+                android:text="purple"
+                android:textColor="@android:color/black"
+                android:background="@drawable/ripple_bg"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:id="@+id/rgb_purple"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:padding="10dp"
         android:orientation="vertical"
         android:id="@+id/ledDetailLayout"
@@ -146,83 +193,99 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-            <com.rtugeek.android.colorseekbar.ColorSeekBar
-                android:paddingLeft="8dp"
-                android:id="@+id/colorpicker"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:barHeight="10dp"
-                app:colorSeeds="@array/material_colors" />
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+            <Button
+                android:text="25%"
+                android:textColor="@android:color/black"
+                android:background="@drawable/ripple_bg"
+                android:layout_marginRight="10dp"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:id="@+id/rgb_25"/>
+            <Button
+                android:text="50%"
+                android:textColor="@android:color/black"
+                android:background="@drawable/ripple_bg"
+                android:layout_marginRight="10dp"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:id="@+id/rgb_50"/>
+            <Button
+                android:text="75%"
+                android:textColor="@android:color/black"
+                android:background="@drawable/ripple_bg"
+                android:layout_marginRight="10dp"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:id="@+id/rgb_75"/>
+            <Button
+                android:text="100%"
+                android:textColor="@android:color/black"
+                android:background="@drawable/ripple_bg"
+                android:layout_marginRight="10dp"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:id="@+id/rgb_100"/>
+
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="10dp"
         android:orientation="vertical"
         android:id="@+id/blindDetailLayout"
         android:animateLayoutChanges="true">
 
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:weightSum="2"
-            android:paddingHorizontal="30dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/blindMinLayout"
-                android:layout_weight="1">
-                <Button
-                    android:id="@+id/blindMinBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="MIN" />
-            </LinearLayout>
+            android:gravity="center_horizontal">
+            <Button
+                android:text="0%"
+                android:textColor="@android:color/black"
+                android:background="@drawable/ripple_bg"
+                android:layout_marginRight="10dp"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:id="@+id/blind_0"/>
+            <Button
+                android:text="25%"
+                android:textColor="@android:color/black"
+                android:background="@drawable/ripple_bg"
+                android:layout_marginRight="10dp"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:id="@+id/blind_25"/>
+            <Button
+                android:text="50%"
+                android:textColor="@android:color/black"
+                android:background="@drawable/ripple_bg"
+                android:layout_marginRight="10dp"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:id="@+id/blind_50"/>
+            <Button
+                android:text="75%"
+                android:textColor="@android:color/black"
+                android:background="@drawable/ripple_bg"
+                android:layout_marginRight="10dp"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:id="@+id/blind_75"/>
+            <Button
+                android:text="100%"
+                android:textColor="@android:color/black"
+                android:background="@drawable/ripple_bg"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:id="@+id/blind_100"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:id="@+id/blindMaxLayout"
-                android:gravity="right">
-                <Button
-                    android:id="@+id/blindMaxBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="MAX" />
-            </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="10dp"
-            >
-            <SeekBar
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:id="@+id/blindSeekBar"
-                android:scrollbarSize="10dp"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="min" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="max"
-                    android:layout_marginLeft="300dp"/>
-            </LinearLayout>
-        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

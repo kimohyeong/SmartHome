@@ -37,7 +37,6 @@ import io.particle.sdk.app.R;
 import static io.particle.android.sdk.utils.Py.list;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder>  {
-
     public ArrayList<Device> listData = new ArrayList<>();
     private Context context;
     private SparseBooleanArray selectedItems = new SparseBooleanArray();
@@ -71,10 +70,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 
     void setRoomNum(int roomNum){this.roomNum  = roomNum;}
 
-    class ItemViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, SeekBar.OnSeekBarChangeListener{
+    class ItemViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener, View.OnClickListener{
 
         private TextView deviceNameTxt, deviceStateTxt, deviceInfoTxt;
-        private LinearLayout fanDetailLayout, blindDetailLayout, ledDetailLayout;
+        private LinearLayout fanDetailLayout, blindDetailLayout, ledDetailLayout, rgbledDetailLayout;
         private ImageView deviceImg;
         private Device data;
         private Switch deviceSwitch;
@@ -90,9 +89,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             deviceSwitch = itemView.findViewById(R.id.deviceSwitch);
             // LED layout listener 세팅
 
-            fanDetailLayout = (LinearLayout)itemView.findViewById(R.id.fanDetailLayout);
-            blindDetailLayout = (LinearLayout)itemView.findViewById(R.id.blindDetailLayout);
-            ledDetailLayout = (LinearLayout)itemView.findViewById(R.id.ledDetailLayout);
+            fanDetailLayout = itemView.findViewById(R.id.fanDetailLayout);
+            blindDetailLayout = itemView.findViewById(R.id.blindDetailLayout);
+            ledDetailLayout = itemView.findViewById(R.id.ledDetailLayout);
+            rgbledDetailLayout = itemView.findViewById(R.id.rgbledDetailLayout);
         }
 
 
@@ -108,46 +108,40 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             deviceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                    String s=data.getDeviceState();
-
+                    String s = data.getDeviceState();
                     if(s.equals("1") && isChecked)
                         return;
                     else if(s.equals("0") && !isChecked)
-                        return;
+                        return;;
 
+                    String state, detailState;
                     int x =Integer.parseInt(RoomActivity.actNum.getText().toString());
                     int y =Integer.parseInt(RoomActivity.inactNum.getText().toString());
                     if(isChecked) {
-                        s="1";
+                        state = "1";
                         x++;
                         y--;
                     }
                     else {
-                        s="0";
+                        state = "0";
                         x--;
                         y++;
                     }
 
-                    String command=s+"/"+data.getDeviceDetailState();
-
-                    Log.e("log1-command",command);
                     //int resultCode = cloudLink.setDevice(roomNum,position, command);
                     int resultCode = 1;
                     if(resultCode==1)
                     {
                         RoomActivity.actNum.setText(x+"");
                         RoomActivity.inactNum.setText(y+"");
-                        data.setDeviceState(s);
+                        data.setDeviceState(state);
                         notifyDataSetChanged();
 
                         helper.updateDevice(data);
-                        helper.printAllDevices();
                     }
-
                 }
             });
-            if(data.getDeviceState().substring(0,1).equals("1"))
+            if(data.getDeviceState().equals("1"))
                 deviceSwitch.setChecked(true);
             else
                 deviceSwitch.setChecked(false);
@@ -161,97 +155,43 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 
         @Override
         public void onClick(View v) {
-            int resultCode;
-            String commandState="";
             switch (v.getId()) {
                 case R.id.deviceInfoText:
                 case R.id.deviceStateText:
                     if (selectedItems.get(position)) {
-                        // 펼쳐진 Item을 클릭 시
                         selectedItems.delete(position);
                     } else {
-                        // 직전의 클릭됐던 Item의 클릭상태를 지움
                         selectedItems.delete(prePosition);
-                        // 클릭한 Item의 position을 저장
                         selectedItems.put(position, true);
                     }
-                    // 해당 포지션의 변화를 알림
                     if (prePosition != -1) notifyItemChanged(prePosition);
                     notifyItemChanged(position);
-                    // 클릭된 position 저장
                     prePosition = position;
-                    return;
-                case R.id.blindMinBtn:
-                    commandState="1/0";
                     break;
-                case R.id.blindMaxBtn:
-                    commandState="1/100";
-                    break;
-                case R.id.fanMinBtn:
-                    commandState="1/min";
-                    break;
-                case R.id.fanMidBtn:
-                    commandState="1/mid";
-                    break;
-                case R.id.fanMaxBtn:
-                    commandState="max";
-                    break;
-
             }
-
-            if(SmartHomeMainActivity.meshGateway == null) {
-                Log.e("log1-blindBtn", "Gateway is null");
-                return;
-            }
-
-            //아르곤 함수호출
-            resultCode = cloudLink.setDevice(this.data.getDeviceRoomNum(),position,commandState);
-            if(resultCode==1)
-            {
-                if(v.getId() == R.id.fanMinBtn) {
-                    this.data.setDeviceDetailState("min");
-                } else if(v.getId() == R.id.fanMidBtn) {
-                    this.data.setDeviceDetailState("mid");
-                } else {
-                    this.data.setDeviceDetailState("max");
-                }
-                helper.updateDevice(this.data);
-            }
-
-
-
-
+            return;
         }
 
         private void changeVisibility(final boolean isExpanded) {
-            int dpValue = 150;
-
-            float d = context.getResources().getDisplayMetrics().density;
-            int height = (int) (dpValue * d);
             final LinearLayout curLayout = visibleLayout(this.data.getDeviceType());
-
             if(curLayout == null) return;
 
-            // ValueAnimator.ofInt(int... values)는 View가 변할 값을 지정, 인자는 int 배열
+            //int dpValue = curLayout.getHeight();
+            float d = context.getResources().getDisplayMetrics().density;
+            int height = (int) (50 * d);
+
             ValueAnimator va = isExpanded ? ValueAnimator.ofInt(0, height) : ValueAnimator.ofInt(height, 0);
             va.setDuration(600);
             va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    // value는 height 값
                     int value = (int) animation.getAnimatedValue();
 
-
-                    //imageView의 높이 변경
                     curLayout.getLayoutParams().height = value;
                     curLayout.requestLayout();
-
-                    // imageView가 실제로 사라지게하는 부분
                     curLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
-
                 }
             });
-            // Animation start
             va.start();
         }
 
@@ -263,30 +203,35 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                     fanDetailLayout.setVisibility(View.GONE);
                     blindDetailLayout.setVisibility(View.GONE);
                     ledDetailLayout.setVisibility(View.VISIBLE);
+                    rgbledDetailLayout.setVisibility(View.GONE);
                     return ledDetailLayout;
                 case 1:
                     SetLayoutListener(ledDetailLayout, deviceNum);
                     fanDetailLayout.setVisibility(View.GONE);
                     blindDetailLayout.setVisibility(View.GONE);
-                    ledDetailLayout.setVisibility(View.VISIBLE);
-                    return ledDetailLayout;
+                    ledDetailLayout.setVisibility(View.GONE);
+                    rgbledDetailLayout.setVisibility(View.VISIBLE);
+                    return rgbledDetailLayout;
                 case 2:
                     SetLayoutListener(blindDetailLayout, deviceNum);
                     fanDetailLayout.setVisibility(View.GONE);
                     blindDetailLayout.setVisibility(View.VISIBLE);
                     ledDetailLayout.setVisibility(View.GONE);
+                    rgbledDetailLayout.setVisibility(View.GONE);
                     return blindDetailLayout;
                 case 3:
                     SetLayoutListener(fanDetailLayout, deviceNum);
                     fanDetailLayout.setVisibility(View.VISIBLE);
                     blindDetailLayout.setVisibility(View.GONE);
                     ledDetailLayout.setVisibility(View.GONE);
+                    rgbledDetailLayout.setVisibility(View.GONE);
                     return fanDetailLayout;
                 case 4:
                     SetLayoutListener(fanDetailLayout, deviceNum);
                     fanDetailLayout.setVisibility(View.GONE);
                     blindDetailLayout.setVisibility(View.GONE);
                     ledDetailLayout.setVisibility(View.GONE);
+                    rgbledDetailLayout.setVisibility(View.GONE);
                     return null;
             }
             return null;
@@ -296,44 +241,47 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         private void SetLayoutListener(LinearLayout curLayout, int deviceNum) {
             switch (deviceNum){
                 case 0:
-                    ColorSeekBar cs = curLayout.getChildAt(0).findViewById(R.id.colorpicker);
-                    cs.setOnColorChangeListener(new ColorSeekBar.OnColorChangeListener() {
-                        @Override
-                        public void onColorChangeListener(int colorBarPosition, int alphaBarPosition, int color) {
-                            Log.e("log1-colorSeekBar", color+"");
-                        }
-                    });
+                    Button led25Btn = curLayout.getChildAt(0).findViewById(R.id.rgb_25);
+                    Button led50Btn = curLayout.getChildAt(0).findViewById(R.id.rgb_50);
+                    Button led75Btn = curLayout.getChildAt(0).findViewById(R.id.rgb_75);
+                    Button led100Btn = curLayout.getChildAt(0).findViewById(R.id.rgb_100);
+
+                    led25Btn.setOnClickListener(this::onClickLed);  led75Btn.setOnClickListener(this::onClickLed);
+                    led50Btn.setOnClickListener(this::onClickLed);  led100Btn.setOnClickListener(this::onClickLed);
                     return;
                 case 1:
-                    ColorSeekBar cs1 = curLayout.getChildAt(0).findViewById(R.id.colorpicker);
-                    cs1.setOnColorChangeListener(new ColorSeekBar.OnColorChangeListener() {
-                        @Override
-                        public void onColorChangeListener(int colorBarPosition, int alphaBarPosition, int color) {
-                            Log.e("log1-colorSeekBar", color+"");
-                        }
-                    });
+                    Button redBtn = curLayout.getChildAt(0).findViewById(R.id.led_red);
+                    Button yellowBtn = curLayout.getChildAt(0).findViewById(R.id.led_yellow);
+                    Button greenBtn = curLayout.getChildAt(0).findViewById(R.id.led_green);
+                    Button blueBtn = curLayout.getChildAt(0).findViewById(R.id.rgb_blue);
+                    Button purpleBtn = curLayout.getChildAt(0).findViewById(R.id.rgb_purple);
+
+                    redBtn.setOnClickListener(this::onClickRgbLed);  yellowBtn.setOnClickListener(this::onClickRgbLed);
+                    greenBtn.setOnClickListener(this::onClickRgbLed);  blueBtn.setOnClickListener(this::onClickRgbLed);
+                    purpleBtn.setOnClickListener(this::onClickRgbLed);
                     return;
                 case 2:
                     // BLIND layout listener 세팅
-                    Button blindMinBtn = curLayout.getChildAt(0).findViewById(R.id.blindMinBtn);
-                    Button blindMaxBtn = curLayout.getChildAt(0).findViewById(R.id.blindMaxBtn);
-                    blindMaxBtn.setOnClickListener(this);
-                    blindMinBtn.setOnClickListener(this);
+                    Button blind0Btn = curLayout.getChildAt(0).findViewById(R.id.blind_0);
+                    Button blind25Btn = curLayout.getChildAt(0).findViewById(R.id.blind_25);
+                    Button blind50Btn = curLayout.getChildAt(0).findViewById(R.id.blind_50);
+                    Button blind75Btn = curLayout.getChildAt(0).findViewById(R.id.blind_75);
+                    Button blind100Btn = curLayout.getChildAt(0).findViewById(R.id.blind_100);
 
-                    SeekBar blindSeekBar = curLayout.getChildAt(1).findViewById(R.id.blindSeekBar);
-                    blindSeekBar.setOnSeekBarChangeListener(this);
+                    blind0Btn.setOnClickListener(this::onClickBlind);
+                    blind25Btn.setOnClickListener(this::onClickBlind);
+                    blind50Btn.setOnClickListener(this::onClickBlind);
+                    blind75Btn.setOnClickListener(this::onClickBlind);
+                    blind100Btn.setOnClickListener(this::onClickBlind);
                     return;
                 case 3:
                     // FAN layout listener 세팅
-                    Switch fanSwitch = curLayout.getChildAt(0).findViewById(R.id.fanSwitch);
-                    fanSwitch.setOnCheckedChangeListener(this);
-
-                    Button fanMinBtn = curLayout.getChildAt(1).findViewById(R.id.fanMinBtn);
-                    Button fanMidBtn = curLayout.getChildAt(1).findViewById(R.id.fanMidBtn);
-                    Button fanMaxBtn = curLayout.getChildAt(1).findViewById(R.id.fanMaxBtn);
-                    fanMinBtn.setOnClickListener(this);
-                    fanMidBtn.setOnClickListener(this);
-                    fanMaxBtn.setOnClickListener(this);
+                    Button fanMinBtn = curLayout.getChildAt(0).findViewById(R.id.fanMinBtn);
+                    Button fanMidBtn = curLayout.getChildAt(0).findViewById(R.id.fanMidBtn);
+                    Button fanMaxBtn = curLayout.getChildAt(0).findViewById(R.id.fanMaxBtn);
+                    fanMinBtn.setOnClickListener(this::onClickFan);
+                    fanMidBtn.setOnClickListener(this::onClickFan);
+                    fanMaxBtn.setOnClickListener(this::onClickFan);
                     return;
             }
         }
@@ -344,18 +292,109 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             Log.e("log1-switch", buttonView.getId()+""+isChecked+"");
         }
 
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            Log.e("log1-seekBar", progress+"");
-        }
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
 
-        }
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
+        void onClickLed(View v) {
+//            if(SmartHomeMainActivity.meshGateway == null) {
+//                Log.e("log1-blindBtn", "Gateway is null");
+//                return;
+//            }
 
+            switch (v.getId()) {
+                case R.id.rgb_25:
+                    this.data.setDeviceDetailState("25");
+                    break;
+                case R.id.rgb_50:
+                    this.data.setDeviceDetailState("50");
+                    break;
+                case R.id.rgb_75:
+                    this.data.setDeviceDetailState("75");
+                    break;
+                case R.id.rgb_100:
+                    this.data.setDeviceDetailState("100");
+                    break;
+            }
+            String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/" +
+                    this.data.getDeviceState() + "/" + this.data.getDeviceDetailState();
+            Log.e("smart onclick: ", commandStr);
+            //sendCloudCommand(commandStr);
         }
 
+        void onClickRgbLed(View v) {
+//            if(SmartHomeMainActivity.meshGateway == null) {
+//                Log.e("log1-blindBtn", "Gateway is null");
+//                return;
+//            }
+
+            switch (v.getId()) {
+                case R.id.led_red:
+                    this.data.setDeviceDetailState("255/0/0");
+                    break;
+                case R.id.led_yellow:
+                    this.data.setDeviceDetailState("255/255/0");
+                    break;
+                case R.id.led_green:
+                    this.data.setDeviceDetailState("0/255/0");
+                    break;
+                case R.id.rgb_blue:
+                    this.data.setDeviceDetailState("0/0/255");
+                    break;
+                case R.id.rgb_purple:
+                    this.data.setDeviceDetailState("100/0/255");
+                    break;
+            }
+            String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/" +
+                    this.data.getDeviceState() + "/" + this.data.getDeviceDetailState();
+            Log.e("smart onclick: ", commandStr);
+//            sendCloudCommand(commandStr);
+        }
+
+        void onClickFan(View v) {
+//            if(SmartHomeMainActivity.meshGateway == null) {
+//                Log.e("log1-blindBtn", "Gateway is null");
+//                return;
+//            }
+            if(v.getId() == R.id.fanMinBtn) {
+                this.data.setDeviceDetailState("min");
+            } else if(v.getId() == R.id.fanMidBtn) {
+                this.data.setDeviceDetailState("mid");
+            } else {
+                this.data.setDeviceDetailState("max");
+            }
+            String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/" +
+                    this.data.getDeviceState() + "/" + this.data.getDeviceDetailState();
+            Log.e("smart onclick: ", commandStr);
+
+            //sendCloudCommand(commandStr);
+        }
+
+        void onClickBlind(View v) {
+//            if(SmartHomeMainActivity.meshGateway == null) {
+//                Log.e("log1-blindBtn", "Gateway is null");
+//                return;
+//            }
+
+            switch (v.getId()) {
+                case R.id.blind_0:
+                    this.data.setDeviceDetailState("0");
+                    break;
+                case R.id.blind_25:
+                    this.data.setDeviceDetailState("25");
+                    break;
+                case R.id.blind_50:
+                    this.data.setDeviceDetailState("50");
+                    break;
+                case R.id.blind_75:
+                    this.data.setDeviceDetailState("75");
+                    break;
+                case R.id.blind_100:
+                    this.data.setDeviceDetailState("100");
+                    break;
+            }
+            String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/" +
+                    this.data.getDeviceState() + "/" + this.data.getDeviceDetailState();
+            Log.e("smart onclick: ", commandStr);
+
+            //sendCloudCommand(commandStr);
+        }
     }
 }
