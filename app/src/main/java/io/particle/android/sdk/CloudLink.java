@@ -17,8 +17,8 @@ import io.particle.android.sdk.utils.Async;
 public class CloudLink {
 
     //방번호/디바이스이름/state
-    public int setDevice(int roomNum, int idx, String state){
-        String command;
+    public int setDevice(String command){
+        /*String command;
 
         if(idx==-1)
         {
@@ -30,7 +30,7 @@ public class CloudLink {
             command = roomNum+"/"+deviceName+"/"+state;
         }
         
-
+*/
         Async.executeAsync(ParticleCloudSDK.getCloud(), new Async.ApiWork<ParticleCloud, Object>() {
             @Override
             public Object callApi(@NonNull ParticleCloud particleCloud) throws ParticleCloudException, IOException {
@@ -41,7 +41,7 @@ public class CloudLink {
                     msg.add(cmd);
 
                     int resultCode = SmartHomeMainActivity.meshGateway.callFunction("setDevice", msg);
-                    Log.e("log1",command + resultCode);
+                    Log.e("log1",command);
 
                 }  catch (ParticleDevice.FunctionDoesNotExistException e) {
                     e.printStackTrace();

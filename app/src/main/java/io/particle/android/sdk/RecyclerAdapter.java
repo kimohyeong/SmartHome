@@ -299,24 +299,39 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 //                return;
 //            }
 
+            String detail_state="";
             switch (v.getId()) {
                 case R.id.led_25:
-                    this.data.setDeviceDetailState("25");
+                    detail_state="25";
                     break;
                 case R.id.led_50:
-                    this.data.setDeviceDetailState("50");
+                    detail_state="50";
                     break;
                 case R.id.led_75:
-                    this.data.setDeviceDetailState("75");
+                    detail_state="75";
                     break;
                 case R.id.led_100:
-                    this.data.setDeviceDetailState("100");
+                    detail_state="100";
                     break;
             }
+
             String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/" +
                     this.data.getDeviceState() + "/" + this.data.getDeviceDetailState();
+            //int resultCode = cloudLink.setDevice(commandStr);
+            int resultCode = 1;
+            if(resultCode==1)
+            {
+                deviceInfoTxt.setText(detail_state);
+                data.setDeviceDetailState(detail_state);
+
+                helper.updateDevice(data);
+
+                notifyDataSetChanged();
+            }
+
+
             Log.e("smart onclick: ", commandStr);
-            //sendCloudCommand(commandStr);
+
         }
 
         void onClickRgbLed(View v) {

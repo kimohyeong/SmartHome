@@ -15,7 +15,7 @@ import io.particle.android.sdk.Device;
 
 
 public class DBhelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 10;
     private static final String DATABASE_NAME = "deviceManager";
     private static final String TABLE_DEVICE = "devices";
 
@@ -126,13 +126,13 @@ public class DBhelper extends SQLiteOpenHelper {
 
 
         return db.update(TABLE_DEVICE, values, KEY_NAME + " = ?",
-                new String[] {String.valueOf(device.getDeviceId())});
+                new String[] {String.valueOf(device.getDeviceName())});
     }
 
     public void deleteDevice(Device device) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_DEVICE, KEY_NAME + " = ? ",
-                new String[] {String.valueOf(device.getDeviceId())});
+                new String[] {String.valueOf(device.getDeviceName())});
         db.close();
     }
 

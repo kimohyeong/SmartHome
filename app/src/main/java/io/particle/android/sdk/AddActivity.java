@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import io.particle.android.sdk.cloudDB.DBhelper;
 import io.particle.sdk.app.R;
 
 public class AddActivity extends AppCompatActivity {
@@ -25,6 +26,8 @@ public class AddActivity extends AppCompatActivity {
     ArrayList<Device> device;
     static boolean[] addNum ;
     int roomNum;
+
+    private DBhelper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,7 @@ public class AddActivity extends AppCompatActivity {
     public void setting(){
         Log.d("super","setting");///////////
 
-
+        helper=new DBhelper(this);
         addNum =  new boolean[100];
         editText = findViewById(R.id.editText);
         listView = findViewById(R.id.addList0);
@@ -64,21 +67,26 @@ public class AddActivity extends AppCompatActivity {
         listView.setAdapter(mAdapter);
     }
     public void onClickOK(View v){
+
         ArrayList<Device> addDevice = new ArrayList<Device>();
 
         //check된 device addDevice에저장
         for(int i=0; i<device.size(); i++){
             if(addNum[i]){
+                //helper.updateDevice(device.get(i));
                 addDevice.add(device.get(i));
             }
         }
 
+
+
         //finish & transger addDevice
-        Intent intent = new Intent();
-        SmartHomeMainActivity.devices[roomNum] = addDevice;
+        //Intent intent = new Intent();
+        //SmartHomeMainActivity.devices[roomNum] = addDevice;
         //intent.putExtra("AddDevice",addDevice);
-        intent.putExtra("AddName",editText.getText().toString());
-        setResult(RESULT_OK, intent);
+        //intent.putExtra("AddName",editText.getText().toString());
+        //setResult(RESULT_OK, intent);
+
         finish();
 
     }
