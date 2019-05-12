@@ -45,7 +45,7 @@ public class SmartHomeMainActivity extends AppCompatActivity {
 
     public Boolean isAdd4, isAdd5;
     public String name4, name5;
-    public static  ArrayList<Device>[] devices;
+    public static ArrayList<Device>[] devices;
     public static ParticleDevice meshGateway;
 
     DBhelper helper;
@@ -64,10 +64,8 @@ public class SmartHomeMainActivity extends AppCompatActivity {
         ActionBar bar = getSupportActionBar();
         bar.hide();
 
-        deviceSetting();
-
-        // For test
-        addData();
+        //particleInit();
+        setting();
     }
     @Override
     protected void onRestart() {
@@ -84,7 +82,79 @@ public class SmartHomeMainActivity extends AppCompatActivity {
         }
     }
 
-    public void deviceSetting(){
+    public void particleInit() {
+        Log.d("log1","startparticle");
+        ParticleCloudSDK.init(this);
+        Async.executeAsync(ParticleCloudSDK.getCloud(), new Async.ApiWork<ParticleCloud, Object>() {
+
+            private List<ParticleDevice> particleDevices;
+
+            @Override
+            public Object callApi(@NonNull ParticleCloud particleCloud) throws ParticleCloudException, IOException {
+
+                Log.d("log1","startparticle1");
+
+                try {
+                    List<ParticleDevice> particleDevices;
+                    JSONObject json = new JSONObject(loadJSONFromAsset());
+                    Log.e("log1",json.getString("cloudEmail"));
+                    Log.e("log1",json.getString("cloudPassword"));
+                    particleCloud.logIn(json.getString("cloudEmail"), json.getString("cloudPassword"));
+
+                    Calendar distantFuture = Calendar.getInstance();
+                    distantFuture.add(Calendar.YEAR, 20);
+                    particleCloud.setAccessToken(json.getString("cloudAccessToken"), distantFuture.getTime());
+
+                    particleDevices = particleCloud.getDevices();
+                    Log.e("log1",particleDevices.size()+"");
+
+                    for (ParticleDevice device : particleDevices) {
+                        //리스트 저장
+                        int roomnum=Integer.parseInt(device.getStringVariable("roomNum"));
+                        String name=device.getStringVariable("name");
+                        int type=Integer.parseInt(device.getStringVariable("type"));
+                        String state=device.getStringVariable("state");
+
+                        if(name.equals("meshGateway")) {
+                            meshGateway = device;
+                        }
+
+                        Device d=new Device();
+
+                        //클라우드에서 가져오기
+                        d.setDeviceRoom(roomnum,9);
+                        d.setDeviceRoomNum(roomnum);
+                        d.setDeviceState(state);
+                        d.setDeviceName(name);
+                        d.setDeviceType(type);
+
+                        devices[roomnum].add(d);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.d("log1",e.toString());
+                } catch (ParticleDevice.VariableDoesNotExistException e) {
+                    e.printStackTrace();
+                }
+
+                return -1;
+
+            }
+
+            @Override
+            public void onSuccess(@NonNull Object value) {
+                Log.e("log1", "login success");
+            }
+
+            @Override
+            public void onFailure(@NonNull ParticleCloudException e) {
+                Log.d("log1", e.getBestMessage());
+            }
+        });
+    }
+
+
+    public void setting(){
         //view
         room = new ImageView[6];
         room[0] = findViewById(R.id.room0);
@@ -137,39 +207,84 @@ public class SmartHomeMainActivity extends AppCompatActivity {
         if(helper.getDevicesCount() != 0) {
             devices = helper.getAllDevices();
         }
+
+        //addData1();
+        addData();
     }
 
+    public void addData1(){
+        int idx =0;
+        Device[] dd = new Device[10];
+        dd[idx] = new Device();
+        dd[idx].setDeviceRoom(0,0);
+        dd[idx].setDeviceName("Led0");
+        dd[idx].setDeviceType(0);
+        dd[idx].setDeviceState("1/fff");
+        devices[0].add(dd[idx]);
+
+        idx++;
+        dd[idx] = new Device();
+        dd[idx].setDeviceRoom(0,0);
+        dd[idx].setDeviceName("Led1");
+        dd[idx].setDeviceType(0);
+        dd[idx].setDeviceState("1/asa");
+        devices[0].add(dd[idx]);
+
+        idx++;
+        dd[idx] = new Device();
+        dd[idx].setDeviceRoom(0,0);
+        dd[idx].setDeviceName("MyFan");
+        dd[idx].setDeviceType(2);
+        dd[idx].setDeviceState("0/www");
+        devices[0].add(dd[idx]);
+
+        idx++;
+        dd[idx] = new Device();
+        dd[idx].setDeviceRoom(0,0);
+        dd[idx].setDeviceName("Led2");
+        dd[idx].setDeviceType(0);
+        dd[idx].setDeviceState("0/2234");
+        devices[0].add(dd[idx]);
+
+        idx++;
+        dd[idx] = new Device();
+        dd[idx].setDeviceRoom(0,0);
+        dd[idx].setDeviceName("MyBlind");
+        dd[idx].setDeviceType(1);
+        dd[idx].setDeviceState("1/444");
+        devices[0].add(dd[idx]);
+    }
     public void addData(){
         Device[] dd = new Device[10];
-        for(int i=0; i<2; i++){
+        for(int i=0; i<3; i++){
             dd[i] = new Device();
             dd[i].setDeviceRoom(0,0);
             dd[i].setDeviceName("led"+i);
-            dd[i].setDeviceType(0);
-            dd[i].setDeviceState("ON/30");
+            dd[i].setDeviceType(i);
+            dd[i].setDeviceState("1/30");
             devices[0].add(dd[i]);
         }
-        for(int i=2; i<4; i++){
+        for(int i=3; i<4; i++){
             dd[i] = new Device();
             dd[i].setDeviceRoom(0,1);
             dd[i].setDeviceName("led"+i);
             dd[i].setDeviceType(0);
-            dd[i].setDeviceState("OFF/90");
+            dd[i].setDeviceState("0/90");
             devices[1].add(dd[i]);
         }
         for(int i=4; i<7; i++){
             dd[i] = new Device();
             dd[i].setDeviceRoom(0,2);
             dd[i].setDeviceName("led"+i);
-            dd[i].setDeviceState("OFF/30");
-            dd[i].setDeviceType(0);
+            dd[i].setDeviceState("0/30");
+            dd[i].setDeviceType(2);
             devices[2].add(dd[i]);
         }
         for(int i=7; i<10; i++){
             dd[i] = new Device();
             dd[i].setDeviceRoom(0,3);
             dd[i].setDeviceName("led"+i);
-            dd[i].setDeviceState("ON/30");
+            dd[i].setDeviceState("1/30");
             dd[i].setDeviceType(0);
             devices[3].add(dd[i]);
         }
@@ -207,9 +322,29 @@ public class SmartHomeMainActivity extends AppCompatActivity {
         int [] roomImg = {R.drawable.livingroom, R.drawable.bathroom, R.drawable.bedroom, R.drawable.studyroom,R.drawable.person,R.drawable.person};
         intent = new Intent(this, RoomActivity.class);
         intent.putExtra("NAME",roomName[roomNum]);
+        //intent.putExtra("DEVICE",devices[roomNum]);
         intent.putExtra("ROOM_NUM",roomNum);
         intent.putExtra("IMG",roomImg[roomNum]);
         startActivity(intent);
+    }
+
+    public String loadJSONFromAsset() {
+        String json = null;
+        try {
+
+            InputStream is = getAssets().open("infoConfig.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+
     }
 
     ///----------- room reset butoon ------------------///
@@ -310,11 +445,10 @@ public class SmartHomeMainActivity extends AppCompatActivity {
 
     public void plusDevice(View v)
     {
-        Log.e("log1","plusDevice");
-        Intent intent = new Intent(this, SplashActivity.class);
-//        DB test
-//        Intent intent = new Intent(this, AddDeviceActivity.class);
+        Intent intent = new Intent(this, AddDeviceActivity.class);
         startActivity(intent);
     }
+
+
 }
 

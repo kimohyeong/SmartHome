@@ -1,10 +1,12 @@
 package io.particle.android.sdk;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +34,9 @@ public class RoomActivity extends AppCompatActivity {
     private int roomNum = 0;
     private String roomName;
     private int roomImg;
+    public static TextView actNum ;
+    public static TextView inactNum ;
+    CloudLink cloudLink = new CloudLink();
 
 
 
@@ -56,26 +61,27 @@ public class RoomActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         adapter = new RecyclerAdapter();
+        adapter.setRoomNum(roomNum);
         recyclerView.setAdapter(adapter);
 
         //위layout
         TextView txtRoom = findViewById(R.id.txt_room);
         ImageView imgRoom = findViewById(R.id.img_room);
-        TextView actNum = null;
-        TextView inactNum = null;
+        actNum = findViewById(R.id.actNum);
+        inactNum = findViewById(R.id.inactNum);
 
         txtRoom.setText(roomName);
         imgRoom.setImageResource(roomImg);
 
         int an=0,ian=0;
         for(int i=0; i<SmartHomeMainActivity.devices[roomNum].size(); i++){
-            if(SmartHomeMainActivity.devices[roomNum].get(i).getDeviceState().substring(0,2).equals("ON"))
+            if(SmartHomeMainActivity.devices[roomNum].get(i).getDeviceState().substring(0,1).equals("1"))
                 an++;
             else
                 ian++;
         }
-        //actNum.setText(String.valueOf(an));
-        //inactNum.setText(String.valueOf(ian));
+        actNum.setText(String.valueOf(an));
+        inactNum.setText(String.valueOf(ian));
 
         //delete touch
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
@@ -102,6 +108,17 @@ public class RoomActivity extends AppCompatActivity {
     }
 
 
+    public void onClickAllOff(View v){
+        for(int i=0; i<SmartHomeMainActivity.devices[roomNum].size(); i++){
+            String s = SmartHomeMainActivity.devices[roomNum].get(i).getDeviceState();
+            String offStr = "0"+s.substring(1,s.length());
+            SmartHomeMainActivity.devices[roomNum].get(i).setDeviceState(offStr);
+            cloudLink.setDevice(roomNum,i,offStr);
+        }
+        adapter.notifyDataSetChanged();
+        actNum.setText("0");
+        inactNum.setText(SmartHomeMainActivity.devices[roomNum].size()+"");
+    }
 
     ///////////////////////////////////
     // delete btn //
@@ -112,7 +129,7 @@ public class RoomActivity extends AppCompatActivity {
 
     boolean swipeBack = false;
     ButtonsState buttonShowedState = ButtonsState.GONE;
-    private static final float buttonWidth = 300;
+    private static final float buttonWidth = 200;
 
     //왼쪽오른쪽 터시이벤트
     ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
@@ -146,7 +163,7 @@ public class RoomActivity extends AppCompatActivity {
                 setTouchListener(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                 //버튼visible상태라면 view위치 -300
                 if (buttonShowedState == ButtonsState.RIGHT_VISIBLE) {
-                    dX = dX - 300;
+                    dX = dX - buttonWidth;
                     //버튼그리기
                     drawButtons(c, viewHolder);
                 }
@@ -233,22 +250,23 @@ public class RoomActivity extends AppCompatActivity {
             if (buttonShowedState == ButtonsState.RIGHT_VISIBLE) {
                 View itemView = viewHolder.itemView;
                 Paint p = new Paint();
-                RectF rightButton = new RectF(itemView.getRight() - buttonWidthWithoutPadding, itemView.getTop()+13, itemView.getRight(), itemView.getTop()+253);
-                p.setColor(Color.RED);
+                RectF rightButton = new RectF(itemView.getRight() - buttonWidthWithoutPadding, itemView.getTop()+14, itemView.getRight(), itemView.getTop()+255);
+                p.setColor(Color.rgb(251,72,80));
                 c.drawRoundRect(rightButton, corners, corners, p);
-                drawText("DELETE", c, rightButton, p);
+                drawImgBtn( c, rightButton, p);
 
                 buttonInstance = rightButton;
             }
         }
-        private void drawText(String text, Canvas c, RectF button, Paint p) {
+        private void drawImgBtn( Canvas c, RectF button, Paint p) {
             float textSize = 60;
             p.setColor(Color.WHITE);
             p.setAntiAlias(true);
-            p.setTextSize(textSize);
 
-            float textWidth = p.measureText(text);
-            c.drawText(text, button.centerX()-(textWidth/2), button.centerY()+(textSize/2), p);
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.trashcan,null);
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            Bitmap bitmap1 = bitmap.createScaledBitmap(bitmap, 55, 70,true);
+            c.drawBitmap(bitmap1,button.centerX()-bitmap1.getWidth()/2,button.centerY()-bitmap1.getHeight()/2, p);
         }
 
     };

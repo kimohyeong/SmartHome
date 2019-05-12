@@ -71,12 +71,16 @@ public class addViewAdapter extends BaseAdapter{
         final Device device = addDevices.get(position);
         Log.d("super","position : " + position );
         TextView room_txtv = (TextView)itemlayout.findViewById(R.id.roomName);
+        //TextView room_txtv1 = (TextView)itemlayout.findViewById(R.id.roomName1);
 
        if( device.getIsFirst() == true){
+            room_txtv.setVisibility(View.VISIBLE);
             room_txtv.setText(roomName[device.getDeviceRoom(0)]);
         }
         else {
-            room_txtv.setHeight(0);
+            room_txtv.setVisibility(View.GONE);
+            //room_txtv.setHeight(0);
+            //room_txtv1.setHeight(0);
         }
         ImageView imgv = (ImageView) itemlayout.findViewById(R.id.imageicon);
         TextView txtv = (TextView) itemlayout.findViewById(R.id.textview);

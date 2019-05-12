@@ -3,7 +3,7 @@
 
     <string name="mode_button_name">Setup button</string>
     <string name="electron_setup_uri">https://setup.particle.io</string>
-    <drawable name="screen_background">@drawable/ic_trianglify_background</drawable>
+    <drawable name="screen_background">#e4e4e4</drawable>
 
     <color name="element_background_color">#FFFFFF</color>
     <color name="element_text_color">@color/teal</color>
