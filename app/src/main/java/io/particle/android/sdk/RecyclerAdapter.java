@@ -30,24 +30,28 @@ import io.particle.android.sdk.cloud.ParticleCloud;
 import io.particle.android.sdk.cloud.ParticleCloudSDK;
 import io.particle.android.sdk.cloud.ParticleDevice;
 import io.particle.android.sdk.cloud.exceptions.ParticleCloudException;
+import io.particle.android.sdk.cloudDB.DBhelper;
 import io.particle.android.sdk.utils.Async;
 import io.particle.sdk.app.R;
 
 import static io.particle.android.sdk.utils.Py.list;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder>  {
+
     public ArrayList<Device> listData = new ArrayList<>();
     private Context context;
     private SparseBooleanArray selectedItems = new SparseBooleanArray();
     private int prePosition = -1;
     private int roomNum;
     CloudLink cloudLink = new CloudLink();
+    private DBhelper helper;
 
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         this.context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_node, parent, false);
+        helper = new DBhelper(context);
         return new ItemViewHolder(view);
     }
 
@@ -104,30 +108,40 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             deviceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    String s = data.getDeviceState();
-                    if(s.substring(0,1).equals("1") && isChecked)
-                        return;
-                    else if(s.substring(0,1).equals("0") && !isChecked)
-                        return;;
 
-                    String stateStr;
+                    String s=data.getDeviceState();
+
+                    if(s.equals("1") && isChecked)
+                        return;
+                    else if(s.equals("0") && !isChecked)
+                        return;
+
                     int x =Integer.parseInt(RoomActivity.actNum.getText().toString());
                     int y =Integer.parseInt(RoomActivity.inactNum.getText().toString());
                     if(isChecked) {
-                        stateStr = "1" + s.substring(1, s.length());
+                        s="1";
                         x++;
                         y--;
                     }
                     else {
-                        stateStr = "0" + s.substring(1, s.length());
+                        s="0";
                         x--;
                         y++;
                     }
-                    RoomActivity.actNum.setText(x+"");
-                    RoomActivity.inactNum.setText(y+"");
-                    data.setDeviceState(stateStr);
-                    cloudLink.setDevice(roomNum,position);
-                    notifyDataSetChanged();
+
+                    String command=s+"/"+data.getDeviceDetailState();
+
+                    Log.e("log1-command",command);
+                    int resultCode = cloudLink.setDevice(roomNum,position, command);
+                    if(resultCode==1)
+                    {
+                        RoomActivity.actNum.setText(x+"");
+                        RoomActivity.inactNum.setText(y+"");
+                        data.setDeviceState(s);
+                        notifyDataSetChanged();
+                        helper.updateDevice(data);
+                    }
+
                 }
             });
             if(data.getDeviceState().substring(0,1).equals("1"))
@@ -143,7 +157,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 
         @Override
         public void onClick(View v) {
-
+            int resultCode;
+            String commandState="";
             switch (v.getId()) {
                 case R.id.deviceInfoText:
                 case R.id.deviceStateText:
@@ -161,31 +176,47 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                     notifyItemChanged(position);
                     // 클릭된 position 저장
                     prePosition = position;
-                    break;
+                    return;
                 case R.id.blindMinBtn:
+                    commandState="1/0";
+                    break;
                 case R.id.blindMaxBtn:
-                    Log.e("log1-blindBtn",v.getId()+"");
+                    commandState="1/100";
                     break;
                 case R.id.fanMinBtn:
+                    commandState="1/min";
+                    break;
                 case R.id.fanMidBtn:
+                    commandState="1/mid";
+                    break;
                 case R.id.fanMaxBtn:
-                    if(SmartHomeMainActivity.meshGateway == null) {
-                        Log.e("log1-blindBtn", "Gateway is null");
-                        return;
-                    }
-                    if(v.getId() == R.id.fanMinBtn) {
-                        this.data.setDeviceState("MIN");
-                    } else if(v.getId() == R.id.fanMidBtn) {
-                        this.data.setDeviceState("MID");
-                    } else {
-                        this.data.setDeviceState("MAX");
-                    }
-                    String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/"+ this.data.getDeviceState();
-
+                    commandState="max";
                     break;
 
             }
-            return;
+
+            if(SmartHomeMainActivity.meshGateway == null) {
+                Log.e("log1-blindBtn", "Gateway is null");
+                return;
+            }
+
+            //아르곤 함수호출
+            resultCode = cloudLink.setDevice(this.data.getDeviceRoomNum(),position,commandState);
+            if(resultCode==1)
+            {
+                if(v.getId() == R.id.fanMinBtn) {
+                    this.data.setDeviceState("min");
+                } else if(v.getId() == R.id.fanMidBtn) {
+                    this.data.setDeviceState("mid");
+                } else {
+                    this.data.setDeviceState("max");
+                }
+                helper.updateDevice(this.data);
+            }
+
+
+
+
         }
 
         private void changeVisibility(final boolean isExpanded) {

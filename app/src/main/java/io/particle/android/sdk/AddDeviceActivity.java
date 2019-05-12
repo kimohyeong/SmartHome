@@ -236,6 +236,7 @@ public class AddDeviceActivity extends AppCompatActivity {
         newDevice.setDeviceId(dbID++);
         newDevice.setDeviceState("false");  //처음 상태
         newDevice.setDeviceName(newDeivceNameEdit.getText().toString());
+        newDevice.setDeviceDetailState("");
         helper.addDevice(newDevice);
 
         helper.printAllDevices();

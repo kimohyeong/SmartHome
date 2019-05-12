@@ -87,8 +87,6 @@ public class SmartHomeMainActivity extends AppCompatActivity {
         ParticleCloudSDK.init(this);
         Async.executeAsync(ParticleCloudSDK.getCloud(), new Async.ApiWork<ParticleCloud, Object>() {
 
-            private List<ParticleDevice> particleDevices;
-
             @Override
             public Object callApi(@NonNull ParticleCloud particleCloud) throws ParticleCloudException, IOException {
 
@@ -101,6 +99,8 @@ public class SmartHomeMainActivity extends AppCompatActivity {
                     Log.e("log1",json.getString("cloudPassword"));
                     particleCloud.logIn(json.getString("cloudEmail"), json.getString("cloudPassword"));
 
+                    particleCloud.logIn(json.getString("cloudEmail"), json.getString("cloudPassword"));
+
                     Calendar distantFuture = Calendar.getInstance();
                     distantFuture.add(Calendar.YEAR, 20);
                     particleCloud.setAccessToken(json.getString("cloudAccessToken"), distantFuture.getTime());
@@ -109,13 +109,13 @@ public class SmartHomeMainActivity extends AppCompatActivity {
                     Log.e("log1",particleDevices.size()+"");
 
                     for (ParticleDevice device : particleDevices) {
-                        //리스트 저장
+
                         int roomnum=Integer.parseInt(device.getStringVariable("roomNum"));
                         String name=device.getStringVariable("name");
                         int type=Integer.parseInt(device.getStringVariable("type"));
                         String state=device.getStringVariable("state");
 
-                        if(name.equals("meshGateway")) {
+                        if(name.equals("yeongeeArgon")) {
                             meshGateway = device;
                         }
 
@@ -127,6 +127,7 @@ public class SmartHomeMainActivity extends AppCompatActivity {
                         d.setDeviceState(state);
                         d.setDeviceName(name);
                         d.setDeviceType(type);
+                        d.setDeviceDetailState("");
 
                         devices[roomnum].add(d);
                     }
@@ -152,7 +153,6 @@ public class SmartHomeMainActivity extends AppCompatActivity {
             }
         });
     }
-
 
     public void setting(){
         //view

@@ -119,7 +119,7 @@ public class RoomActivity extends AppCompatActivity {
         actNum.setText("0");
         inactNum.setText(SmartHomeMainActivity.devices[roomNum].size()+"");
 
-        cloudLink.setDevice(roomNum,-1);
+        cloudLink.setDevice(roomNum,-1, "0");
     }
 
     ///////////////////////////////////

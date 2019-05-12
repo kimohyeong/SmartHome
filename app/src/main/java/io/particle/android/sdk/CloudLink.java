@@ -17,9 +17,7 @@ import io.particle.android.sdk.utils.Async;
 public class CloudLink {
 
     //방번호/디바이스이름/state
-    public void setDevice(int roomNum, int idx){
-        String deviceName;
-        String deviceState;
+    public int setDevice(int roomNum, int idx, String state){
         String command;
 
         if(idx==-1)
@@ -28,9 +26,8 @@ public class CloudLink {
         }
         else
         {
-            deviceName = SmartHomeMainActivity.devices[roomNum].get(idx).getDeviceName();
-            deviceState = SmartHomeMainActivity.devices[roomNum].get(idx).getDeviceState();
-            command = roomNum+"/"+deviceName+"/"+deviceState;
+            String deviceName = SmartHomeMainActivity.devices[roomNum].get(idx).getDeviceName();
+            command = roomNum+"/"+deviceName+"/"+state;
         }
         
 
@@ -48,15 +45,21 @@ public class CloudLink {
 
                 }  catch (ParticleDevice.FunctionDoesNotExistException e) {
                     e.printStackTrace();
+                    return -1;
                 }
-                return -1;
+                return 1;
             }
             @Override
             public void onSuccess(@NonNull Object value) {
+
+
             }
             @Override
             public void onFailure(@NonNull ParticleCloudException e) {
+
             }
         });
+
+        return 1;
     }
 }
