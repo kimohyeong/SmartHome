@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="room">
+        <item>"Living Room"</item>
+        <item>"Bathroom"</item>
+        <item>"Bedroom"</item>
+        <item>"Study Room"</item>
+
+    </string-array>
+</resources>

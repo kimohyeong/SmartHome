@@ -9,23 +9,43 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <Button
+            android:text="〈"
+            android:textSize="25dp"
+            android:textColor="#ffffff"
+            android:background="#00ff0000"
+            android:layout_width="50dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
+            android:gravity="left|center_vertical"
+            android:onClick="onClickBack"/>
         <TextView
-            android:text="ADD Device"
+            android:text="Add Device"
             android:background="#46547f"
             android:textColor="#ffffff"
             android:textSize="20dp"
             android:gravity="center"
             android:layout_width="match_parent"
+            android:id="@+id/txt_room"
             android:layout_height="60dp" />
     </RelativeLayout>
 
-    <RelativeLayout
+    <TextView
+        android:text="Device Name"
+        android:textColor="@android:color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
         android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"/>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <EditText
             android:id="@+id/newDeviceNameEdit"
             android:hint="device name"
+            android:textColor="@android:color/black"
             android:layout_marginHorizontal="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,86 +58,145 @@
             android:layout_alignRight="@+id/newDeviceNameEdit"
             android:layout_alignBottom="@+id/newDeviceNameEdit"
             android:layout_width="40dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:onClick="onClickClear"/>
     </RelativeLayout>
 
+    <TextView
+        android:text="Device Type"
+        android:textColor="@android:color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"/>
 
-    <RadioGroup
+    <LinearLayout
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/deviceRadioGroup">
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="20dp">
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <RadioButton
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/smarthome_checkbox_checkbox1"
-            android:button="@android:color/transparent"
-            android:id="@+id/r_light"/>
-        <RadioButton
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/smarthome_checkbox_checkbox1"
-            android:button="@android:color/transparent"
-            android:id="@+id/r_fan"/>
-        <RadioButton
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/smarthome_checkbox_checkbox1"
-            android:button="@android:color/transparent"
-            android:id="@+id/r_blind"/>
-    </RadioGroup>
+            <TextView
+                android:text="LED"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"/>
+
+            <TextView
+                android:text="RGB LED"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"/>
+            <TextView
+                android:text="BLIND"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"/>
+
+            <TextView
+                android:text="FAN"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"/>
+            <TextView
+                android:text="THERMOMETER"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"/>
+        </LinearLayout>
+
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="right"
+            android:id="@+id/deviceRadioGroup">
+
+            <RadioButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/smarthome_checkbox_checkbox1"
+                android:button="@android:color/transparent"
+                android:id="@+id/r_light"/>
+            <RadioButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/smarthome_checkbox_checkbox1"
+                android:button="@android:color/transparent"
+                android:id="@+id/r_rgb_light"/>
+            <RadioButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/smarthome_checkbox_checkbox1"
+                android:button="@android:color/transparent"
+                android:id="@+id/r_blind"/>
+            <RadioButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/smarthome_checkbox_checkbox1"
+                android:button="@android:color/transparent"
+                android:id="@+id/r_fan"/>
+            <RadioButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/smarthome_checkbox_checkbox1"
+                android:button="@android:color/transparent"
+                android:id="@+id/r_thermometer"/>
+        </RadioGroup>
+    </LinearLayout>
 
     <TextView
-        android:layout_width="match_parent"
+        android:text="Device Room"
+        android:textColor="@android:color/black"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="방선택"
-        android:gravity="center"
-        android:textColor="#FFFFFF"
-        android:background="#46547f"/>
+        android:textSize="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"/>
 
-    <RadioGroup
+    <Spinner
+        android:layout_marginTop="13dp"
+        android:layout_marginHorizontal="30dp"
+        android:background="#424242"
+        android:id="@+id/myspinner"
+        android:spinnerMode="dropdown"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:id="@+id/roomRadioGroup">
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Living Room"
-            android:id="@+id/livingRadioBtn"/>
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Bathroom"
-            android:id="@+id/bathRadioBtn"/>
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Bedroom"
-            android:id="@+id/bedRadioBtn"/>
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Study Room"
-            android:id="@+id/studyRadioBtn"/>
-
-    </RadioGroup>
-
+        android:layout_height="40dp"
+        android:entries="@array/room"/>
 
     <Button
-        android:text="ok"
-        android:onClick="onClickOK"
-        android:layout_gravity="center"
-        android:layout_width="140dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="20dp"
-        android:background="#46547f"/>
+        android:text="OK"
+        android:layout_marginHorizontal="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#46547f"
+        android:textColor="#ffffff"
+        android:layout_marginTop="100dp"
+        android:onClick="onClickOK"/>
+
 
 
 

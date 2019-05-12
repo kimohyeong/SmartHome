@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 public class Device implements Serializable {
     private String name;                // device이름
-    private int type;                   //0:led 1:blind 2:fan 3:temp
+    private int type;                   //0:led 1:rgb 2:blind 3:fan 4:temp
     private int roomNum;
     private int id;                     // db 테이블 id
     private int[] room = new int[3];    //0:기본 1~2추가

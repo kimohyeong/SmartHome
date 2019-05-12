@@ -132,14 +132,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                     String command=s+"/"+data.getDeviceDetailState();
 
                     Log.e("log1-command",command);
-                    int resultCode = cloudLink.setDevice(roomNum,position, command);
+                    //int resultCode = cloudLink.setDevice(roomNum,position, command);
+                    int resultCode = 1;
                     if(resultCode==1)
                     {
                         RoomActivity.actNum.setText(x+"");
                         RoomActivity.inactNum.setText(y+"");
                         data.setDeviceState(s);
                         notifyDataSetChanged();
+
                         helper.updateDevice(data);
+                        helper.printAllDevices();
                     }
 
                 }
@@ -148,6 +151,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                 deviceSwitch.setChecked(true);
             else
                 deviceSwitch.setChecked(false);
+
 
             changeVisibility(selectedItems.get(position));
 
@@ -205,11 +209,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             if(resultCode==1)
             {
                 if(v.getId() == R.id.fanMinBtn) {
-                    this.data.setDeviceState("min");
+                    this.data.setDeviceDetailState("min");
                 } else if(v.getId() == R.id.fanMidBtn) {
-                    this.data.setDeviceState("mid");
+                    this.data.setDeviceDetailState("mid");
                 } else {
-                    this.data.setDeviceState("max");
+                    this.data.setDeviceDetailState("max");
                 }
                 helper.updateDevice(this.data);
             }
@@ -226,6 +230,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             int height = (int) (dpValue * d);
             final LinearLayout curLayout = visibleLayout(this.data.getDeviceType());
 
+            if(curLayout == null) return;
+
             // ValueAnimator.ofInt(int... values)는 View가 변할 값을 지정, 인자는 int 배열
             ValueAnimator va = isExpanded ? ValueAnimator.ofInt(0, height) : ValueAnimator.ofInt(height, 0);
             va.setDuration(600);
@@ -235,12 +241,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                     // value는 height 값
                     int value = (int) animation.getAnimatedValue();
 
+
                     //imageView의 높이 변경
                     curLayout.getLayoutParams().height = value;
                     curLayout.requestLayout();
 
                     // imageView가 실제로 사라지게하는 부분
                     curLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+
                 }
             });
             // Animation start
@@ -257,17 +265,29 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                     ledDetailLayout.setVisibility(View.VISIBLE);
                     return ledDetailLayout;
                 case 1:
+                    SetLayoutListener(ledDetailLayout, deviceNum);
+                    fanDetailLayout.setVisibility(View.GONE);
+                    blindDetailLayout.setVisibility(View.GONE);
+                    ledDetailLayout.setVisibility(View.VISIBLE);
+                    return ledDetailLayout;
+                case 2:
                     SetLayoutListener(blindDetailLayout, deviceNum);
                     fanDetailLayout.setVisibility(View.GONE);
                     blindDetailLayout.setVisibility(View.VISIBLE);
                     ledDetailLayout.setVisibility(View.GONE);
                     return blindDetailLayout;
-                case 2:
+                case 3:
                     SetLayoutListener(fanDetailLayout, deviceNum);
                     fanDetailLayout.setVisibility(View.VISIBLE);
                     blindDetailLayout.setVisibility(View.GONE);
                     ledDetailLayout.setVisibility(View.GONE);
                     return fanDetailLayout;
+                case 4:
+                    SetLayoutListener(fanDetailLayout, deviceNum);
+                    fanDetailLayout.setVisibility(View.GONE);
+                    blindDetailLayout.setVisibility(View.GONE);
+                    ledDetailLayout.setVisibility(View.GONE);
+                    return null;
             }
             return null;
         }
@@ -285,6 +305,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                     });
                     return;
                 case 1:
+                    ColorSeekBar cs1 = curLayout.getChildAt(0).findViewById(R.id.colorpicker);
+                    cs1.setOnColorChangeListener(new ColorSeekBar.OnColorChangeListener() {
+                        @Override
+                        public void onColorChangeListener(int colorBarPosition, int alphaBarPosition, int color) {
+                            Log.e("log1-colorSeekBar", color+"");
+                        }
+                    });
+                    return;
+                case 2:
                     // BLIND layout listener 세팅
                     Button blindMinBtn = curLayout.getChildAt(0).findViewById(R.id.blindMinBtn);
                     Button blindMaxBtn = curLayout.getChildAt(0).findViewById(R.id.blindMaxBtn);
@@ -294,7 +323,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                     SeekBar blindSeekBar = curLayout.getChildAt(1).findViewById(R.id.blindSeekBar);
                     blindSeekBar.setOnSeekBarChangeListener(this);
                     return;
-                case 2:
+                case 3:
                     // FAN layout listener 세팅
                     Switch fanSwitch = curLayout.getChildAt(0).findViewById(R.id.fanSwitch);
                     fanSwitch.setOnCheckedChangeListener(this);

@@ -2,6 +2,8 @@ package io.particle.android.sdk;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.ActionBar;
@@ -9,9 +11,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -49,7 +54,8 @@ public class AddDeviceActivity extends AppCompatActivity {
     private HashMap hashMap;
 
     EditText newDeivceNameEdit;
-    RadioGroup roomRadioGroup, deviceRadioGroup;
+    RadioGroup  deviceRadioGroup;
+    Spinner spinner;
     LinearLayout linearLayout;
 
     // Device data
@@ -78,14 +84,28 @@ public class AddDeviceActivity extends AppCompatActivity {
         //startActivity(intent);
 
         newDevice = new Device();
+        newDevice.setDeviceType(-1);
 
         newDeivceNameEdit = findViewById(R.id.newDeviceNameEdit);
-        roomRadioGroup = findViewById(R.id.roomRadioGroup);
+        spinner = findViewById(R.id.myspinner);
         deviceRadioGroup = findViewById(R.id.deviceRadioGroup);
-        roomRadioGroup.setOnCheckedChangeListener(radioGroupListener);
         deviceRadioGroup.setOnCheckedChangeListener(radioGroupListener);
 
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
 
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                newDevice.setDeviceRoomNum(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        int color = Color.parseColor("#46547f");
+        newDeivceNameEdit.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
     }
 
 
@@ -205,24 +225,17 @@ public class AddDeviceActivity extends AppCompatActivity {
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
             switch (group.getId()) {
-                case R.id.roomRadioGroup:
-                    if(checkedId == R.id.livingRadioBtn) {
-                        newDevice.setDeviceRoomNum(0);
-                    } else if(checkedId == R.id.bathRadioBtn) {
-                        newDevice.setDeviceRoomNum(1);
-                    } else if(checkedId == R.id.bedRadioBtn) {
-                        newDevice.setDeviceRoomNum(2);
-                    } else if(checkedId == R.id.studyRadioBtn) {
-                        newDevice.setDeviceRoomNum(3);
-                    }
-                    break;
                 case R.id.deviceRadioGroup:
                     if(checkedId == R.id.r_light) {
                         newDevice.setDeviceType(0);
-                    } else if(checkedId == R.id.r_blind) {
+                    } else if(checkedId == R.id.r_rgb_light) {
                         newDevice.setDeviceType(1);
-                    } else if(checkedId == R.id.r_fan) {
+                    } else if(checkedId == R.id.r_blind) {
                         newDevice.setDeviceType(2);
+                    } else if(checkedId == R.id.r_fan) {
+                        newDevice.setDeviceType(3);
+                    } else if(checkedId == R.id.r_thermometer) {
+                        newDevice.setDeviceType(4);
                     }
                     break;
             }
@@ -232,10 +245,16 @@ public class AddDeviceActivity extends AppCompatActivity {
     // DB에 추가
     public void onClickOK(View v)
     {
+        String name = newDeivceNameEdit.getText().toString();
+        if(name.isEmpty() || newDevice.getDeviceType() == -1){
+            Toast.makeText(this,"모든 설정을 완료 해주세요.",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         // id는 고유값 위해 계속 ++
         newDevice.setDeviceId(dbID++);
-        newDevice.setDeviceState("false");  //처음 상태
-        newDevice.setDeviceName(newDeivceNameEdit.getText().toString());
+        newDevice.setDeviceState("0");  //처음 상태
+        newDevice.setDeviceName(name);
         newDevice.setDeviceDetailState("");
         helper.addDevice(newDevice);
 
@@ -244,4 +263,13 @@ public class AddDeviceActivity extends AppCompatActivity {
         finish();
     }
 
+
+    public void onClickClear(View v){
+        newDeivceNameEdit.setText("");
+    }
+
+
+    public void onClickBack(View v){
+        finish();
+    }
 }

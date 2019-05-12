@@ -16,6 +16,7 @@
             android:background="#00ff0000"
             android:layout_width="50dp"
             android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
             android:gravity="left|center_vertical"
             android:onClick="onClickBack"/>
         <TextView

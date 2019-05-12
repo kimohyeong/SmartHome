@@ -32,7 +32,6 @@ import io.particle.android.sdk.cloud.ParticleDevice;
 import io.particle.android.sdk.cloud.exceptions.ParticleCloudException;
 import io.particle.android.sdk.cloudDB.DBhelper;
 import io.particle.android.sdk.devicesetup.ParticleDeviceSetupLibrary;
-import io.particle.android.sdk.ui.SplashActivity;
 import io.particle.android.sdk.utils.Async;
 import io.particle.sdk.app.R;
 
@@ -83,7 +82,6 @@ public class SmartHomeMainActivity extends AppCompatActivity {
     }
 
     public void particleInit() {
-        Log.d("log1","startparticle");
         ParticleCloudSDK.init(this);
         Async.executeAsync(ParticleCloudSDK.getCloud(), new Async.ApiWork<ParticleCloud, Object>() {
 
@@ -209,7 +207,7 @@ public class SmartHomeMainActivity extends AppCompatActivity {
         }
 
         //addData1();
-        addData();
+        //addData();
     }
 
     public void addData1(){
