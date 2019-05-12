@@ -206,7 +206,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                     rgbledDetailLayout.setVisibility(View.GONE);
                     return ledDetailLayout;
                 case 1:
-                    SetLayoutListener(ledDetailLayout, deviceNum);
+                    SetLayoutListener(rgbledDetailLayout, deviceNum);
                     fanDetailLayout.setVisibility(View.GONE);
                     blindDetailLayout.setVisibility(View.GONE);
                     ledDetailLayout.setVisibility(View.GONE);
@@ -241,18 +241,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         private void SetLayoutListener(LinearLayout curLayout, int deviceNum) {
             switch (deviceNum){
                 case 0:
-                    Button led25Btn = curLayout.getChildAt(0).findViewById(R.id.rgb_25);
-                    Button led50Btn = curLayout.getChildAt(0).findViewById(R.id.rgb_50);
-                    Button led75Btn = curLayout.getChildAt(0).findViewById(R.id.rgb_75);
-                    Button led100Btn = curLayout.getChildAt(0).findViewById(R.id.rgb_100);
+                    Button led25Btn = curLayout.getChildAt(0).findViewById(R.id.led_25);
+                    Button led50Btn = curLayout.getChildAt(0).findViewById(R.id.led_50);
+                    Button led75Btn = curLayout.getChildAt(0).findViewById(R.id.led_75);
+                    Button led100Btn = curLayout.getChildAt(0).findViewById(R.id.led_100);
 
                     led25Btn.setOnClickListener(this::onClickLed);  led75Btn.setOnClickListener(this::onClickLed);
                     led50Btn.setOnClickListener(this::onClickLed);  led100Btn.setOnClickListener(this::onClickLed);
                     return;
                 case 1:
-                    Button redBtn = curLayout.getChildAt(0).findViewById(R.id.led_red);
-                    Button yellowBtn = curLayout.getChildAt(0).findViewById(R.id.led_yellow);
-                    Button greenBtn = curLayout.getChildAt(0).findViewById(R.id.led_green);
+                    Button redBtn = curLayout.getChildAt(0).findViewById(R.id.rgb_red);
+                    Button yellowBtn = curLayout.getChildAt(0).findViewById(R.id.rgb_yellow);
+                    Button greenBtn = curLayout.getChildAt(0).findViewById(R.id.rgb_green);
                     Button blueBtn = curLayout.getChildAt(0).findViewById(R.id.rgb_blue);
                     Button purpleBtn = curLayout.getChildAt(0).findViewById(R.id.rgb_purple);
 
@@ -300,16 +300,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 //            }
 
             switch (v.getId()) {
-                case R.id.rgb_25:
+                case R.id.led_25:
                     this.data.setDeviceDetailState("25");
                     break;
-                case R.id.rgb_50:
+                case R.id.led_50:
                     this.data.setDeviceDetailState("50");
                     break;
-                case R.id.rgb_75:
+                case R.id.led_75:
                     this.data.setDeviceDetailState("75");
                     break;
-                case R.id.rgb_100:
+                case R.id.led_100:
                     this.data.setDeviceDetailState("100");
                     break;
             }
@@ -326,13 +326,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 //            }
 
             switch (v.getId()) {
-                case R.id.led_red:
+                case R.id.rgb_red:
                     this.data.setDeviceDetailState("255/0/0");
                     break;
-                case R.id.led_yellow:
+                case R.id.rgb_yellow:
                     this.data.setDeviceDetailState("255/255/0");
                     break;
-                case R.id.led_green:
+                case R.id.rgb_green:
                     this.data.setDeviceDetailState("0/255/0");
                     break;
                 case R.id.rgb_blue:

@@ -22,7 +22,7 @@
             android:adjustViewBounds="true"
             android:padding="5dp"
             />
-        
+
         <TextView
             android:textColor="#000000"
             android:layout_width="0dp"
@@ -147,7 +147,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_width="60dp"
                 android:layout_height="30dp"
-                android:id="@+id/led_red"/>
+                android:id="@+id/rgb_red"/>
             <Button
                 android:text="yellow"
                 android:textColor="@android:color/black"
@@ -155,7 +155,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_width="60dp"
                 android:layout_height="30dp"
-                android:id="@+id/led_yellow"/>
+                android:id="@+id/rgb_yellow"/>
             <Button
                 android:text="green"
                 android:textColor="@android:color/black"
@@ -163,7 +163,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_width="60dp"
                 android:layout_height="30dp"
-                android:id="@+id/led_green"/>
+                android:id="@+id/rgb_green"/>
             <Button
                 android:text="blue"
                 android:textColor="@android:color/black"
@@ -202,7 +202,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_width="60dp"
                 android:layout_height="30dp"
-                android:id="@+id/rgb_25"/>
+                android:id="@+id/led_25"/>
             <Button
                 android:text="50%"
                 android:textColor="@android:color/black"
@@ -210,7 +210,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_width="60dp"
                 android:layout_height="30dp"
-                android:id="@+id/rgb_50"/>
+                android:id="@+id/led_50"/>
             <Button
                 android:text="75%"
                 android:textColor="@android:color/black"
@@ -218,7 +218,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_width="60dp"
                 android:layout_height="30dp"
-                android:id="@+id/rgb_75"/>
+                android:id="@+id/led_75"/>
             <Button
                 android:text="100%"
                 android:textColor="@android:color/black"
@@ -226,7 +226,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_width="60dp"
                 android:layout_height="30dp"
-                android:id="@+id/rgb_100"/>
+                android:id="@+id/led_100"/>
 
         </LinearLayout>
     </LinearLayout>
