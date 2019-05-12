@@ -66,7 +66,6 @@ public class SmartHomeMainActivity extends AppCompatActivity {
 
         //particleInit();
         setting();
-        addData();
     }
     @Override
     protected void onRestart() {
@@ -208,41 +207,84 @@ public class SmartHomeMainActivity extends AppCompatActivity {
         if(helper.getDevicesCount() != 0) {
             devices = helper.getAllDevices();
         }
-        //test
-        //addData();
+
+        //addData1();
+        addData();
     }
 
+    public void addData1(){
+        int idx =0;
+        Device[] dd = new Device[10];
+        dd[idx] = new Device();
+        dd[idx].setDeviceRoom(0,0);
+        dd[idx].setDeviceName("Led0");
+        dd[idx].setDeviceType(0);
+        dd[idx].setDeviceState("1/fff");
+        devices[0].add(dd[idx]);
+
+        idx++;
+        dd[idx] = new Device();
+        dd[idx].setDeviceRoom(0,0);
+        dd[idx].setDeviceName("Led1");
+        dd[idx].setDeviceType(0);
+        dd[idx].setDeviceState("1/asa");
+        devices[0].add(dd[idx]);
+
+        idx++;
+        dd[idx] = new Device();
+        dd[idx].setDeviceRoom(0,0);
+        dd[idx].setDeviceName("MyFan");
+        dd[idx].setDeviceType(2);
+        dd[idx].setDeviceState("0/www");
+        devices[0].add(dd[idx]);
+
+        idx++;
+        dd[idx] = new Device();
+        dd[idx].setDeviceRoom(0,0);
+        dd[idx].setDeviceName("Led2");
+        dd[idx].setDeviceType(0);
+        dd[idx].setDeviceState("0/2234");
+        devices[0].add(dd[idx]);
+
+        idx++;
+        dd[idx] = new Device();
+        dd[idx].setDeviceRoom(0,0);
+        dd[idx].setDeviceName("MyBlind");
+        dd[idx].setDeviceType(1);
+        dd[idx].setDeviceState("1/444");
+        devices[0].add(dd[idx]);
+    }
     public void addData(){
         Device[] dd = new Device[10];
-        for(int i=0; i<2; i++){
+        for(int i=0; i<3; i++){
             dd[i] = new Device();
             dd[i].setDeviceRoom(0,0);
             dd[i].setDeviceName("led"+i);
-            dd[i].setDeviceType(0);
-            dd[i].setDeviceState("ON/30");
+            dd[i].setDeviceType(i);
+            dd[i].setDeviceState("1/30");
             devices[0].add(dd[i]);
         }
-        for(int i=2; i<4; i++){
+        for(int i=3; i<4; i++){
             dd[i] = new Device();
             dd[i].setDeviceRoom(0,1);
             dd[i].setDeviceName("led"+i);
             dd[i].setDeviceType(0);
-            dd[i].setDeviceState("OFF/90");
+            dd[i].setDeviceState("0/90");
             devices[1].add(dd[i]);
         }
         for(int i=4; i<7; i++){
             dd[i] = new Device();
             dd[i].setDeviceRoom(0,2);
             dd[i].setDeviceName("led"+i);
-            dd[i].setDeviceState("OFF/30");
-            dd[i].setDeviceType(0);
+            dd[i].setDeviceState("0/30");
+            dd[i].setDeviceType(2);
             devices[2].add(dd[i]);
         }
         for(int i=7; i<10; i++){
             dd[i] = new Device();
             dd[i].setDeviceRoom(0,3);
             dd[i].setDeviceName("led"+i);
-            dd[i].setDeviceState("ON/30");
+            dd[i].setDeviceState("1/30");
             dd[i].setDeviceType(0);
             devices[3].add(dd[i]);
         }
@@ -409,5 +451,7 @@ public class SmartHomeMainActivity extends AppCompatActivity {
 //        Intent intent = new Intent(this, AddDeviceActivity.class);
         startActivity(intent);
     }
+
+
 }
 

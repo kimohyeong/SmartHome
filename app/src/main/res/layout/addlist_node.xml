@@ -8,39 +8,48 @@
     <TextView
         android:id="@+id/roomName"
         android:text="room"
-        android:background="@android:color/darker_gray"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <LinearLayout
+        android:textColor="@android:color/darker_gray"
+        android:background="@android:color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingHorizontal="20dp"
-        android:paddingVertical="10dp"
-        android:background="#e4e4e4">
+        android:textSize="15dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:paddingVertical="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="1dp"/>
+
+    <LinearLayout
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingHorizontal="10dp"
+        android:orientation="horizontal">
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
             android:id="@+id/imageicon"
             android:layout_gravity="center_vertical"
             android:src="@drawable/fan"
+            android:adjustViewBounds="true"
             android:padding="5dp"/>
 
         <TextView
+            android:layout_marginLeft="10dp"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
+            android:textColor="@android:color/black"
             android:id="@+id/textview"
-            android:padding="10dp"
             android:text="HEATER"
-            android:textSize="20dp"/>
+            android:textSize="15dp"/>
 
         <CheckBox
             android:id="@+id/checkbox"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:buttonTint="#46547f"/>
     </LinearLayout>
 
 </LinearLayout>
