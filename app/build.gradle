@@ -143,6 +143,10 @@ dependencies {
 
     implementation 'com.github.christophesmet:colorpicker:d84191b1cf'
     implementation 'com.github.rtugeek:colorseekbar:1.7.3'
+
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.2.0'
+
 }
 
 apply plugin: 'com.google.gms.google-services'  /* uncomment for release builds */

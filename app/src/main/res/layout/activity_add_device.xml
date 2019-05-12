@@ -1,60 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_weight="1">
+    android:background="#ffffff">
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="이름"
-        android:gravity="center"
-        android:textColor="#FFFFFF"
-        android:background="#46547f"
-        />
-    <EditText
-        android:id="@+id/newDeviceNameEdit"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="ADD Device"
+            android:background="#46547f"
+            android:textColor="#ffffff"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="60dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:singleLine="true"/>
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/newDeviceNameEdit"
+            android:hint="device name"
+            android:layout_marginHorizontal="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <Button
+            android:text="X"
+            android:textSize="20dp"
+            android:background="#00ff0000"
+            android:textColor="#46547f"
+            android:layout_alignRight="@+id/newDeviceNameEdit"
+            android:layout_alignBottom="@+id/newDeviceNameEdit"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="타입"
-        android:gravity="center"
-        android:textColor="#FFFFFF"
-        android:background="#46547f"/>
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:id="@+id/deviceRadioGroup">
+
         <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:button="@drawable/radio_button_light"
-            android:id="@+id/r_light"
-            />
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/smarthome_checkbox_checkbox1"
+            android:button="@android:color/transparent"
+            android:id="@+id/r_light"/>
         <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:button="@drawable/radio_button_fan"
-            android:id="@+id/r_fan"
-            />
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/smarthome_checkbox_checkbox1"
+            android:button="@android:color/transparent"
+            android:id="@+id/r_fan"/>
         <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:button="@drawable/radio_button_blind"
-            android:id="@+id/r_blind"
-            />
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/smarthome_checkbox_checkbox1"
+            android:button="@android:color/transparent"
+            android:id="@+id/r_blind"/>
     </RadioGroup>
 
     <TextView
@@ -105,7 +116,8 @@
         android:layout_gravity="center"
         android:layout_width="140dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="20dp"
+        android:background="#46547f"/>
 
 
 
