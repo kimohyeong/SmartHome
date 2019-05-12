@@ -126,7 +126,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                     RoomActivity.actNum.setText(x+"");
                     RoomActivity.inactNum.setText(y+"");
                     data.setDeviceState(stateStr);
-                    cloudLink.setDevice(roomNum,position,stateStr);
+                    cloudLink.setDevice(roomNum,position);
                     notifyDataSetChanged();
                 }
             });
@@ -143,6 +143,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 
         @Override
         public void onClick(View v) {
+
             switch (v.getId()) {
                 case R.id.deviceInfoText:
                 case R.id.deviceStateText:
@@ -180,8 +181,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                         this.data.setDeviceState("MAX");
                     }
                     String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/"+ this.data.getDeviceState();
-                    sendCloudCommand(commandStr);
+
                     break;
+
             }
             return;
         }
@@ -295,30 +297,5 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 
         }
 
-        public void sendCloudCommand(final String command) {
-            Async.executeAsync(ParticleCloudSDK.getCloud(), new Async.ApiWork<ParticleCloud, Object>() {
-                @Override
-                public Object callApi(@NonNull ParticleCloud particleCloud) throws ParticleCloudException, IOException {
-                    try {
-                        String cmd = command;
-
-                        List<String> msg = new ArrayList<String>();
-                        msg.add(cmd);
-                        int resultCode = SmartHomeMainActivity.meshGateway.callFunction("publishMsg", msg);
-                        Log.e("log1-sendCC",command + resultCode);
-
-                    }  catch (ParticleDevice.FunctionDoesNotExistException e) {
-                        e.printStackTrace();
-                    }
-                    return -1;
-                }
-                @Override
-                public void onSuccess(@NonNull Object value) {
-                }
-                @Override
-                public void onFailure(@NonNull ParticleCloudException e) {
-                }
-            });
-        }
     }
 }

@@ -109,15 +109,17 @@ public class RoomActivity extends AppCompatActivity {
 
 
     public void onClickAllOff(View v){
-        for(int i=0; i<SmartHomeMainActivity.devices[roomNum].size(); i++){
+        for(int i=0; i<SmartHomeMainActivity.devices[roomNum].size(); i++)
+        {
             String s = SmartHomeMainActivity.devices[roomNum].get(i).getDeviceState();
             String offStr = "0"+s.substring(1,s.length());
             SmartHomeMainActivity.devices[roomNum].get(i).setDeviceState(offStr);
-            cloudLink.setDevice(roomNum,i,offStr);
         }
         adapter.notifyDataSetChanged();
         actNum.setText("0");
         inactNum.setText(SmartHomeMainActivity.devices[roomNum].size()+"");
+
+        cloudLink.setDevice(roomNum,-1);
     }
 
     ///////////////////////////////////
