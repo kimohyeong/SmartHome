@@ -102,6 +102,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 
             deviceNameTxt.setText(data.getDeviceName());
             deviceStateTxt.setText(data.getDeviceState());
+            deviceInfoTxt.setText(data.getDeviceDetailState());
             deviceImg.setImageDrawable(data.getDeviceImgDrawable());
 
             // switch on off
@@ -134,8 +135,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                     {
                         RoomActivity.actNum.setText(x+"");
                         RoomActivity.inactNum.setText(y+"");
+                        deviceStateTxt.setText(state);
                         data.setDeviceState(state);
-                        notifyDataSetChanged();
 
                         helper.updateDevice(data);
                     }
@@ -294,10 +295,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 
 
         void onClickLed(View v) {
-//            if(SmartHomeMainActivity.meshGateway == null) {
-//                Log.e("log1-blindBtn", "Gateway is null");
-//                return;
-//            }
 
             String detail_state="";
             switch (v.getId()) {
@@ -321,14 +318,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             int resultCode = 1;
             if(resultCode==1)
             {
+                this.data.setDeviceDetailState(detail_state);
+                deviceStateTxt.setText(this.data.getDeviceState());
                 deviceInfoTxt.setText(detail_state);
-                data.setDeviceDetailState(detail_state);
-
-                helper.updateDevice(data);
-
-                notifyDataSetChanged();
+                helper.updateDevice(this.data);
             }
-
 
             Log.e("smart onclick: ", commandStr);
 
@@ -340,27 +334,38 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 //                return;
 //            }
 
+            String detail_state="";
             switch (v.getId()) {
                 case R.id.rgb_red:
-                    this.data.setDeviceDetailState("255/0/0");
+                    detail_state="255/0/0";
                     break;
                 case R.id.rgb_yellow:
-                    this.data.setDeviceDetailState("255/255/0");
+                    detail_state="255/255/0";
                     break;
                 case R.id.rgb_green:
-                    this.data.setDeviceDetailState("0/255/0");
+                    detail_state="0/255/0";
                     break;
                 case R.id.rgb_blue:
-                    this.data.setDeviceDetailState("0/0/255");
+                    detail_state="0/0/255";
                     break;
                 case R.id.rgb_purple:
-                    this.data.setDeviceDetailState("100/0/255");
+                    detail_state="100/0/255";
                     break;
             }
             String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/" +
                     this.data.getDeviceState() + "/" + this.data.getDeviceDetailState();
+
+            //int resultCode = cloudLink.setDevice(commandStr);
+            int resultCode = 1;
+            if(resultCode==1)
+            {
+                this.data.setDeviceDetailState(detail_state);
+                deviceStateTxt.setText(this.data.getDeviceState());
+                deviceInfoTxt.setText(detail_state);
+                helper.updateDevice(this.data);
+            }
+
             Log.e("smart onclick: ", commandStr);
-//            sendCloudCommand(commandStr);
         }
 
         void onClickFan(View v) {
@@ -368,20 +373,32 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 //                Log.e("log1-blindBtn", "Gateway is null");
 //                return;
 //            }
+            String detail_state="";
             if(v.getId() == R.id.fanMinBtn) {
-                this.data.setDeviceDetailState("min");
+                detail_state="min";
             } else if(v.getId() == R.id.fanMidBtn) {
-                this.data.setDeviceDetailState("mid");
+                detail_state="mid";
             } else {
-                this.data.setDeviceDetailState("max");
+                detail_state="max";
             }
             String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/" +
                     this.data.getDeviceState() + "/" + this.data.getDeviceDetailState();
+
+            //int resultCode = cloudLink.setDevice(commandStr);
+            int resultCode = 1;
+            if(resultCode==1)
+            {
+                this.data.setDeviceDetailState(detail_state);
+                deviceStateTxt.setText(this.data.getDeviceState());
+                deviceInfoTxt.setText(detail_state);
+                helper.updateDevice(this.data);
+            }
+
             Log.e("smart onclick: ", commandStr);
 
-            //sendCloudCommand(commandStr);
         }
 
+        //0/30/60/100으로 바꾸기!!!!!!
         void onClickBlind(View v) {
 //            if(SmartHomeMainActivity.meshGateway == null) {
 //                Log.e("log1-blindBtn", "Gateway is null");
@@ -409,7 +426,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                     this.data.getDeviceState() + "/" + this.data.getDeviceDetailState();
             Log.e("smart onclick: ", commandStr);
 
-            //sendCloudCommand(commandStr);
         }
     }
 }
