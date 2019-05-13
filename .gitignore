@@ -44,3 +44,5 @@ proguard/
 # OS X droppings  (how is this not in the default Android Studio .gitconfig?)
 .DS_Store
 
+# config file
+app/src/main/assets/infoConfig.json

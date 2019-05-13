@@ -57,28 +57,60 @@ public class SmartHomeMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smarthome_main);
+
         ParticleDeviceSetupLibrary.init(this.getApplicationContext());
         helper = new DBhelper(this);
+        devices = new ArrayList[6];
+        for(int i=0; i<6; i++){
+            devices[i] = new ArrayList<Device>();
+        }
 
         ActionBar bar = getSupportActionBar();
         bar.hide();
-
-        //particleInit();
-        setting();
-    }
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.e("smart main: ","onRestart");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Log.e("smart main: ","onResume"+helper.getDevicesCount()+"");
+        initComponents();
+
         if(helper.getDevicesCount() != 0) {
             devices = helper.getAllDevices();
+
+            // set custom room UI
+            if(devices[4].size() > 0) {
+                room[4].setImageResource(R.drawable.person);
+                isAdd4 = true;
+                reBtn4.setEnabled(isAdd4);
+                reBtn4.setVisibility(View.VISIBLE);
+//                name4 = intent.getStringExtra("AddName");
+                txtV4.setText("");
+            } else {
+                room[4].setImageResource(R.drawable.plus);
+                isAdd4 = false;
+                reBtn4.setEnabled(isAdd4);
+                reBtn4.setVisibility(View.GONE);
+//                name4 = intent.getStringExtra("AddName");
+                txtV4.setText("");
+            }
+            if (devices[5].size() > 0) {
+                room[5].setImageResource(R.drawable.person);
+                isAdd5 = true;
+                reBtn5.setEnabled(isAdd5);
+                reBtn5.setVisibility(View.VISIBLE);
+//                name5 = intent.getStringExtra("AddName");
+                txtV5.setText("");
+            } else {
+                room[5].setImageResource(R.drawable.plus);
+                isAdd5 = false;
+                reBtn5.setEnabled(isAdd5);
+                reBtn5.setVisibility(View.GONE);
+//                name5 = intent.getStringExtra("AddName");
+                txtV5.setText("");
+            }
         }
+        //particleInit();
     }
 
     public void particleInit() {
@@ -152,8 +184,7 @@ public class SmartHomeMainActivity extends AppCompatActivity {
         });
     }
 
-    public void setting(){
-        //view
+    public void initComponents(){
         room = new ImageView[6];
         room[0] = findViewById(R.id.room0);
         room[1] = findViewById(R.id.room1);
@@ -166,128 +197,8 @@ public class SmartHomeMainActivity extends AppCompatActivity {
         reBtn5 = findViewById(R.id.resetBtn2);
         txtV4 = findViewById(R.id.txtv4);
         txtV5 = findViewById(R.id.txtv5);
-
-        ///is add personalize room4,room5?
-        pref = getSharedPreferences("IsAdd",MODE_PRIVATE);
-        editor = pref.edit();
-        isAdd4 = pref.getBoolean("IsAdd4",false);
-        isAdd5 = pref.getBoolean("IsAdd5",false);
-        name4 = pref.getString("Name4","");
-        name5 = pref.getString("Name5","");
-
-        txtV4.setText(name4);
-        txtV5.setText(name5);
-
-        if(isAdd4 == false) {
-            room[4].setImageResource(R.drawable.plus);
-            reBtn4.setEnabled(isAdd4);
-            reBtn4.setVisibility(View.GONE);
-        }
-        else {
-            room[4].setImageResource(R.drawable.person);
-        }
-
-        if(isAdd5 == false) {
-            room[5].setImageResource(R.drawable.plus);
-            reBtn5.setEnabled(isAdd5);
-            reBtn5.setVisibility(View.GONE);
-        }
-        else {
-            room[5].setImageResource(R.drawable.person);
-        }
-
-        //device
-        devices = new ArrayList[6];
-        for(int i=0; i<6; i++){
-            devices[i] = new ArrayList<Device>();
-        }
-        // db에 device존재하면
-        if(helper.getDevicesCount() != 0) {
-            devices = helper.getAllDevices();
-        }
-
-        //addData1();
-        //addData();
     }
 
-    public void addData1(){
-        int idx =0;
-        Device[] dd = new Device[10];
-        dd[idx] = new Device();
-        dd[idx].setDeviceRoom(0,0);
-        dd[idx].setDeviceName("Led0");
-        dd[idx].setDeviceType(0);
-        dd[idx].setDeviceState("1/fff");
-        devices[0].add(dd[idx]);
-
-        idx++;
-        dd[idx] = new Device();
-        dd[idx].setDeviceRoom(0,0);
-        dd[idx].setDeviceName("Led1");
-        dd[idx].setDeviceType(0);
-        dd[idx].setDeviceState("1/asa");
-        devices[0].add(dd[idx]);
-
-        idx++;
-        dd[idx] = new Device();
-        dd[idx].setDeviceRoom(0,0);
-        dd[idx].setDeviceName("MyFan");
-        dd[idx].setDeviceType(2);
-        dd[idx].setDeviceState("0/www");
-        devices[0].add(dd[idx]);
-
-        idx++;
-        dd[idx] = new Device();
-        dd[idx].setDeviceRoom(0,0);
-        dd[idx].setDeviceName("Led2");
-        dd[idx].setDeviceType(0);
-        dd[idx].setDeviceState("0/2234");
-        devices[0].add(dd[idx]);
-
-        idx++;
-        dd[idx] = new Device();
-        dd[idx].setDeviceRoom(0,0);
-        dd[idx].setDeviceName("MyBlind");
-        dd[idx].setDeviceType(1);
-        dd[idx].setDeviceState("1/444");
-        devices[0].add(dd[idx]);
-    }
-    public void addData(){
-        Device[] dd = new Device[10];
-        for(int i=0; i<3; i++){
-            dd[i] = new Device();
-            dd[i].setDeviceRoom(0,0);
-            dd[i].setDeviceName("led"+i);
-            dd[i].setDeviceType(i);
-            dd[i].setDeviceState("1/30");
-            devices[0].add(dd[i]);
-        }
-        for(int i=3; i<4; i++){
-            dd[i] = new Device();
-            dd[i].setDeviceRoom(0,1);
-            dd[i].setDeviceName("led"+i);
-            dd[i].setDeviceType(0);
-            dd[i].setDeviceState("0/90");
-            devices[1].add(dd[i]);
-        }
-        for(int i=4; i<7; i++){
-            dd[i] = new Device();
-            dd[i].setDeviceRoom(0,2);
-            dd[i].setDeviceName("led"+i);
-            dd[i].setDeviceState("0/30");
-            dd[i].setDeviceType(2);
-            devices[2].add(dd[i]);
-        }
-        for(int i=7; i<10; i++){
-            dd[i] = new Device();
-            dd[i].setDeviceRoom(0,3);
-            dd[i].setDeviceName("led"+i);
-            dd[i].setDeviceState("1/30");
-            dd[i].setDeviceType(0);
-            devices[3].add(dd[i]);
-        }
-    }
-    ///---------- add room button ------------///
     public void onClickRoom(View v){
         int roomNum = -1;
         Intent intent;
@@ -301,17 +212,14 @@ public class SmartHomeMainActivity extends AppCompatActivity {
         //start addActivity
         if(roomNum == 4 && !isAdd4){
             intent = new Intent(this, AddActivity.class);
-            //intent.putExtra("DEVICE",devices);
-            //startActivityForResult(intent,4);
-            //intent.putExtra("DEVICE",devices);
             intent.putExtra("ROOM_NUM",roomNum);
-            startActivityForResult(intent,4);
+            startActivity(intent);
             return;
         }
         if(roomNum == 5 && !isAdd5) {
             intent = new Intent(this, AddActivity.class);
             intent.putExtra("ROOM_NUM",roomNum);
-            startActivityForResult(intent,5);
+            startActivity(intent);
             return;
         }
 
@@ -329,7 +237,6 @@ public class SmartHomeMainActivity extends AppCompatActivity {
     public String loadJSONFromAsset() {
         String json = null;
         try {
-
             InputStream is = getAssets().open("infoConfig.json");
             int size = is.available();
             byte[] buffer = new byte[size];
@@ -342,7 +249,6 @@ public class SmartHomeMainActivity extends AppCompatActivity {
             return null;
         }
         return json;
-
     }
 
     ///----------- room reset butoon ------------------///
@@ -359,7 +265,7 @@ public class SmartHomeMainActivity extends AppCompatActivity {
             }
         }
 
-        // check dialog //
+        // check dialog
         final Dialog dialog = new Dialog(SmartHomeMainActivity.this);
         dialog.setContentView(R.layout.dialog_check);
         Button btnOK = (Button)dialog.findViewById(R.id.check_OKbtn);
@@ -380,10 +286,9 @@ public class SmartHomeMainActivity extends AppCompatActivity {
             }
         });
         dialog.show();
-
     }
+
     public void reset(int roomNum){
-        // room4 reset //
         if(roomNum == 4){
             isAdd4 = false;
             reBtn4.setEnabled(isAdd4);
@@ -408,45 +313,9 @@ public class SmartHomeMainActivity extends AppCompatActivity {
         editor.commit();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
-
-        if(resultCode != RESULT_OK) return;
-
-       // devices[requestCode] = (ArrayList<Device>) intent.getSerializableExtra("AddDevice");
-        room[requestCode].setImageResource(R.drawable.person);
-
-        // room4 set //
-        if(requestCode == 4){
-            isAdd4 = true;
-            editor.putBoolean("IsAdd4",isAdd4);
-            reBtn4.setEnabled(isAdd4);
-            reBtn4.setVisibility(View.VISIBLE);
-            name4 = intent.getStringExtra("AddName");
-            txtV4.setText(name4);
-            editor.putString("Name4",name4);
-        }
-        // room5 set //
-        else if(requestCode == 5){
-            isAdd5 = true;
-            editor.putBoolean("IsAdd5",isAdd5);
-            reBtn5.setEnabled(isAdd5);
-            reBtn5.setVisibility(View.VISIBLE);
-            name5 = intent.getStringExtra("AddName");
-            txtV5.setText(name5);
-            editor.putString("Name5",name5);
-        }
-        editor.commit();
-    }
-
-
-    public void plusDevice(View v)
-    {
+    public void plusDevice(View v) {
         Intent intent = new Intent(this, AddDeviceActivity.class);
         startActivity(intent);
     }
-
-
 }
 

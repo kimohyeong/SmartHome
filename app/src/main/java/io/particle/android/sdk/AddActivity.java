@@ -33,6 +33,7 @@ public class AddActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
+        helper = new DBhelper(this);
 
         ActionBar bar = getSupportActionBar();
         bar.hide();
@@ -43,9 +44,8 @@ public class AddActivity extends AppCompatActivity {
     }
 
     public void setting(){
-        Log.d("super","setting");///////////
+        Log.d("super","setting");
 
-        helper=new DBhelper(this);
         addNum =  new boolean[100];
         editText = findViewById(R.id.editText);
         listView = findViewById(R.id.addList0);
@@ -73,22 +73,21 @@ public class AddActivity extends AppCompatActivity {
         //check된 device addDevice에저장
         for(int i=0; i<device.size(); i++){
             if(addNum[i]){
-                //helper.updateDevice(device.get(i));
-                addDevice.add(device.get(i));
+                Device updatedDevice = device.get(i);
+                if(roomNum == 4) {
+                    // 4 --> customRoom1
+                    updatedDevice.setDeviceCustomRoomNum1(roomNum);
+                } else if(roomNum == 5) {
+                    // 5 --> customRoom2
+                    updatedDevice.setDeviceCustomRoomNum2(roomNum);
+                }
+                helper.updateDevice(updatedDevice);
+                helper.printAllDevices();
+
+                addDevice.add(updatedDevice);
             }
         }
-
-
-
-        //finish & transger addDevice
-        //Intent intent = new Intent();
-        //SmartHomeMainActivity.devices[roomNum] = addDevice;
-        //intent.putExtra("AddDevice",addDevice);
-        //intent.putExtra("AddName",editText.getText().toString());
-        //setResult(RESULT_OK, intent);
-
         finish();
-
     }
     public void onClickClear(View v){
         editText.setText("");

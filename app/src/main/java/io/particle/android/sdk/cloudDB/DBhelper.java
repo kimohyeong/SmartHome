@@ -15,7 +15,7 @@ import io.particle.android.sdk.Device;
 
 
 public class DBhelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "deviceManager";
     private static final String TABLE_DEVICE = "devices";
 
@@ -30,6 +30,8 @@ public class DBhelper extends SQLiteOpenHelper {
     private static final String KEY_ROOMNUM = "room";
     private static final String KEY_STATE = "state";
     private static final String KEY_DETAIL_STATE= "detailState";
+    private static final String KEY_CUSTOM_ROOM1 = "customRoom1";
+    private static final String KEY_CUSTOM_ROOM2 = "customRoom2";
 
     public DBhelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -40,7 +42,8 @@ public class DBhelper extends SQLiteOpenHelper {
         String CREATE_DEVICES_TABLE = "CREATE TABLE " + TABLE_DEVICE + "("
                 + KEY_ID + " INTEGER, " + KEY_NAME + " TEXT PRIMARY KEY,"
                 + KEY_ROOMNUM + " INTEGER, " + KEY_TYPE + " INTEGER,"
-                + KEY_STATE + " TEXT, " + KEY_DETAIL_STATE + " TEXT" +")";
+                + KEY_STATE + " TEXT, " + KEY_DETAIL_STATE + " TEXT,"
+                + KEY_CUSTOM_ROOM1 + " INTEGER, " + KEY_CUSTOM_ROOM2 + " INTEGER" + ")";
         db.execSQL(CREATE_DEVICES_TABLE);
     }
 
@@ -63,6 +66,8 @@ public class DBhelper extends SQLiteOpenHelper {
         values.put(KEY_TYPE, device.getDeviceType());
         values.put(KEY_STATE, device.getDeviceState());
         values.put(KEY_DETAIL_STATE, device.getDeviceDetailState());
+        values.put(KEY_CUSTOM_ROOM1, device.getDeviceCustomRoomNum1());
+        values.put(KEY_CUSTOM_ROOM2, device.getDeviceCustomRoomNum2());
 
         db.insert(TABLE_DEVICE, null, values);
         db.close();
@@ -71,7 +76,7 @@ public class DBhelper extends SQLiteOpenHelper {
     public Device getDevice(String name) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_DEVICE, new String[] {
-                        KEY_ID, KEY_NAME, KEY_ROOMNUM, KEY_TYPE, KEY_DETAIL_STATE}, KEY_NAME + "=?",
+                        KEY_ID, KEY_NAME, KEY_ROOMNUM, KEY_TYPE, KEY_DETAIL_STATE, KEY_CUSTOM_ROOM1, KEY_CUSTOM_ROOM2}, KEY_NAME + "=?",
                 new String[] {name},null,null,null,null);
         if(cursor != null)
             cursor.moveToFirst();
@@ -83,6 +88,8 @@ public class DBhelper extends SQLiteOpenHelper {
         device.setDeviceType(Integer.parseInt(cursor.getString(3)));
         device.setDeviceState(cursor.getString(4));
         device.setDeviceState(cursor.getString(5));
+        device.setDeviceCustomRoomNum1(Integer.parseInt(cursor.getString(6)));
+        device.setDeviceCustomRoomNum2(Integer.parseInt(cursor.getString(7)));
 
         return device;
     }
@@ -106,9 +113,19 @@ public class DBhelper extends SQLiteOpenHelper {
                 device.setDeviceType(Integer.parseInt(cursor.getString(3)));
                 device.setDeviceState(cursor.getString(4));
                 device.setDeviceDetailState(cursor.getString(5));
+                device.setDeviceCustomRoomNum1(Integer.parseInt(cursor.getString(6)));
+                device.setDeviceCustomRoomNum2(Integer.parseInt(cursor.getString(7)));
 
                 // roomNum에 맞는 device를 deviceList에 넣어줌
                 deviceList[Integer.parseInt(cursor.getString(2))].add(device);
+
+                // For customRoom
+                if(Integer.parseInt(cursor.getString(6)) == 4) {
+                    deviceList[4].add(device);
+                }
+                if(Integer.parseInt(cursor.getString(7)) == 5) {
+                    deviceList[5].add(device);
+                }
             } while(cursor.moveToNext());
         }
         return deviceList;
@@ -123,7 +140,8 @@ public class DBhelper extends SQLiteOpenHelper {
         values.put(KEY_TYPE, device.getDeviceType());
         values.put(KEY_STATE, device.getDeviceState());
         values.put(KEY_DETAIL_STATE, device.getDeviceDetailState());
-
+        values.put(KEY_CUSTOM_ROOM1, device.getDeviceCustomRoomNum1());
+        values.put(KEY_CUSTOM_ROOM2, device.getDeviceCustomRoomNum2());
 
         return db.update(TABLE_DEVICE, values, KEY_NAME + " = ?",
                 new String[] {String.valueOf(device.getDeviceName())});
@@ -157,7 +175,8 @@ public class DBhelper extends SQLiteOpenHelper {
                 Log.e("smart db", cursor.getString(0)+", "+
                         cursor.getString(1)+", "+cursor.getString(2)+", "+
                         cursor.getString(3)+", "+cursor.getString(4)+", "+
-                        cursor.getString(5));
+                        cursor.getString(5) + ", " + cursor.getString(6)+", " +
+                        cursor.getString(7));
             } while(cursor.moveToNext());
         }
         return;
