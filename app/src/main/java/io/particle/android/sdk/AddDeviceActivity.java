@@ -210,6 +210,8 @@ public class AddDeviceActivity extends AppCompatActivity {
             newDevice.setDeviceState("0");  //처음 상태
             newDevice.setDeviceName(name);
             newDevice.setDeviceDetailState("");
+            newDevice.setDeviceCustomRoomNum1(-1);
+            newDevice.setDeviceCustomRoomNum2(-1);
             helper.addDevice(newDevice);
 
             helper.printAllDevices();
