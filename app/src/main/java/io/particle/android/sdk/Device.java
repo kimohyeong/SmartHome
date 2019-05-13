@@ -20,6 +20,10 @@ public class Device implements Serializable {
     private boolean cBoxState;            //checkbox상태
     private String detailState;
 
+    // For customRoom
+    private int customRoomNum1;
+    private int customRoomNum2;
+
     public int getDeviceId() {return id;}
     public void setDeviceId(int _id) {this.id = _id;}
 
@@ -78,4 +82,10 @@ public class Device implements Serializable {
     public void setDeviceDetailState(String _state) {
         this.detailState = _state;
     }
+
+    public int getDeviceCustomRoomNum1() { return customRoomNum1; }
+    public void setDeviceCustomRoomNum1(int _roomNum1) { this.customRoomNum1 = _roomNum1; }
+
+    public int getDeviceCustomRoomNum2() { return customRoomNum2; }
+    public void setDeviceCustomRoomNum2(int _roomNum2) {this.customRoomNum2 = _roomNum2;}
 }
