@@ -181,7 +181,7 @@ public class AddDeviceActivity extends AppCompatActivity {
             return;
         }
 
-        String msg = newDevice.getDeviceRoomNum()+"/"+newDevice.getDeviceName()+"/"+newDevice.getDeviceType();
+        String msg = newDevice.getDeviceRoomNum()+"/"+name+"/"+newDevice.getDeviceType();
         Call<PArgonInfo> call = particleApi.callInitDevice(msg,"c71a8d2cb891e50a9a5f0a18921f366abef86271");
 
         call.enqueue(new Callback<PArgonInfo>()
@@ -190,6 +190,26 @@ public class AddDeviceActivity extends AppCompatActivity {
             public void onResponse(Call<PArgonInfo> call, Response<PArgonInfo> response) {
                 PArgonInfo argonInfo = response.body();
                 returnValue=argonInfo.getReturnValue();
+                Log.e("log1-adddevice",returnValue+"");
+
+                if(returnValue > 0)
+                {
+                    // id는 고유값 위해 계속 ++
+                    newDevice.setDeviceId(dbID++);
+                    newDevice.setDeviceState("0");  //처음 상태
+                    newDevice.setDeviceName(name);
+                    newDevice.setDeviceDetailState("");
+                    newDevice.setDeviceCustomRoomNum1(-1);
+                    newDevice.setDeviceCustomRoomNum2(-1);
+                    helper.addDevice(newDevice);
+
+                    helper.printAllDevices();
+
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(), "기기를 추가 하지 못했습니다.", Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -201,26 +221,6 @@ public class AddDeviceActivity extends AppCompatActivity {
             }
 
         });
-
-
-        if(returnValue > 0)
-        {
-            // id는 고유값 위해 계속 ++
-            newDevice.setDeviceId(dbID++);
-            newDevice.setDeviceState("0");  //처음 상태
-            newDevice.setDeviceName(name);
-            newDevice.setDeviceDetailState("");
-            newDevice.setDeviceCustomRoomNum1(-1);
-            newDevice.setDeviceCustomRoomNum2(-1);
-            helper.addDevice(newDevice);
-
-            helper.printAllDevices();
-
-        }
-        else
-        {
-            Toast.makeText(getApplicationContext(), "기기를 추가 하지 못했습니다.", Toast.LENGTH_LONG).show();
-        }
 
         finish();
     }

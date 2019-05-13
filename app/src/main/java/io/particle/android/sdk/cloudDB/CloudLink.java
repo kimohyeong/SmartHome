@@ -57,6 +57,6 @@ public class CloudLink {
 
         });
 
-        return returnValue;
+        return 1;
     }
 }

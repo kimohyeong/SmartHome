@@ -106,40 +106,49 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                     else if(s.equals("0") && !isChecked)
                         return;;
 
-                    String state;
+                    String state, detailState="";
                     int x =Integer.parseInt(RoomActivity.actNum.getText().toString());
                     int y =Integer.parseInt(RoomActivity.inactNum.getText().toString());
                     if(isChecked) {
                         state = "1";
+                        //0 - LED,  1 - RGB LED, 2 - blind, 3 - fan, 4 - thermometer
+                        if(data.getDeviceDetailState().equals(""))
+                        {
+                            if(data.getDeviceType()==0)
+                                detailState="255";
+                            else if(data.getDeviceType()==1)
+                                detailState="255/0/0";
+                            else if(data.getDeviceType()==2)
+                                detailState="100";
+                            else if(data.getDeviceType()==3)
+                                detailState="max";
+                        }
+                        else
+                            detailState=data.getDeviceDetailState();
+
                         x++;
                         y--;
                     }
                     else {
                         state = "0";
+                        detailState=data.getDeviceDetailState();
                         x--;
                         y++;
                     }
 
-                    if(state.equals("1"))
+                    String commandStr = data.getDeviceRoomNum() + "/" + data.getDeviceName() +"/" +
+                        state+ "/" + detailState;
+                    int resultCode = cloudLink.setDevice(commandStr);
+
+                    if(resultCode > 0)
                     {
-                        String commandStr = data.getDeviceRoomNum() + "/" + data.getDeviceName() +"/" +
-                            state+ "/" + data.getDeviceDetailState();
-                        int resultCode = cloudLink.setDevice(commandStr);
+                        RoomActivity.actNum.setText(x+"");
+                        RoomActivity.inactNum.setText(y+"");
+                        deviceStateTxt.setText(state);
+                        data.setDeviceState(state);
+                        data.setDeviceDetailState(detailState);
 
-                        if(resultCode > 0)
-                        {
-                            RoomActivity.actNum.setText(x+"");
-                            RoomActivity.inactNum.setText(y+"");
-                            deviceStateTxt.setText(state);
-                            data.setDeviceState(state);
-
-                            helper.updateDevice(data);
-                        }
-
-                    }
-                    else
-                    {
-                        Toast.makeText(context, "장치가 꺼져있습니다.", Toast.LENGTH_LONG).show();
+                        helper.updateDevice(data);
                     }
 
                 }

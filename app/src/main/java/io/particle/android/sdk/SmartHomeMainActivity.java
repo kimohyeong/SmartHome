@@ -42,7 +42,7 @@ public class SmartHomeMainActivity extends AppCompatActivity {
     public Button reBtn4, reBtn5;
     public TextView txtV4, txtV5;
 
-    public Boolean isAdd4, isAdd5;
+    public Boolean isAdd4=false, isAdd5=false;
     public String name4, name5;
     public static ArrayList<Device>[] devices;
     public static ParticleDevice meshGateway;
@@ -110,78 +110,6 @@ public class SmartHomeMainActivity extends AppCompatActivity {
                 txtV5.setText("");
             }
         }
-        //particleInit();
-    }
-
-    public void particleInit() {
-        ParticleCloudSDK.init(this);
-        Async.executeAsync(ParticleCloudSDK.getCloud(), new Async.ApiWork<ParticleCloud, Object>() {
-
-            @Override
-            public Object callApi(@NonNull ParticleCloud particleCloud) throws ParticleCloudException, IOException {
-
-                Log.d("log1","startparticle1");
-
-                try {
-                    List<ParticleDevice> particleDevices;
-                    JSONObject json = new JSONObject(loadJSONFromAsset());
-                    Log.e("log1",json.getString("cloudEmail"));
-                    Log.e("log1",json.getString("cloudPassword"));
-                    particleCloud.logIn(json.getString("cloudEmail"), json.getString("cloudPassword"));
-
-                    particleCloud.logIn(json.getString("cloudEmail"), json.getString("cloudPassword"));
-
-                    Calendar distantFuture = Calendar.getInstance();
-                    distantFuture.add(Calendar.YEAR, 20);
-                    particleCloud.setAccessToken(json.getString("cloudAccessToken"), distantFuture.getTime());
-
-                    particleDevices = particleCloud.getDevices();
-                    Log.e("log1",particleDevices.size()+"");
-
-                    for (ParticleDevice device : particleDevices) {
-
-                        int roomnum=Integer.parseInt(device.getStringVariable("roomNum"));
-                        String name=device.getStringVariable("name");
-                        int type=Integer.parseInt(device.getStringVariable("type"));
-                        String state=device.getStringVariable("state");
-
-                        if(name.equals("yeongeeArgon")) {
-                            meshGateway = device;
-                        }
-
-                        Device d=new Device();
-
-                        //클라우드에서 가져오기
-                        d.setDeviceRoom(roomnum,9);
-                        d.setDeviceRoomNum(roomnum);
-                        d.setDeviceState(state);
-                        d.setDeviceName(name);
-                        d.setDeviceType(type);
-                        d.setDeviceDetailState("");
-
-                        devices[roomnum].add(d);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.d("log1",e.toString());
-                } catch (ParticleDevice.VariableDoesNotExistException e) {
-                    e.printStackTrace();
-                }
-
-                return -1;
-
-            }
-
-            @Override
-            public void onSuccess(@NonNull Object value) {
-                Log.e("log1", "login success");
-            }
-
-            @Override
-            public void onFailure(@NonNull ParticleCloudException e) {
-                Log.d("log1", e.getBestMessage());
-            }
-        });
     }
 
     public void initComponents(){
