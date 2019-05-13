@@ -18,10 +18,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 import io.particle.android.sdk.cloudDB.CloudLink;
 import io.particle.android.sdk.cloudDB.DBhelper;
 import io.particle.sdk.app.R;
@@ -36,12 +42,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
     CloudLink cloudLink = new CloudLink();
     private DBhelper helper;
 
+    HashMap<String,String> rgbValue = new HashMap<>();
+
+
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         this.context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_node, parent, false);
         helper = new DBhelper(context);
+
+
+        rgbValue.put("255/0/0","red"); rgbValue.put("255/255/0","yellow");
+        rgbValue.put("0/255/0","green"); rgbValue.put("0/0/255","blue"); rgbValue.put("100/0/255","purple");
+
         return new ItemViewHolder(view);
     }
 
@@ -96,6 +110,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             deviceInfoTxt.setText(data.getDeviceDetailState());
             deviceImg.setImageDrawable(data.getDeviceImgDrawable());
 
+            if(data.getDeviceType() == 1)
+                deviceInfoTxt.setText(rgbValue.get(data.getDeviceDetailState()));
+
             // switch on off
             deviceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -138,13 +155,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 
                     String commandStr = data.getDeviceRoomNum() + "/" + data.getDeviceName() +"/" +
                         state+ "/" + detailState;
-                    int resultCode = cloudLink.setDevice(commandStr);
+                    int resultCode = 1;//cloudLink.setDevice(commandStr);
 
                     if(resultCode > 0)
                     {
                         RoomActivity.actNum.setText(x+"");
                         RoomActivity.inactNum.setText(y+"");
                         deviceStateTxt.setText(state);
+                        deviceInfoTxt.setText(detailState);
+                        if(data.getDeviceType() == 1)
+                            deviceInfoTxt.setText(rgbValue.get(detailState));
                         data.setDeviceState(state);
                         data.setDeviceDetailState(detailState);
 
@@ -326,7 +346,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             {
                 String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/" +
                         this.data.getDeviceState() + "/" + detail_state;
-                int resultCode = cloudLink.setDevice(commandStr);
+                int resultCode = 1;//cloudLink.setDevice(commandStr);
                 if(resultCode > 0)
                 {
                     this.data.setDeviceDetailState(detail_state);
@@ -369,12 +389,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                 String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/" +
                         this.data.getDeviceState() + "/" + detail_state;
 
-                int resultCode = cloudLink.setDevice(commandStr);
+                int resultCode = 1;//cloudLink.setDevice(commandStr);
                 if(resultCode > 0)
                 {
                     this.data.setDeviceDetailState(detail_state);
                     deviceStateTxt.setText(this.data.getDeviceState());
-                    deviceInfoTxt.setText(detail_state);
+                    deviceInfoTxt.setText(rgbValue.get(detail_state));
                     helper.updateDevice(this.data);
                 }
 
@@ -402,7 +422,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                 String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/" +
                         this.data.getDeviceState() + "/" + detail_state;
 
-                int resultCode = cloudLink.setDevice(commandStr);
+                int resultCode = 1;//cloudLink.setDevice(commandStr);
                 if(resultCode > 0)
                 {
                     this.data.setDeviceDetailState(detail_state);
@@ -443,7 +463,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                 String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/" +
                         this.data.getDeviceState() + "/" + detail_state;
 
-                int resultCode = cloudLink.setDevice(commandStr);
+                int resultCode = 1;//cloudLink.setDevice(commandStr);
                 if(resultCode > 0)
                 {
                     this.data.setDeviceDetailState(detail_state);

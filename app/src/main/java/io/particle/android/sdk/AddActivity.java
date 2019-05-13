@@ -87,6 +87,10 @@ public class AddActivity extends AppCompatActivity {
                 addDevice.add(updatedDevice);
             }
         }
+
+        Intent intent = new Intent();
+        intent.putExtra("AddName",editText.getText().toString());
+        setResult(RESULT_OK, intent);
         finish();
     }
     public void onClickClear(View v){
