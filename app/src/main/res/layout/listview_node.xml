@@ -254,33 +254,26 @@
                 android:layout_height="30dp"
                 android:id="@+id/blind_0"/>
             <Button
-                android:text="25%"
+                android:text="30%"
                 android:textColor="@android:color/black"
                 android:background="@drawable/ripple_bg"
                 android:layout_marginRight="10dp"
                 android:layout_width="60dp"
                 android:layout_height="30dp"
-                android:id="@+id/blind_25"/>
+                android:id="@+id/blind_30"/>
             <Button
-                android:text="50%"
+                android:text="60%"
                 android:textColor="@android:color/black"
                 android:background="@drawable/ripple_bg"
                 android:layout_marginRight="10dp"
                 android:layout_width="60dp"
                 android:layout_height="30dp"
-                android:id="@+id/blind_50"/>
-            <Button
-                android:text="75%"
-                android:textColor="@android:color/black"
-                android:background="@drawable/ripple_bg"
-                android:layout_marginRight="10dp"
-                android:layout_width="60dp"
-                android:layout_height="30dp"
-                android:id="@+id/blind_75"/>
+                android:id="@+id/blind_60"/>
             <Button
                 android:text="100%"
                 android:textColor="@android:color/black"
                 android:background="@drawable/ripple_bg"
+                android:layout_marginRight="10dp"
                 android:layout_width="60dp"
                 android:layout_height="30dp"
                 android:id="@+id/blind_100"/>

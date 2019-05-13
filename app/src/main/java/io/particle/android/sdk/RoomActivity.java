@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.Arrays;
 import java.util.List;
 
+import io.particle.android.sdk.cloudDB.CloudLink;
 import io.particle.sdk.app.R;
 
 import static androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_SWIPE;
@@ -116,7 +117,9 @@ public class RoomActivity extends AppCompatActivity {
         actNum.setText("0");
         inactNum.setText(SmartHomeMainActivity.devices[roomNum].size()+"");
 
-        //cloudLink.setDevice(roomNum,-1, "0");
+        String commandStr = roomNum + "/" + "ALL" +"/" + "0" + "/" + "0";
+
+        cloudLink.setDevice(commandStr);
     }
 
     ///////////////////////////////////

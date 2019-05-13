@@ -1,10 +1,8 @@
 package io.particle.android.sdk;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,34 +11,23 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
 import io.particle.android.sdk.cloudDB.DBhelper;
-import io.particle.android.sdk.ui.SplashActivity;
+import io.particle.android.sdk.retrofitLib.PArgonInfo;
+import io.particle.android.sdk.retrofitLib.PNetworkInfo;
+import io.particle.android.sdk.retrofitLib.ParticleRetrofitApi;
 import io.particle.sdk.app.R;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import static org.spongycastle.asn1.x500.style.RFC4519Style.o;
 
 public class AddDeviceActivity extends AppCompatActivity {
     private DBhelper helper = new DBhelper(this);
@@ -50,20 +37,18 @@ public class AddDeviceActivity extends AppCompatActivity {
     private Retrofit retrofit;
     private boolean isAfterMeshSetup=false;
     private ParticleRetrofitApi particleApi;
+    private int returnValue;
+
     ProgressDialog progressDialog;
-    private HashMap hashMap;
 
     EditText newDeivceNameEdit;
     RadioGroup  deviceRadioGroup;
     Spinner spinner;
-    LinearLayout linearLayout;
 
     // Device data
     Device newDevice;
 
-
-
-    @Override
+        @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_device);
@@ -78,7 +63,6 @@ public class AddDeviceActivity extends AppCompatActivity {
 
         // ParticleRetrofitApi API 인터페이스 생성
         particleApi = retrofit.create(ParticleRetrofitApi.class);
-        //Log.e("log1", "인터페이스 생성");
 
         //Intent intent = new Intent(this, SplashActivity.class);
         //startActivity(intent);
@@ -127,8 +111,7 @@ public class AddDeviceActivity extends AppCompatActivity {
             progressDialog.setMessage("Please wait...");
             progressDialog.show();
 
-
-            //int deviceCount= SmartHomeMainActivity.devices.length;
+            //int deviceCount= helper.getDevicesCount();
             int deviceCount= 4;
 
             //요청
@@ -161,64 +144,11 @@ public class AddDeviceActivity extends AppCompatActivity {
 
             });
 
-
-
-           /* AsyncTask asyncTask = new AsyncTask()
-            {
-                String result;
-                @Override
-                protected Object doInBackground(Object[] objects) {
-                    Log.e("log1","doinbackground");
-                    try{
-                        URL url = new URL(BASE_URL);
-
-                        InputStream inputStream = new URL(BASE_URL).openStream();
-                        InputStreamReader inputStreamReader = new InputStreamReader(inputStream,"UTF-8");
-                        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                        StringBuilder stringBuilder = new StringBuilder();
-                        String line = null;
-
-                        while ((line=bufferedReader.readLine()) != null)
-                            stringBuilder.append(line);
-                        result = stringBuilder.toString().trim();
-
-                        inputStream.close();
-                        bufferedReader.close();
-                        Log.e("log1",result);
-                        //finish();
-
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    return true;
-                }
-
-
-
-                @Override
-                protected void onPostExecute(Object o) {
-                    super.onPostExecute(o);
-
-                    progressDialog.dismiss();
-                    Pasing(result);
-                }
-
-
-
-
-            }.execute();*/
-
-
         }
 
 
     }
 
-    public void Pasing(String str){
-
-
-    }
 
     // Setting Listener
     RadioGroup.OnCheckedChangeListener radioGroupListener = new RadioGroup.OnCheckedChangeListener() {
@@ -251,14 +181,44 @@ public class AddDeviceActivity extends AppCompatActivity {
             return;
         }
 
-        // id는 고유값 위해 계속 ++
-        newDevice.setDeviceId(dbID++);
-        newDevice.setDeviceState("0");  //처음 상태
-        newDevice.setDeviceName(name);
-        newDevice.setDeviceDetailState("");
-        helper.addDevice(newDevice);
+        String msg = newDevice.getDeviceRoomNum()+"/"+newDevice.getDeviceName()+"/"+newDevice.getDeviceType();
+        Call<PArgonInfo> call = particleApi.callInitDevice(msg,"c71a8d2cb891e50a9a5f0a18921f366abef86271");
 
-        helper.printAllDevices();
+        call.enqueue(new Callback<PArgonInfo>()
+        {
+            @Override
+            public void onResponse(Call<PArgonInfo> call, Response<PArgonInfo> response) {
+                PArgonInfo argonInfo = response.body();
+                returnValue=argonInfo.getReturnValue();
+            }
+
+            @Override
+
+            public void onFailure(Call<PArgonInfo> call, Throwable t) {
+                Log.e("log1-argon","실패!");
+                returnValue=-1;
+
+            }
+
+        });
+
+
+        if(returnValue > 0)
+        {
+            // id는 고유값 위해 계속 ++
+            newDevice.setDeviceId(dbID++);
+            newDevice.setDeviceState("0");  //처음 상태
+            newDevice.setDeviceName(name);
+            newDevice.setDeviceDetailState("");
+            helper.addDevice(newDevice);
+
+            helper.printAllDevices();
+
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(), "기기를 추가 하지 못했습니다.", Toast.LENGTH_LONG).show();
+        }
 
         finish();
     }

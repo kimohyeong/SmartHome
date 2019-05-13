@@ -13,28 +13,19 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.rtugeek.android.colorseekbar.ColorSeekBar;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-
-import io.particle.android.sdk.cloud.ParticleCloud;
-import io.particle.android.sdk.cloud.ParticleCloudSDK;
-import io.particle.android.sdk.cloud.ParticleDevice;
-import io.particle.android.sdk.cloud.exceptions.ParticleCloudException;
+import io.particle.android.sdk.cloudDB.CloudLink;
 import io.particle.android.sdk.cloudDB.DBhelper;
-import io.particle.android.sdk.utils.Async;
 import io.particle.sdk.app.R;
 
-import static io.particle.android.sdk.utils.Py.list;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder>  {
     public ArrayList<Device> listData = new ArrayList<>();
@@ -115,7 +106,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                     else if(s.equals("0") && !isChecked)
                         return;;
 
-                    String state, detailState;
+                    String state;
                     int x =Integer.parseInt(RoomActivity.actNum.getText().toString());
                     int y =Integer.parseInt(RoomActivity.inactNum.getText().toString());
                     if(isChecked) {
@@ -129,17 +120,28 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                         y++;
                     }
 
-                    //int resultCode = cloudLink.setDevice(roomNum,position, command);
-                    int resultCode = 1;
-                    if(resultCode==1)
+                    if(state.equals("1"))
                     {
-                        RoomActivity.actNum.setText(x+"");
-                        RoomActivity.inactNum.setText(y+"");
-                        deviceStateTxt.setText(state);
-                        data.setDeviceState(state);
+                        String commandStr = data.getDeviceRoomNum() + "/" + data.getDeviceName() +"/" +
+                            state+ "/" + data.getDeviceDetailState();
+                        int resultCode = cloudLink.setDevice(commandStr);
 
-                        helper.updateDevice(data);
+                        if(resultCode > 0)
+                        {
+                            RoomActivity.actNum.setText(x+"");
+                            RoomActivity.inactNum.setText(y+"");
+                            deviceStateTxt.setText(state);
+                            data.setDeviceState(state);
+
+                            helper.updateDevice(data);
+                        }
+
                     }
+                    else
+                    {
+                        Toast.makeText(context, "장치가 꺼져있습니다.", Toast.LENGTH_LONG).show();
+                    }
+
                 }
             });
             if(data.getDeviceState().equals("1"))
@@ -264,15 +266,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                 case 2:
                     // BLIND layout listener 세팅
                     Button blind0Btn = curLayout.getChildAt(0).findViewById(R.id.blind_0);
-                    Button blind25Btn = curLayout.getChildAt(0).findViewById(R.id.blind_25);
-                    Button blind50Btn = curLayout.getChildAt(0).findViewById(R.id.blind_50);
-                    Button blind75Btn = curLayout.getChildAt(0).findViewById(R.id.blind_75);
+                    Button blind30Btn = curLayout.getChildAt(0).findViewById(R.id.blind_30);
+                    Button blind60Btn = curLayout.getChildAt(0).findViewById(R.id.blind_60);
                     Button blind100Btn = curLayout.getChildAt(0).findViewById(R.id.blind_100);
 
                     blind0Btn.setOnClickListener(this::onClickBlind);
-                    blind25Btn.setOnClickListener(this::onClickBlind);
-                    blind50Btn.setOnClickListener(this::onClickBlind);
-                    blind75Btn.setOnClickListener(this::onClickBlind);
+                    blind30Btn.setOnClickListener(this::onClickBlind);
+                    blind60Btn.setOnClickListener(this::onClickBlind);
                     blind100Btn.setOnClickListener(this::onClickBlind);
                     return;
                 case 3:
@@ -294,7 +294,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         }
 
 
-        void onClickLed(View v) {
+        void onClickLed(View v)
+        {
 
             String detail_state="";
             switch (v.getId()) {
@@ -312,28 +313,28 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                     break;
             }
 
-            String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/" +
-                    this.data.getDeviceState() + "/" + this.data.getDeviceDetailState();
-            //int resultCode = cloudLink.setDevice(commandStr);
-            int resultCode = 1;
-            if(resultCode==1)
+            if(this.data.getDeviceState().equals("1"))
             {
-                this.data.setDeviceDetailState(detail_state);
-                deviceStateTxt.setText(this.data.getDeviceState());
-                deviceInfoTxt.setText(detail_state);
-                helper.updateDevice(this.data);
+                String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/" +
+                        this.data.getDeviceState() + "/" + detail_state;
+                int resultCode = cloudLink.setDevice(commandStr);
+                if(resultCode > 0)
+                {
+                    this.data.setDeviceDetailState(detail_state);
+                    deviceStateTxt.setText(this.data.getDeviceState());
+                    deviceInfoTxt.setText(detail_state);
+                    helper.updateDevice(this.data);
+                }
             }
-
-            Log.e("smart onclick: ", commandStr);
+            else
+            {
+                Toast.makeText(context, "장치가 꺼져있습니다.", Toast.LENGTH_LONG).show();
+            }
 
         }
 
-        void onClickRgbLed(View v) {
-//            if(SmartHomeMainActivity.meshGateway == null) {
-//                Log.e("log1-blindBtn", "Gateway is null");
-//                return;
-//            }
-
+        void onClickRgbLed(View v)
+        {
             String detail_state="";
             switch (v.getId()) {
                 case R.id.rgb_red:
@@ -352,27 +353,32 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                     detail_state="100/0/255";
                     break;
             }
-            String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/" +
-                    this.data.getDeviceState() + "/" + this.data.getDeviceDetailState();
 
-            //int resultCode = cloudLink.setDevice(commandStr);
-            int resultCode = 1;
-            if(resultCode==1)
+
+            if(this.data.getDeviceState().equals("1"))
             {
-                this.data.setDeviceDetailState(detail_state);
-                deviceStateTxt.setText(this.data.getDeviceState());
-                deviceInfoTxt.setText(detail_state);
-                helper.updateDevice(this.data);
+                String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/" +
+                        this.data.getDeviceState() + "/" + detail_state;
+
+                int resultCode = cloudLink.setDevice(commandStr);
+                if(resultCode > 0)
+                {
+                    this.data.setDeviceDetailState(detail_state);
+                    deviceStateTxt.setText(this.data.getDeviceState());
+                    deviceInfoTxt.setText(detail_state);
+                    helper.updateDevice(this.data);
+                }
+
+            }
+            else
+            {
+                Toast.makeText(context, "장치가 꺼져있습니다.", Toast.LENGTH_LONG).show();
             }
 
-            Log.e("smart onclick: ", commandStr);
         }
 
         void onClickFan(View v) {
-//            if(SmartHomeMainActivity.meshGateway == null) {
-//                Log.e("log1-blindBtn", "Gateway is null");
-//                return;
-//            }
+
             String detail_state="";
             if(v.getId() == R.id.fanMinBtn) {
                 detail_state="min";
@@ -381,50 +387,67 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             } else {
                 detail_state="max";
             }
-            String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/" +
-                    this.data.getDeviceState() + "/" + this.data.getDeviceDetailState();
 
-            //int resultCode = cloudLink.setDevice(commandStr);
-            int resultCode = 1;
-            if(resultCode==1)
+            if(this.data.getDeviceState().equals("1"))
             {
-                this.data.setDeviceDetailState(detail_state);
-                deviceStateTxt.setText(this.data.getDeviceState());
-                deviceInfoTxt.setText(detail_state);
-                helper.updateDevice(this.data);
-            }
+                String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/" +
+                        this.data.getDeviceState() + "/" + detail_state;
 
-            Log.e("smart onclick: ", commandStr);
+                int resultCode = cloudLink.setDevice(commandStr);
+                if(resultCode > 0)
+                {
+                    this.data.setDeviceDetailState(detail_state);
+                    deviceStateTxt.setText(this.data.getDeviceState());
+                    deviceInfoTxt.setText(detail_state);
+                    helper.updateDevice(this.data);
+                }
+
+            }
+            else
+            {
+                Toast.makeText(context, "장치가 꺼져있습니다.", Toast.LENGTH_LONG).show();
+            }
 
         }
 
-        //0/30/60/100으로 바꾸기!!!!!!
         void onClickBlind(View v) {
-//            if(SmartHomeMainActivity.meshGateway == null) {
-//                Log.e("log1-blindBtn", "Gateway is null");
-//                return;
-//            }
 
+            String detail_state="";
             switch (v.getId()) {
                 case R.id.blind_0:
-                    this.data.setDeviceDetailState("0");
+                    detail_state="0";
                     break;
-                case R.id.blind_25:
-                    this.data.setDeviceDetailState("25");
+                case R.id.blind_30:
+                    detail_state="30";
                     break;
-                case R.id.blind_50:
-                    this.data.setDeviceDetailState("50");
-                    break;
-                case R.id.blind_75:
-                    this.data.setDeviceDetailState("75");
+                case R.id.blind_60:
+                    detail_state="60";
                     break;
                 case R.id.blind_100:
-                    this.data.setDeviceDetailState("100");
+                    detail_state="100";
                     break;
             }
-            String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/" +
-                    this.data.getDeviceState() + "/" + this.data.getDeviceDetailState();
-            Log.e("smart onclick: ", commandStr);
+
+
+            if(this.data.getDeviceState().equals("1"))
+            {
+                String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/" +
+                        this.data.getDeviceState() + "/" + detail_state;
+
+                int resultCode = cloudLink.setDevice(commandStr);
+                if(resultCode > 0)
+                {
+                    this.data.setDeviceDetailState(detail_state);
+                    deviceStateTxt.setText(this.data.getDeviceState());
+                    deviceInfoTxt.setText(detail_state);
+                    helper.updateDevice(this.data);
+                }
+
+            }
+            else
+            {
+                Toast.makeText(context, "장치가 꺼져있습니다.", Toast.LENGTH_LONG).show();
+            }
 
         }
     }
