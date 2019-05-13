@@ -76,7 +76,7 @@ public class addViewAdapter extends BaseAdapter{
 
        if( device.getIsFirst() == true){
             room_txtv.setVisibility(View.VISIBLE);
-            room_txtv.setText(roomName[device.getDeviceRoom(0)]);
+            room_txtv.setText(roomName[device.getDeviceRoomNum()]);
         }
         else {
             room_txtv.setVisibility(View.GONE);

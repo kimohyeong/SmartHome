@@ -67,6 +67,11 @@ public class SmartHomeMainActivity extends AppCompatActivity {
 
         ActionBar bar = getSupportActionBar();
         bar.hide();
+
+        pref = getSharedPreferences("IsAdd",MODE_PRIVATE);
+        editor = pref.edit();
+        name4 = pref.getString("Name4","");
+        name5 = pref.getString("Name5","");
     }
 
     @Override
@@ -77,38 +82,33 @@ public class SmartHomeMainActivity extends AppCompatActivity {
 
         if(helper.getDevicesCount() != 0) {
             devices = helper.getAllDevices();
-
             // set custom room UI
             if(devices[4].size() > 0) {
                 room[4].setImageResource(R.drawable.person);
                 isAdd4 = true;
                 reBtn4.setEnabled(isAdd4);
                 reBtn4.setVisibility(View.VISIBLE);
-//                name4 = intent.getStringExtra("AddName");
-                txtV4.setText("");
-            } else {
-                room[4].setImageResource(R.drawable.plus);
-                isAdd4 = false;
-                reBtn4.setEnabled(isAdd4);
-                reBtn4.setVisibility(View.GONE);
-//                name4 = intent.getStringExtra("AddName");
-                txtV4.setText("");
+                txtV4.setText(name4);
             }
             if (devices[5].size() > 0) {
                 room[5].setImageResource(R.drawable.person);
                 isAdd5 = true;
                 reBtn5.setEnabled(isAdd5);
                 reBtn5.setVisibility(View.VISIBLE);
-//                name5 = intent.getStringExtra("AddName");
-                txtV5.setText("");
-            } else {
-                room[5].setImageResource(R.drawable.plus);
-                isAdd5 = false;
-                reBtn5.setEnabled(isAdd5);
-                reBtn5.setVisibility(View.GONE);
-//                name5 = intent.getStringExtra("AddName");
-                txtV5.setText("");
+                txtV5.setText(name5);
             }
+        } else {
+            room[4].setImageResource(R.drawable.plus);
+            isAdd4 = false;
+            reBtn4.setEnabled(isAdd4);
+            reBtn4.setVisibility(View.GONE);
+            txtV4.setText("");
+
+            room[5].setImageResource(R.drawable.plus);
+            isAdd5 = false;
+            reBtn5.setEnabled(isAdd5);
+            reBtn5.setVisibility(View.GONE);
+            txtV5.setText("");
         }
     }
 
@@ -141,13 +141,13 @@ public class SmartHomeMainActivity extends AppCompatActivity {
         if(roomNum == 4 && !isAdd4){
             intent = new Intent(this, AddActivity.class);
             intent.putExtra("ROOM_NUM",roomNum);
-            startActivity(intent);
+            startActivityForResult(intent,4);
             return;
         }
         if(roomNum == 5 && !isAdd5) {
             intent = new Intent(this, AddActivity.class);
             intent.putExtra("ROOM_NUM",roomNum);
-            startActivity(intent);
+            startActivityForResult(intent,5);
             return;
         }
 
@@ -217,6 +217,15 @@ public class SmartHomeMainActivity extends AppCompatActivity {
     }
 
     public void reset(int roomNum){
+        for(int i=0; i<SmartHomeMainActivity.devices[roomNum].size(); i++){
+            if(roomNum == 4)
+                SmartHomeMainActivity.devices[roomNum].get(i).setDeviceCustomRoomNum1(-1);
+            else
+                SmartHomeMainActivity.devices[roomNum].get(i).setDeviceCustomRoomNum2(-1);
+            helper.updateDevice(SmartHomeMainActivity.devices[roomNum].get(i));
+        }
+        devices = helper.getAllDevices();
+
         if(roomNum == 4){
             isAdd4 = false;
             reBtn4.setEnabled(isAdd4);
@@ -224,7 +233,6 @@ public class SmartHomeMainActivity extends AppCompatActivity {
             name4 = "";
             txtV4.setText(name4);
             editor.putString("Name4",name4);
-            editor.putBoolean("IsAdd4",isAdd4);
             room[4].setImageResource(R.drawable.plus);
         }
         // room5 reset //
@@ -235,10 +243,30 @@ public class SmartHomeMainActivity extends AppCompatActivity {
             name5 = "";
             txtV5.setText(name5);
             editor.putString("Name5",name5);
-            editor.putBoolean("IsAdd5",isAdd5);
             room[5].setImageResource(R.drawable.plus);
         }
         editor.commit();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent intent) {
+        if(resultCode != RESULT_OK) return;
+
+        // room4 set //
+        if(requestCode == 4){
+            name4 = intent.getStringExtra("AddName");
+            txtV4.setText(name4);
+            editor.putString("Name4",name4);
+        }
+        // room5 set //
+        else if(requestCode == 5){
+            name5 = intent.getStringExtra("AddName");
+            txtV5.setText(name5);
+            editor.putString("Name5",name5);
+        }
+        editor.commit();
+
+        super.onActivityResult(requestCode, resultCode, intent);
     }
 
     public void plusDevice(View v) {

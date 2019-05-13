@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.particle.android.sdk.cloudDB.CloudLink;
+import io.particle.android.sdk.cloudDB.DBhelper;
 import io.particle.sdk.app.R;
 
 import static androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_SWIPE;
@@ -39,6 +40,8 @@ public class RoomActivity extends AppCompatActivity {
     public static TextView inactNum ;
     CloudLink cloudLink = new CloudLink();
 
+
+    private DBhelper helper = new DBhelper(this);
 
 
     @Override
@@ -107,19 +110,23 @@ public class RoomActivity extends AppCompatActivity {
 
 
     public void onClickAllOff(View v){
-        for(int i=0; i<SmartHomeMainActivity.devices[roomNum].size(); i++)
-        {
-            String s = SmartHomeMainActivity.devices[roomNum].get(i).getDeviceState();
-            String offStr = "0"+s.substring(1,s.length());
-            SmartHomeMainActivity.devices[roomNum].get(i).setDeviceState(offStr);
-        }
-        adapter.notifyDataSetChanged();
-        actNum.setText("0");
-        inactNum.setText(SmartHomeMainActivity.devices[roomNum].size()+"");
 
         String commandStr = roomNum + "/" + "ALL" +"/" + "0" + "/" + "0";
 
-        cloudLink.setDevice(commandStr);
+        int resultCode = 1;//cloudLink.setDevice(commandStr);
+
+        if(resultCode > 0)
+        {
+            for(int i=0; i<SmartHomeMainActivity.devices[roomNum].size(); i++)
+            {
+                SmartHomeMainActivity.devices[roomNum].get(i).setDeviceState("0");
+                helper.updateDevice(SmartHomeMainActivity.devices[roomNum].get(i));
+            }
+            adapter.notifyDataSetChanged();
+            actNum.setText("0");
+            inactNum.setText(SmartHomeMainActivity.devices[roomNum].size()+"");
+
+        }
     }
 
     ///////////////////////////////////
@@ -183,6 +190,15 @@ public class RoomActivity extends AppCompatActivity {
                         if(buttonShowedState == ButtonsState.RIGHT_VISIBLE) {
                             ///삭제
                             if(buttonInstance.contains(event.getX(),event.getY())){Log.d("super","Remobe");
+                                helper.deleteDevice(adapter.listData.get(viewHolder.getAdapterPosition()));
+
+                                int x =Integer.parseInt(RoomActivity.actNum.getText().toString());
+                                int y =Integer.parseInt(RoomActivity.inactNum.getText().toString());
+                                if(adapter.listData.get(viewHolder.getAdapterPosition()).getDeviceState().equals("1"))
+                                    actNum.setText((x-1)+"");
+                                else
+                                    inactNum.setText((y-1)+"");
+
                                 adapter.listData.remove(viewHolder.getAdapterPosition());
                                 adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
                                 adapter.notifyItemRangeChanged(viewHolder.getAdapterPosition(),adapter.getItemCount());

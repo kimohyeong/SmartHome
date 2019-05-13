@@ -181,6 +181,15 @@ public class AddDeviceActivity extends AppCompatActivity {
             return;
         }
 
+        newDevice.setDeviceId(dbID++);
+        newDevice.setDeviceState("0");  //처음 상태
+        newDevice.setDeviceName(name);
+        newDevice.setDeviceDetailState("");
+        newDevice.setDeviceCustomRoomNum1(-1);
+        newDevice.setDeviceCustomRoomNum2(-1);
+        helper.addDevice(newDevice);
+
+        /*
         String msg = newDevice.getDeviceRoomNum()+"/"+name+"/"+newDevice.getDeviceType();
         Call<PArgonInfo> call = particleApi.callInitDevice(msg,"c71a8d2cb891e50a9a5f0a18921f366abef86271");
 
@@ -220,7 +229,7 @@ public class AddDeviceActivity extends AppCompatActivity {
 
             }
 
-        });
+        });*/
 
         finish();
     }
