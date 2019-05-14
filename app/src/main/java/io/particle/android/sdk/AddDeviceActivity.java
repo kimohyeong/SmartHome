@@ -18,6 +18,7 @@ import android.widget.Toast;
 import java.util.List;
 import java.util.Random;
 
+import io.particle.android.sdk.cloudDB.CloudLink;
 import io.particle.android.sdk.cloudDB.DBhelper;
 import io.particle.android.sdk.retrofitLib.PArgonInfo;
 import io.particle.android.sdk.retrofitLib.PNetworkInfo;
@@ -48,6 +49,8 @@ public class AddDeviceActivity extends AppCompatActivity {
     // Device data
     Device newDevice;
 
+    private CloudLink cloudLink;
+
         @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +59,7 @@ public class AddDeviceActivity extends AppCompatActivity {
         ActionBar bar = getSupportActionBar();
         bar.hide();
 
+        cloudLink = new CloudLink();
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -191,46 +195,26 @@ public class AddDeviceActivity extends AppCompatActivity {
 
         /*
         String msg = newDevice.getDeviceRoomNum()+"/"+name+"/"+newDevice.getDeviceType();
-        Call<PArgonInfo> call = particleApi.callInitDevice(msg,"c71a8d2cb891e50a9a5f0a18921f366abef86271");
-
-        call.enqueue(new Callback<PArgonInfo>()
+        returnValue = cloudLink.initDevice(msg);
+        if(returnValue > 0)
         {
-            @Override
-            public void onResponse(Call<PArgonInfo> call, Response<PArgonInfo> response) {
-                PArgonInfo argonInfo = response.body();
-                returnValue=argonInfo.getReturnValue();
-                Log.e("log1-adddevice",returnValue+"");
+            // id는 고유값 위해 계속 ++
+            newDevice.setDeviceId(dbID++);
+            newDevice.setDeviceState("0");  //처음 상태
+            newDevice.setDeviceName(name);
+            newDevice.setDeviceDetailState("");
+            newDevice.setDeviceCustomRoomNum1(-1);
+            newDevice.setDeviceCustomRoomNum2(-1);
+            helper.addDevice(newDevice);
 
-                if(returnValue > 0)
-                {
-                    // id는 고유값 위해 계속 ++
-                    newDevice.setDeviceId(dbID++);
-                    newDevice.setDeviceState("0");  //처음 상태
-                    newDevice.setDeviceName(name);
-                    newDevice.setDeviceDetailState("");
-                    newDevice.setDeviceCustomRoomNum1(-1);
-                    newDevice.setDeviceCustomRoomNum2(-1);
-                    helper.addDevice(newDevice);
+            helper.printAllDevices();
 
-                    helper.printAllDevices();
-
-                }
-                else
-                {
-                    Toast.makeText(getApplicationContext(), "기기를 추가 하지 못했습니다.", Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-
-            public void onFailure(Call<PArgonInfo> call, Throwable t) {
-                Log.e("log1-argon","실패!");
-                returnValue=-1;
-
-            }
-
-        });*/
-
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(), "기기를 추가 하지 못했습니다.", Toast.LENGTH_LONG).show();
+        };
+        */
         finish();
     }
 

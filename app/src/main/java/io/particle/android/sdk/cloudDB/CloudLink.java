@@ -59,4 +59,44 @@ public class CloudLink {
 
         return 1;
     }
+
+
+
+    public int initDevice(String msg){
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        // ParticleRetrofitApi API 인터페이스 생성
+        particleApi = retrofit.create(ParticleRetrofitApi.class);
+
+        Log.e("log1-argon", msg);
+
+        Call<PArgonInfo> call = particleApi.callInitDevice(msg,"c71a8d2cb891e50a9a5f0a18921f366abef86271");
+
+        call.enqueue(new Callback<PArgonInfo>()
+        {
+            @Override
+            public void onResponse(Call<PArgonInfo> call, Response<PArgonInfo> response) {
+                PArgonInfo argonInfo = response.body();
+                returnValue=argonInfo.getReturnValue();
+                Log.e("log1-adddevice",returnValue+"");
+
+
+
+            }
+
+            @Override
+
+            public void onFailure(Call<PArgonInfo> call, Throwable t) {
+                Log.e("log1-argon","실패!");
+                returnValue=-1;
+
+            }
+
+        });
+
+        return 1;
+    }
 }
