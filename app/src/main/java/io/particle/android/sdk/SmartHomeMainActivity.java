@@ -30,6 +30,7 @@ import io.particle.android.sdk.cloud.ParticleCloud;
 import io.particle.android.sdk.cloud.ParticleCloudSDK;
 import io.particle.android.sdk.cloud.ParticleDevice;
 import io.particle.android.sdk.cloud.exceptions.ParticleCloudException;
+import io.particle.android.sdk.cloudDB.CloudLink;
 import io.particle.android.sdk.cloudDB.DBhelper;
 import io.particle.android.sdk.devicesetup.ParticleDeviceSetupLibrary;
 import io.particle.android.sdk.utils.Async;
@@ -46,8 +47,10 @@ public class SmartHomeMainActivity extends AppCompatActivity {
     public String name4, name5;
     public static ArrayList<Device>[] devices;
     public static ParticleDevice meshGateway;
+    public static String temperData;
 
     DBhelper helper;
+    CloudLink cloudLink;
 
     //sp
     SharedPreferences pref;
@@ -60,6 +63,7 @@ public class SmartHomeMainActivity extends AppCompatActivity {
 
         ParticleDeviceSetupLibrary.init(this.getApplicationContext());
         helper = new DBhelper(this);
+
         devices = new ArrayList[6];
         for(int i=0; i<6; i++){
             devices[i] = new ArrayList<Device>();
@@ -72,6 +76,19 @@ public class SmartHomeMainActivity extends AppCompatActivity {
         editor = pref.edit();
         name4 = pref.getString("Name4","");
         name5 = pref.getString("Name5","");
+
+        // For TemperData from Particle
+        cloudLink = new CloudLink(this);
+        new Thread(new Runnable() { @Override public void run() {
+            while(true) {
+                try {
+                    cloudLink.getTemperData();
+                    Thread.sleep(900000);
+                }catch (Exception e ) {
+                    e.printStackTrace();
+                }
+            }
+        } }).start();
     }
 
     @Override
