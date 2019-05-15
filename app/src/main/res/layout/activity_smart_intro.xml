@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.a502.smarthome.SmartIntroActivity"
-    android:background="#e4e4e4">
+    android:background="#46547f">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
         android:gravity="center"
         android:orientation="horizontal">
         <ImageView
-            android:src="@drawable/introimg"
+            android:src="@drawable/smarhome_icon"
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:adjustViewBounds="true"/>
