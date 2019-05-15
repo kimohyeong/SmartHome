@@ -59,7 +59,7 @@ public class AddDeviceActivity extends AppCompatActivity {
         ActionBar bar = getSupportActionBar();
         bar.hide();
 
-        cloudLink = new CloudLink();
+        cloudLink = new CloudLink(this);
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -185,37 +185,16 @@ public class AddDeviceActivity extends AppCompatActivity {
             return;
         }
 
-        newDevice.setDeviceId(dbID++);
+        String msg = newDevice.getDeviceRoomNum()+"/"+name+"/"+newDevice.getDeviceType();
+        // id는 고유값 위해 계속 ++
+        newDevice.setDeviceId(1);
         newDevice.setDeviceState("0");  //처음 상태
         newDevice.setDeviceName(name);
         newDevice.setDeviceDetailState("");
         newDevice.setDeviceCustomRoomNum1(-1);
         newDevice.setDeviceCustomRoomNum2(-1);
-        helper.addDevice(newDevice);
 
-        /*
-        String msg = newDevice.getDeviceRoomNum()+"/"+name+"/"+newDevice.getDeviceType();
-        returnValue = cloudLink.initDevice(msg);
-        if(returnValue > 0)
-        {
-            // id는 고유값 위해 계속 ++
-            newDevice.setDeviceId(dbID++);
-            newDevice.setDeviceState("0");  //처음 상태
-            newDevice.setDeviceName(name);
-            newDevice.setDeviceDetailState("");
-            newDevice.setDeviceCustomRoomNum1(-1);
-            newDevice.setDeviceCustomRoomNum2(-1);
-            helper.addDevice(newDevice);
-
-            helper.printAllDevices();
-
-        }
-        else
-        {
-            Toast.makeText(getApplicationContext(), "기기를 추가 하지 못했습니다.", Toast.LENGTH_LONG).show();
-        };
-        */
-        finish();
+        cloudLink.initDevice(msg, newDevice);
     }
 
 

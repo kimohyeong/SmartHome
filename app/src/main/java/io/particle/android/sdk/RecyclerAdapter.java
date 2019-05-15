@@ -155,7 +155,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 
                     String commandStr = data.getDeviceRoomNum() + "/" + data.getDeviceName() +"/" +
                         state+ "/" + detailState;
-                    int resultCode = 1;//cloudLink.setDevice(commandStr);
+                    int resultCode = cloudLink.setDevice(commandStr);
 
                     if(resultCode > 0)
                     {
@@ -346,7 +346,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             {
                 String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/" +
                         this.data.getDeviceState() + "/" + detail_state;
-                int resultCode = 1;//cloudLink.setDevice(commandStr);
+                int resultCode = cloudLink.setDevice(commandStr);
                 if(resultCode > 0)
                 {
                     this.data.setDeviceDetailState(detail_state);
@@ -389,7 +389,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                 String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/" +
                         this.data.getDeviceState() + "/" + detail_state;
 
-                int resultCode = 1;//cloudLink.setDevice(commandStr);
+                int resultCode = cloudLink.setDevice(commandStr);
                 if(resultCode > 0)
                 {
                     this.data.setDeviceDetailState(detail_state);
@@ -422,7 +422,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                 String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/" +
                         this.data.getDeviceState() + "/" + detail_state;
 
-                int resultCode = 1;//cloudLink.setDevice(commandStr);
+                int resultCode = cloudLink.setDevice(commandStr);
                 if(resultCode > 0)
                 {
                     this.data.setDeviceDetailState(detail_state);
@@ -463,7 +463,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                 String commandStr = this.data.getDeviceRoomNum() + "/" + this.data.getDeviceName() +"/" +
                         this.data.getDeviceState() + "/" + detail_state;
 
-                int resultCode = 1;//cloudLink.setDevice(commandStr);
+                int resultCode = cloudLink.setDevice(commandStr);
                 if(resultCode > 0)
                 {
                     this.data.setDeviceDetailState(detail_state);

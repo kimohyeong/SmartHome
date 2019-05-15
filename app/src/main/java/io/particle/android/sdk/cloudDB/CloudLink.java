@@ -1,5 +1,7 @@
 package io.particle.android.sdk.cloudDB;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 
@@ -24,10 +26,12 @@ public class CloudLink {
     private int returnValue;
     private String returnStrValue;
     private Context context;
+    private DBhelper helper;
 
     public CloudLink(){}
     public CloudLink(Context context) {
         this.context = context;
+        helper = new DBhelper(context);
     }
 
     //방번호/디바이스이름/state
@@ -49,6 +53,7 @@ public class CloudLink {
         {
             @Override
             public void onResponse(Call<PArgonInfo> call, Response<PArgonInfo> response) {
+
                 PArgonInfo argonInfo = response.body();
 
                 Log.e("log1-argon", "성공");
@@ -68,7 +73,7 @@ public class CloudLink {
 
 
 
-    public int initDevice(String msg){
+    public void initDevice(String msg, Device device){
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -80,22 +85,34 @@ public class CloudLink {
 
         Call<PArgonInfo> call = particleApi.callInitDevice(msg,"c71a8d2cb891e50a9a5f0a18921f366abef86271");
 
+
+        ProgressDialog progressDialog;
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Please wait...");
+        progressDialog.show();
         call.enqueue(new Callback<PArgonInfo>()
         {
             @Override
             public void onResponse(Call<PArgonInfo> call, Response<PArgonInfo> response) {
-                PArgonInfo argonInfo = response.body();
-                returnValue=argonInfo.getReturnValue();
-                Log.e("log1-adddevice",returnValue+"");
+                if(response.isSuccessful()) {
+                    PArgonInfo argonInfo = response.body();
+                    returnValue=argonInfo.getReturnValue();
+                    if(returnValue > 0) {
+                        helper.addDevice(device);
+                        helper.printAllDevices();
+
+                        progressDialog.dismiss();
+
+                        ((Activity)context).finish();
+                    }
+                }
             }
 
             @Override
             public void onFailure(Call<PArgonInfo> call, Throwable t) {
                 Log.e("log1-argon","실패!");
-                returnValue=-1;
             }
         });
-        return 1;
     }
     public void getTemperData() {
         retrofit = new Retrofit.Builder()
