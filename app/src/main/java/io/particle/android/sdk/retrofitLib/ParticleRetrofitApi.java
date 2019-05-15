@@ -14,10 +14,12 @@ public interface ParticleRetrofitApi {
     @GET("networks")
     Call<List<PNetworkInfo>> getDeviceCount(@Query("access_token") String access_token);
 
+    @GET("devices/e00fce68eff6c37be64c2915/temperData")
+    Call<PTemperInfo> getTemperData(@Query("access_token") String access_token);
+
     @FormUrlEncoded
     @POST("devices/e00fce68eff6c37be64c2915/setDevice")
     Call<PArgonInfo> callSetDevice(@Field("arg") String arg, @Field("access_token") String access_token);
-
 
     @FormUrlEncoded
     @POST("devices/e00fce68eff6c37be64c2915/initDevice")

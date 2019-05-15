@@ -9,16 +9,11 @@ import java.io.Serializable;
  */
 
 public class Device implements Serializable {
-    private String name;                // device이름
-    private int type;                   //0:led 1:rgb 2:blind 3:fan 4:temp
-    private int roomNum;
-    private int id;                     // db 테이블 id
+    private String name, state, detailState;                // device이름
+    private int type, roomNum, id;                   //0:led 1:rgb 2:blind 3:fan 4:temper
     private int[] room = new int[3];    //0:기본 1~2추가
-    private String state;               // device상태
     private Drawable deviceImgDrawable; // device image
-    private boolean isFirst;             //fist인지
-    private boolean cBoxState;            //checkbox상태
-    private String detailState;
+    private boolean isFirst, cBoxState;             //fist인지
 
     // For customRoom
     private int customRoomNum1;

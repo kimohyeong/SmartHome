@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class PArgonInfo {
 
-
     @SerializedName("return_value")
     public final int return_value;
 
@@ -16,4 +15,5 @@ public class PArgonInfo {
     public int getReturnValue() {
         return return_value;
     }
+
 }
