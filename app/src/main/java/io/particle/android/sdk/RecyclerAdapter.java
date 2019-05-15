@@ -132,7 +132,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                         if(data.getDeviceDetailState().equals(""))
                         {
                             if(data.getDeviceType()==0)
-                                detailState="255";
+                                detailState="100";
                             else if(data.getDeviceType()==1)
                                 detailState="255/0/0";
                             else if(data.getDeviceType()==2)
